@@ -1,13 +1,7 @@
-import { agents as agentsSchema, messages as messagesSchema, users, type User, type InsertUser } from "@shared/schema";
+import { agents as agentsSchema, messages as messagesSchema, users, type User, type InsertUser, type Message, type InsertMessage } from "@shared/schema";
 import { agents as agentsData } from "../client/src/data/agents";
-
-interface Message {
-  id: string;
-  content: string;
-  agentIds?: number[];
-  sender: string;
-  timestamp: Date;
-}
+import { db } from "./db";
+import { eq, inArray } from "drizzle-orm";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -19,39 +13,33 @@ export interface IStorage {
   getAgent(id: number): Promise<typeof agentsData[0] | undefined>;
   getAgentsByIds(ids: number[]): Promise<typeof agentsData>;
   getMessages(): Promise<Message[]>;
-  createMessage(message: Message): Promise<Message>;
+  createMessage(message: InsertMessage): Promise<Message>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
+export class DatabaseStorage implements IStorage {
   private agents: typeof agentsData;
-  private messages: Message[];
-  currentId: number;
 
   constructor() {
-    this.users = new Map();
     this.agents = agentsData;
-    this.messages = [];
-    this.currentId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
-  }
-
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
-
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+    const [user] = await db.select().from(users).where(eq(users.id, id));
     return user;
   }
 
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db.insert(users).values(insertUser).returning();
+    return user;
+  }
+
+  // For agents, we're still using the static data from the agentsData array
+  // since these are predefined and not dynamically created
   async getAgents(): Promise<typeof agentsData> {
     return this.agents;
   }
@@ -64,14 +52,15 @@ export class MemStorage implements IStorage {
     return this.agents.filter(agent => ids.includes(agent.id));
   }
 
+  // For messages, we use the database
   async getMessages(): Promise<Message[]> {
-    return this.messages;
+    return await db.select().from(messagesSchema).orderBy(messagesSchema.timestamp);
   }
 
-  async createMessage(message: Message): Promise<Message> {
-    this.messages.push(message);
-    return message;
+  async createMessage(message: InsertMessage): Promise<Message> {
+    const [newMessage] = await db.insert(messagesSchema).values(message).returning();
+    return newMessage;
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

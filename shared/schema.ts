@@ -1,5 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
+import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { z } from "zod";
 
 // Users table for authentication
@@ -9,15 +8,10 @@ export const users = pgTable("users", {
   password: text("password").notNull(),
 });
 
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  password: true,
-});
-
-export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+export type InsertUser = typeof users.$inferInsert;
 
-// Agents table for agent data
+// Agents table for agent data - just define the types, we'll use the static data
 export const agents = pgTable("agents", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -31,36 +25,17 @@ export const agents = pgTable("agents", {
   relatedAgents: integer("related_agents").array().notNull(),
 });
 
-export const insertAgentSchema = createInsertSchema(agents).pick({
-  name: true,
-  description: true,
-  category: true,
-  phase: true,
-  coordinator: true,
-  expertise: true,
-  capabilities: true,
-  whenToUse: true,
-  relatedAgents: true,
-});
-
-export type InsertAgent = z.infer<typeof insertAgentSchema>;
 export type Agent = typeof agents.$inferSelect;
+export type InsertAgent = typeof agents.$inferInsert;
 
 // Messages table for chat history
 export const messages = pgTable("messages", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id"),
+  id: text("id").primaryKey(), // Use text for nanoid compatibility
   content: text("content").notNull(),
   agentIds: integer("agent_ids").array(),
-  response: text("response"),
+  sender: text("sender").notNull(), // 'user' or 'agent'
   timestamp: timestamp("timestamp").defaultNow(),
 });
 
-export const insertMessageSchema = createInsertSchema(messages).pick({
-  userId: true,
-  content: true,
-  agentIds: true,
-});
-
-export type InsertMessage = z.infer<typeof insertMessageSchema>;
 export type Message = typeof messages.$inferSelect;
+export type InsertMessage = typeof messages.$inferInsert;

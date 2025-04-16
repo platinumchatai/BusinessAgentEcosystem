@@ -4,12 +4,9 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { agents, AgentType } from "@/data/agents";
+import type { Message as DatabaseMessage } from "@shared/schema";
 
-interface Message {
-  id: string;
-  sender: string;
-  content: string;
-  timestamp: Date;
+interface Message extends DatabaseMessage {
   agentAvatar?: string;
 }
 
@@ -27,10 +24,13 @@ const AgentInteraction = () => {
   );
 
   // Get messages from API
-  const { data: messages = [], refetch } = useQuery({
+  const { data, refetch } = useQuery<Message[]>({
     queryKey: ['/api/messages'],
     staleTime: 0,
   });
+  
+  // Use a safe messages array, ensuring it's always defined
+  const messages = data || [];
 
   // Send message mutation
   const { mutate: sendMessage, isPending } = useMutation({

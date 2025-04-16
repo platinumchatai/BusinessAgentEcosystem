@@ -51,7 +51,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ],
         });
         
-        response = completion.choices[0].message.content;
+        response = completion.choices[0].message.content || "";
       } catch (error) {
         // Fallback response if API call fails
         response = `Thank you for your message about "${content}". Our agents (${agentNames}) will analyze your query and provide tailored business advice shortly.`;
@@ -63,7 +63,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         agentIds,
         sender: "user",
         id: nanoid(),
-        timestamp: new Date(),
       });
       
       const agentMessage = await storage.createMessage({
@@ -71,7 +70,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         agentIds,
         sender: "agent",
         id: nanoid(),
-        timestamp: new Date(),
       });
       
       res.status(201).json({ 
@@ -121,7 +119,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           ],
         });
         
-        response = completion.choices[0].message.content;
+        response = completion.choices[0].message.content || "";
       } catch (error) {
         // Fallback response if API call fails
         response = `Thank you for your message. As the ${agent.name}, I specialize in ${agent.expertise.join(", ")}. I'll analyze your request and provide tailored advice shortly.`;
@@ -164,6 +162,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(agents);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch agents" });
+    }
+  });
+  
+  // Get all messages
+  app.get("/api/messages", async (req, res) => {
+    try {
+      const messages = await storage.getMessages();
+      res.json(messages);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch messages" });
     }
   });
 
