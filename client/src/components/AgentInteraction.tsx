@@ -183,7 +183,15 @@ const AgentInteraction = () => {
                     <span className="material-icons text-white text-sm">smart_toy</span>
                   </div>
                   <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                    <p className="text-sm">Hello! I'm your Business Development Agent. How can I help with your business today?</p>
+                    <div className="text-sm prose prose-sm max-w-none">
+                      <h3>Welcome to Business Agency AI</h3>
+                      <p>I'm your Business Development Agent. How can I help with your business today?</p>
+                      <ul>
+                        <li>Select agents on the left panel to assist you</li>
+                        <li>Ask for specific business advice or strategies</li>
+                        <li>Request plans or documents in structured format</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               )}
@@ -198,7 +206,14 @@ const AgentInteraction = () => {
                   )}
                   
                   <div className={`${msg.sender === 'user' ? 'bg-primary/10' : 'bg-gray-100'} rounded-lg p-3 max-w-[80%]`}>
-                    <p className="text-sm">{msg.content}</p>
+                    {msg.sender === 'user' ? (
+                      <p className="text-sm">{msg.content}</p>
+                    ) : (
+                      <div 
+                        className="text-sm prose prose-sm max-w-none" 
+                        dangerouslySetInnerHTML={{ __html: msg.content }}
+                      />
+                    )}
                   </div>
                   
                   {msg.sender === 'user' && (

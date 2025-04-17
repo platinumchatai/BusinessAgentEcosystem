@@ -45,6 +45,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
               role: "system",
               content: `You are a business agency AI representing the following agents: ${agentNames}. 
               Respond as these agents would, providing valuable business advice in your areas of expertise.
+              
+              FORMAT YOUR RESPONSES:
+              - Always use clear organization with headers, subheaders, and bulleted lists for readability
+              - For any plans, strategies, or formal business documents, format them using HTML
+              - Use <h1>, <h2>, <h3> tags for headers/subheaders
+              - Use <ul> and <li> for bullet points
+              - Use <p> for paragraphs
+              - Include line breaks between sections
+              
               Respond in a professional, helpful manner. Keep responses concise but valuable.`
             },
             { role: "user", content }
@@ -113,6 +122,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
               role: "system",
               content: `You are the ${agent.name}, an AI business agent with expertise in ${agent.expertise.join(", ")}. 
               Your primary role is to help businesses in the Phase ${agent.phase} stage.
+              
+              FORMAT YOUR RESPONSES:
+              - Always use clear organization with headers, subheaders, and bulleted lists for readability
+              - For any plans, strategies, or formal business documents, format them using HTML
+              - Use <h1>, <h2>, <h3> tags for headers/subheaders
+              - Use <ul> and <li> for bullet points
+              - Use <p> for paragraphs
+              - Include line breaks between sections
+              
               Respond in a professional, helpful manner. Keep responses concise but valuable.`
             },
             { role: "user", content }
