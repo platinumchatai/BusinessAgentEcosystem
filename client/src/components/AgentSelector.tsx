@@ -225,129 +225,127 @@ const AgentSelector = () => {
         )}
       </div>
 
-      {/* Workflow Phases - Simplified Vertical Design */}
-      <div className="mt-16 mb-12 max-w-4xl mx-auto">
-        <h3 className="font-heading text-xl font-medium mb-8 text-center">Business Development Phases</h3>
-        
-        {/* Simple stacked phase layout */}
-        <div className="space-y-4">
-          {phases.map((phase) => (
-            <div 
-              key={phase.id}
-              className={cn(
-                "bg-white rounded-lg shadow-sm overflow-hidden border-l-2",
-                phase.id === activePhase ? "ring-1 ring-gray-200" : "",
-                phase.id === 1 ? "border-gray-300" : 
-                phase.id === 2 ? "border-gray-300" : 
-                phase.id === 3 ? "border-gray-300" : 
-                "border-gray-300"
-              )}
-            >
-              {/* Phase header */}
-              <div 
-                className={cn(
-                  "p-5 cursor-pointer",
-                  phase.id === activePhase && "bg-gray-50"
-                )}
+      {/* Consultation Button */}
+      <div className="mt-12 mb-16 text-center">
+        <a 
+          href="mailto:contact@platinumchat.ai" 
+          className="inline-flex items-center px-5 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+        >
+          <span className="material-icons text-sm mr-2">chat</span>
+          Start a Consultation
+        </a>
+      </div>
+      
+      {/* Agent Workflow Preview based on image */}
+      <div className="mt-16 mb-16 max-w-4xl mx-auto bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-6 text-center">
+          <h3 className="font-heading text-xl font-medium mb-2">Agent Workflows</h3>
+          <p className="text-gray-500 text-sm mb-6">
+            See how our agents work together to deliver comprehensive solutions for each business phase.
+          </p>
+          
+          {/* Phase tabs */}
+          <div className="flex flex-wrap justify-center gap-2 mb-8">
+            {phases.map(phase => (
+              <button
+                key={phase.id}
                 onClick={() => setActivePhase(phase.id)}
+                className={cn(
+                  "px-4 py-2 text-sm rounded-md transition-colors",
+                  activePhase === phase.id
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                )}
               >
-                <div className="flex justify-between items-center flex-wrap gap-3">
-                  <h4 className="font-heading font-medium text-lg">
-                    Phase {phase.id}: {phase.name}
-                  </h4>
-                  
-                  {/* Use Workflow button - subtle design */}
-                  <Link
-                    href={`/workflow/${phase.id}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      window.scrollTo(0, 0);
-                    }}
-                    className="inline-flex items-center px-3 py-1.5 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
-                  >
-                    <span className="material-icons text-sm mr-1">play_arrow</span>
-                    Use Workflow
-                  </Link>
-                </div>
-                
-                {/* Phase description */}
-                <p className="text-neutral-500 text-sm mt-3">{phase.description}</p>
-                
-                {/* Workflow description - subtle design */}
-                <div className="mt-3 pt-3 text-sm border-t border-gray-100 text-gray-500">
-                  <span className="font-medium">Workflow:</span> {phase.workflowDescription}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        
-        {/* Phase-specific agents - simplified */}
-        <div className="mt-10 pt-6 border-t border-gray-100">
-          <div className="flex items-center justify-between mb-6">
-            <h4 className="font-heading text-lg font-medium text-gray-700">
-              Phase {activePhase} Specialist Agents
-            </h4>
-            
-            {/* Phase selector dropdown - always visible for simplicity */}
-            <div className="">
-              <select 
-                className="p-2 border border-gray-200 rounded-md text-sm bg-white"
-                value={activePhase}
-                onChange={(e) => setActivePhase(Number(e.target.value))}
-              >
-                {phases.map(phase => (
-                  <option key={phase.id} value={phase.id}>
-                    Phase {phase.id}: {phase.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+                Phase {phase.id}: {phase.name}
+              </button>
+            ))}
           </div>
           
-          {/* Phase agents grid - reduced to 1-2 columns for simplicity */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {agents
-              .filter(agent => 
-                agent.phase === activePhase &&
-                (filter === 'All Agents' || agent.category === filter)
-              )
-              .map(agent => (
-                <div 
-                  key={agent.id}
-                  className="bg-white border border-gray-100 rounded-md p-4 hover:shadow-sm transition-shadow"
-                >
-                  <Link 
-                    href={`/agent/${agent.id}`}
-                    onClick={() => window.scrollTo(0, 0)}
-                    className="block"
-                  >
-                    <div className="flex justify-between items-start mb-2">
-                      <h5 className="font-medium text-base">{agent.name}</h5>
-                      <span className="bg-gray-50 text-gray-600 text-xs px-2 py-0.5 rounded-full">
-                        {agent.category}
-                      </span>
-                    </div>
-                    <p className="text-gray-500 text-sm mb-3">{agent.description}</p>
-                    <div className="flex justify-end">
-                      <span className="text-xs text-gray-400">
-                        {agent.coordinator ? "Coordinating Agent" : "Specialist Agent"}
-                      </span>
-                    </div>
-                  </Link>
-                </div>
-              ))
-            }
+          {/* Current phase details */}
+          <div className="border-t border-gray-100 pt-6">
+            <div className="flex justify-between items-start mb-6">
+              <h4 className="font-heading text-lg font-medium text-gray-800 text-left">
+                Phase {activePhase}: {phases.find(p => p.id === activePhase)?.name} Workflow
+              </h4>
+              <a 
+                href={`/workflow/${activePhase}`}
+                onClick={() => window.scrollTo(0, 0)}
+                className="text-red-500 hover:text-red-600 text-sm font-medium"
+              >
+                Use this workflow
+              </a>
+            </div>
             
-            {/* Empty state */}
-            {agents.filter(agent => 
-              agent.phase === activePhase &&
-              (filter === 'All Agents' || agent.category === filter)
-            ).length === 0 && (
-              <div className="col-span-2 py-10 text-center text-gray-400">
-                No agents found for the selected phase and category.
+            <p className="text-gray-500 text-sm mb-6 text-left">
+              {phases.find(p => p.id === activePhase)?.description}
+            </p>
+            
+            {/* Workflow Steps */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              {/* Step 1 */}
+              <div className="text-center bg-gray-50 rounded-md p-4">
+                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span>1</span>
+                </div>
+                <h5 className="font-medium text-sm mb-2">Business Concept Refinement</h5>
+                <p className="text-xs text-gray-500">The Ideation Agent works with the entrepreneur to clarify and refine the business concept.</p>
+                <div className="mt-3 text-xs text-blue-600">
+                  <span className="material-icons text-xs mr-1 inline-block">person</span>
+                  Ideation Agent
+                </div>
               </div>
-            )}
+              
+              {/* Step 2 */}
+              <div className="text-center bg-gray-50 rounded-md p-4">
+                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span>2</span>
+                </div>
+                <h5 className="font-medium text-sm mb-2">Brand Foundation Development</h5>
+                <p className="text-xs text-gray-500">Marketing & Branding Agent creates initial brand identity based on the refined business concept.</p>
+                <div className="mt-3 text-xs text-blue-600">
+                  <span className="material-icons text-xs mr-1 inline-block">person</span>
+                  Marketing & Branding Agent
+                </div>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="text-center bg-gray-50 rounded-md p-4">
+                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span>3</span>
+                </div>
+                <h5 className="font-medium text-sm mb-2">Financial Planning</h5>
+                <p className="text-xs text-gray-500">Finance & Budgeting Agent develops initial financial projections and startup budget requirements.</p>
+                <div className="mt-3 text-xs text-blue-600">
+                  <span className="material-icons text-xs mr-1 inline-block">person</span>
+                  Finance & Budgeting Agent
+                </div>
+              </div>
+              
+              {/* Step 4 */}
+              <div className="text-center bg-gray-50 rounded-md p-4">
+                <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-3">
+                  <span>4</span>
+                </div>
+                <h5 className="font-medium text-sm mb-2">Strategic Roadmap Creation</h5>
+                <p className="text-xs text-gray-500">Business Development Agent synthesizes all inputs to create a comprehensive business strategy.</p>
+                <div className="mt-3 text-xs text-blue-600">
+                  <span className="material-icons text-xs mr-1 inline-block">person</span>
+                  Business Development Agent
+                </div>
+              </div>
+            </div>
+            
+            {/* Workflow Coordinator */}
+            <div className="bg-blue-50 p-4 rounded-md">
+              <div className="flex items-center">
+                <span className="material-icons text-blue-600 mr-2">hub</span>
+                <h5 className="font-medium text-sm">Workflow Coordinator</h5>
+              </div>
+              <p className="text-sm text-gray-600 mt-2">
+                The Business Development Agent oversees this entire workflow, ensuring all specialized agents work together coherently.
+              </p>
+            </div>
           </div>
         </div>
       </div>
