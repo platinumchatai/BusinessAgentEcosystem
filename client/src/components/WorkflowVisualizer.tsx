@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { workflows, WorkflowType } from "@/data/workflows";
 
 const WorkflowVisualizer = () => {
@@ -159,9 +160,17 @@ const WorkflowVisualizer = () => {
         transition={{ duration: 0.5 }}
         key={activeWorkflow.id}
       >
-        <h3 className="font-heading font-semibold text-xl mb-6">
-          Phase {activeWorkflow.phaseId}: {activeWorkflow.name} Workflow
-        </h3>
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="font-heading font-semibold text-xl">
+            Phase {activeWorkflow.phaseId}: {activeWorkflow.name} Workflow
+          </h3>
+          <Link 
+            href={`/workflow/${activeWorkflow.phaseId}`}
+            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+          >
+            Use this workflow
+          </Link>
+        </div>
         
         <div className="relative" ref={workflowRef}>
           {/* Workflow steps */}
