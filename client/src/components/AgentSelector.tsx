@@ -104,31 +104,21 @@ const AgentSelector = () => {
   
   return (
     <section id="agents" className="mb-16">
-      <div className="text-center mb-12">
-        <motion.h2 
-          className="font-heading font-bold text-3xl mb-4"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Meet Our AI Agent Ecosystem
-        </motion.h2>
-        <motion.p 
-          className="text-neutral-400 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
+      <div className="text-center mb-12 max-w-3xl mx-auto">
+        <h2 className="font-heading font-medium text-2xl mb-3">
+          AI Agent Ecosystem
+        </h2>
+        <p className="text-gray-500 text-base mx-auto">
           Choose between complete workflows tailored to your business stage or individual agents for specific needs.
-        </motion.p>
+        </p>
       </div>
 
-      {/* Top-level category filters */}
-      <div className="mb-8 flex flex-wrap gap-2 justify-center">
+      {/* Top-level category filters - simplified */}
+      <div className="mb-6 flex flex-wrap gap-2 justify-center max-w-3xl mx-auto">
         {categoryFilters.map(category => (
           <button 
             key={category}
-            className={`px-4 py-2 border border-gray-200 rounded-lg transition-colors ${filter === category ? 'bg-primary text-white' : 'bg-white hover:bg-gray-100'}`}
+            className={`px-3 py-1.5 border border-gray-200 rounded-md text-sm transition-colors ${filter === category ? 'bg-gray-100 font-medium' : 'bg-white hover:bg-gray-50'}`}
             onClick={() => setFilter(category)}
           >
             {category}
@@ -136,70 +126,69 @@ const AgentSelector = () => {
         ))}
       </div>
 
-      {/* Featured Agents */}
-      <div className="mb-12">
-        <h3 className="font-heading text-2xl font-bold mb-6 text-center">Featured Agents</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Featured Agents - Simplified */}
+      <div className="mb-12 max-w-4xl mx-auto">
+        <h3 className="font-heading text-xl font-medium mb-6 text-center">Featured Agents</h3>
+        
+        {/* 2x2 Grid for Featured Agents */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {featuredAgents.map(agent => (
-            <motion.div 
+            <div 
               key={agent.id}
-              className={`agent-card bg-white rounded-lg shadow-card overflow-hidden 
-                ${agent.coordinator ? `border-l-4 ${agent.phase === 1 ? 'border-primary' : agent.phase === 2 ? 'border-green-600' : agent.phase === 3 ? 'border-amber-500' : 'border-secondary'}` : ''}
-                cursor-pointer hover:shadow-lg`}
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.2 }}
+              className="bg-white border border-gray-200 rounded-md hover:shadow-sm transition-shadow p-4"
             >
               <Link 
                 href={`/agent/${agent.id}`}
                 onClick={() => window.scrollTo(0, 0)}
+                className="block"
               >
-                <div className="p-5">
-                  <div className="flex justify-between items-start mb-3">
-                    <h5 className="font-heading font-semibold text-lg">{agent.name}</h5>
-                    <span className={`
-                      ${agent.coordinator 
-                        ? `${agent.phase === 1 ? 'bg-primary/10 text-primary' : agent.phase === 2 ? 'bg-green-600/10 text-green-600' : agent.phase === 3 ? 'bg-amber-500/10 text-amber-500' : 'bg-secondary/10 text-secondary'}`
-                        : 'bg-gray-100 text-gray-600'} 
-                      text-xs px-2 py-1 rounded-full`}
-                    >
-                      {agent.category}
+                <div className="flex justify-between items-start mb-2">
+                  <h5 className="font-medium text-lg">{agent.name}</h5>
+                  <span className="bg-gray-50 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                    {agent.category}
+                  </span>
+                </div>
+                <p className="text-gray-500 text-sm mb-3 line-clamp-2">{agent.description}</p>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-gray-400">
+                    Phase {agent.phase}
+                  </span>
+                  {agent.coordinator && (
+                    <span className="text-xs bg-gray-50 px-2 py-0.5 rounded-full text-gray-500">
+                      Coordinator
                     </span>
-                  </div>
-                  <p className="text-neutral-400 text-sm mb-4 line-clamp-2">{agent.description}</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-xs text-neutral-300">
-                      {`Phase ${agent.phase}${agent.coordinator ? ' Primary' : ''}`}
-                    </span>
-                  </div>
+                  )}
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
         
+        {/* "See Other Agents" Button - Simplified */}
         <div className="flex justify-center mt-6">
           <button 
             onClick={() => setShowAllAgents(!showAllAgents)}
-            className="bg-white text-primary border border-primary px-6 py-2 rounded-lg hover:bg-primary/5 transition-colors"
+            className="bg-white text-gray-700 border border-gray-300 px-4 py-1.5 text-sm rounded-md hover:bg-gray-50 transition-colors"
           >
             {showAllAgents ? 'Hide Other Agents' : 'See Other Agents'}
           </button>
         </div>
         
+        {/* Other Agents Section - Simplified */}
         {showAllAgents && (
           <div className="mt-8">
             <div className="relative w-full max-w-md mx-auto mb-6">
               <input 
                 type="text" 
                 placeholder="Search agents..." 
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <span className="material-icons absolute left-3 top-2 text-gray-400">search</span>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {agents
                 .filter(agent => 
                   !featuredAgents.some(featured => featured.id === agent.id) &&
@@ -208,30 +197,27 @@ const AgentSelector = () => {
                 )
                 .slice(0, 8)
                 .map(agent => (
-                  <motion.div 
+                  <div 
                     key={agent.id}
-                    className="bg-white rounded-lg shadow-sm hover:shadow-md p-4 border border-gray-100"
-                    whileHover={{ y: -3 }}
-                    transition={{ duration: 0.2 }}
+                    className="bg-white border border-gray-200 rounded-md p-4 hover:shadow-sm transition-shadow"
                   >
                     <Link 
                       href={`/agent/${agent.id}`}
                       onClick={() => window.scrollTo(0, 0)}
+                      className="block"
                     >
-                      <div className="flex flex-col h-full">
-                        <div className="flex justify-between items-start mb-2">
-                          <h5 className="font-medium text-base">{agent.name}</h5>
-                          <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
-                            {agent.category}
-                          </span>
-                        </div>
-                        <p className="text-neutral-400 text-xs mb-3 line-clamp-2 flex-grow">{agent.description}</p>
-                        <div className="flex justify-end">
-                          <span className="text-xs text-neutral-300">Phase {agent.phase}</span>
-                        </div>
+                      <div className="flex justify-between items-start mb-2">
+                        <h5 className="font-medium text-base">{agent.name}</h5>
+                        <span className="bg-gray-50 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                          {agent.category}
+                        </span>
+                      </div>
+                      <p className="text-gray-500 text-sm mb-3 line-clamp-2">{agent.description}</p>
+                      <div className="flex justify-end">
+                        <span className="text-xs text-gray-400">Phase {agent.phase}</span>
                       </div>
                     </Link>
-                  </motion.div>
+                  </div>
                 ))
               }
             </div>
@@ -239,50 +225,45 @@ const AgentSelector = () => {
         )}
       </div>
 
-      {/* Workflow Phases */}
-      <div className="mt-16 mb-12">
-        <h3 className="font-heading text-2xl font-bold mb-6 text-center">Business Development Phases</h3>
+      {/* Workflow Phases - Simplified Vertical Design */}
+      <div className="mt-16 mb-12 max-w-4xl mx-auto">
+        <h3 className="font-heading text-xl font-medium mb-8 text-center">Business Development Phases</h3>
         
-        {/* Simple phase cards with clean layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Simple stacked phase layout */}
+        <div className="space-y-4">
           {phases.map((phase) => (
             <div 
               key={phase.id}
               className={cn(
-                "bg-white rounded-lg shadow-md overflow-hidden border-t-4",
-                phase.id === 1 ? "border-primary" : 
-                phase.id === 2 ? "border-green-600" : 
-                phase.id === 3 ? "border-amber-500" : 
-                "border-secondary"
+                "bg-white rounded-lg shadow-sm overflow-hidden border-l-2",
+                phase.id === activePhase ? "ring-1 ring-gray-200" : "",
+                phase.id === 1 ? "border-gray-300" : 
+                phase.id === 2 ? "border-gray-300" : 
+                phase.id === 3 ? "border-gray-300" : 
+                "border-gray-300"
               )}
             >
               {/* Phase header */}
               <div 
                 className={cn(
-                  "p-4 cursor-pointer",
+                  "p-5 cursor-pointer",
                   phase.id === activePhase && "bg-gray-50"
                 )}
                 onClick={() => setActivePhase(phase.id)}
               >
-                <div className="flex justify-between items-center">
-                  <h4 className="font-heading font-semibold text-lg">
+                <div className="flex justify-between items-center flex-wrap gap-3">
+                  <h4 className="font-heading font-medium text-lg">
                     Phase {phase.id}: {phase.name}
                   </h4>
                   
-                  {/* Use Workflow button */}
+                  {/* Use Workflow button - subtle design */}
                   <Link
                     href={`/workflow/${phase.id}`}
                     onClick={(e) => {
                       e.stopPropagation();
                       window.scrollTo(0, 0);
                     }}
-                    className={cn(
-                      "inline-flex items-center px-3 py-1.5 rounded-lg text-sm text-white",
-                      phase.id === 1 ? "bg-primary hover:bg-primary-dark" : 
-                      phase.id === 2 ? "bg-green-600 hover:bg-green-700" : 
-                      phase.id === 3 ? "bg-amber-500 hover:bg-amber-600" : 
-                      "bg-secondary hover:bg-secondary-dark"
-                    )}
+                    className="inline-flex items-center px-3 py-1.5 rounded-md text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors"
                   >
                     <span className="material-icons text-sm mr-1">play_arrow</span>
                     Use Workflow
@@ -290,16 +271,10 @@ const AgentSelector = () => {
                 </div>
                 
                 {/* Phase description */}
-                <p className="text-neutral-500 text-sm mt-2">{phase.description}</p>
+                <p className="text-neutral-500 text-sm mt-3">{phase.description}</p>
                 
-                {/* Workflow description */}
-                <div className={cn(
-                  "mt-3 pt-3 text-sm border-t border-gray-100",
-                  phase.id === 1 ? "text-primary/80" : 
-                  phase.id === 2 ? "text-green-600/80" : 
-                  phase.id === 3 ? "text-amber-500/80" : 
-                  "text-secondary/80"
-                )}>
+                {/* Workflow description - subtle design */}
+                <div className="mt-3 pt-3 text-sm border-t border-gray-100 text-gray-500">
                   <span className="font-medium">Workflow:</span> {phase.workflowDescription}
                 </div>
               </div>
@@ -307,24 +282,17 @@ const AgentSelector = () => {
           ))}
         </div>
         
-        {/* Phase-specific agents */}
-        <div className="mt-12">
+        {/* Phase-specific agents - simplified */}
+        <div className="mt-10 pt-6 border-t border-gray-100">
           <div className="flex items-center justify-between mb-6">
-            <h4 className="font-heading text-xl font-medium">
-              <span className={cn(
-                activePhase === 1 ? "text-primary" : 
-                activePhase === 2 ? "text-green-600" : 
-                activePhase === 3 ? "text-amber-500" : 
-                "text-secondary"
-              )}>
-                Phase {activePhase}
-              </span> Specialist Agents
+            <h4 className="font-heading text-lg font-medium text-gray-700">
+              Phase {activePhase} Specialist Agents
             </h4>
             
-            {/* Phase selector for mobile */}
-            <div className="md:hidden">
+            {/* Phase selector dropdown - always visible for simplicity */}
+            <div className="">
               <select 
-                className="p-2 border border-gray-200 rounded-lg"
+                className="p-2 border border-gray-200 rounded-md text-sm bg-white"
                 value={activePhase}
                 onChange={(e) => setActivePhase(Number(e.target.value))}
               >
@@ -337,15 +305,37 @@ const AgentSelector = () => {
             </div>
           </div>
           
-          {/* Phase agents grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* Phase agents grid - reduced to 1-2 columns for simplicity */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {agents
               .filter(agent => 
                 agent.phase === activePhase &&
                 (filter === 'All Agents' || agent.category === filter)
               )
               .map(agent => (
-                <AgentCard key={agent.id} agent={agent} phase={activePhase} />
+                <div 
+                  key={agent.id}
+                  className="bg-white border border-gray-100 rounded-md p-4 hover:shadow-sm transition-shadow"
+                >
+                  <Link 
+                    href={`/agent/${agent.id}`}
+                    onClick={() => window.scrollTo(0, 0)}
+                    className="block"
+                  >
+                    <div className="flex justify-between items-start mb-2">
+                      <h5 className="font-medium text-base">{agent.name}</h5>
+                      <span className="bg-gray-50 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                        {agent.category}
+                      </span>
+                    </div>
+                    <p className="text-gray-500 text-sm mb-3">{agent.description}</p>
+                    <div className="flex justify-end">
+                      <span className="text-xs text-gray-400">
+                        {agent.coordinator ? "Coordinating Agent" : "Specialist Agent"}
+                      </span>
+                    </div>
+                  </Link>
+                </div>
               ))
             }
             
@@ -354,7 +344,7 @@ const AgentSelector = () => {
               agent.phase === activePhase &&
               (filter === 'All Agents' || agent.category === filter)
             ).length === 0 && (
-              <div className="col-span-3 py-10 text-center text-gray-500">
+              <div className="col-span-2 py-10 text-center text-gray-400">
                 No agents found for the selected phase and category.
               </div>
             )}
