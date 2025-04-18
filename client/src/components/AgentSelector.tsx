@@ -139,7 +139,6 @@ const AgentSelector = () => {
             >
               <Link 
                 href={`/agent/${agent.id}`}
-                onClick={() => window.scrollTo(0, 0)}
                 className="block"
               >
                 <div className="flex justify-between items-start mb-2">
@@ -192,7 +191,6 @@ const AgentSelector = () => {
                   >
                     <Link 
                       href={`/agent/${agent.id}`}
-                      onClick={() => window.scrollTo(0, 0)}
                       className="block"
                     >
                       <div className="flex justify-between items-start mb-2">
@@ -218,7 +216,6 @@ const AgentSelector = () => {
       <div className="mt-12 mb-16 text-center">
         <Link 
           href="/consultation" 
-          onClick={() => window.scrollTo(0, 0)}
           className="inline-flex items-center px-5 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
         >
           <span className="material-icons text-sm mr-2">chat</span>
@@ -261,13 +258,12 @@ const AgentSelector = () => {
               <h4 className="font-heading text-lg font-medium text-gray-800 text-left">
                 Phase {activePhase}: {phases.find(p => p.id === activePhase)?.name} Workflow
               </h4>
-              <a 
+              <Link 
                 href={`/workflow/${activePhase}`}
-                onClick={() => window.scrollTo(0, 0)}
                 className="text-red-500 hover:text-red-600 text-sm font-medium"
               >
                 Use this workflow
-              </a>
+              </Link>
             </div>
             
             <p className="text-gray-500 text-sm mb-6 text-left">

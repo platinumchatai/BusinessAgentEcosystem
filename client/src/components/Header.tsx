@@ -84,33 +84,33 @@ const Header = () => {
           <div className="container mx-auto px-4 py-3">
             <nav className="flex flex-col space-y-3">
               <a 
-                href="#about" 
+                href="/#about" 
                 className="text-neutral-400 hover:text-primary py-2 transition-colors"
                 onClick={handleNavClick}
               >
                 About
               </a>
               <a 
-                href="#agents" 
+                href="/#agents-section" 
                 className="text-neutral-400 hover:text-primary py-2 transition-colors"
                 onClick={handleNavClick}
               >
                 Agents
               </a>
-              <a 
-                href="#workflows" 
+              <Link 
+                href="/consultation" 
                 className="text-neutral-400 hover:text-primary py-2 transition-colors"
                 onClick={handleNavClick}
               >
-                Workflows
-              </a>
-              <a 
-                href="#chat" 
+                Consultation
+              </Link>
+              <Link 
+                href="/subscribe" 
                 className="text-neutral-400 hover:text-primary py-2 transition-colors"
                 onClick={handleNavClick}
               >
-                Contact
-              </a>
+                <span className="text-blue-600 font-medium">Subscribe</span>
+              </Link>
             </nav>
           </div>
         </div>
