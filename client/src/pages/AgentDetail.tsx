@@ -13,6 +13,11 @@ const AgentDetail = () => {
   const [showConnecting, setShowConnecting] = useState(false);
   const { toast } = useToast();
   
+  // Scroll to top when component mounts or when agent ID changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [id]);
+  
   // Find the agent from the data
   const agent = agents.find(agent => agent.id === Number(id));
   
@@ -80,7 +85,11 @@ const AgentDetail = () => {
   return (
     <div className="container mx-auto px-4 py-12">
       <div className="mb-8">
-        <Link href="/" className="flex items-center text-primary hover:underline mb-4">
+        <Link 
+          href="/" 
+          className="flex items-center text-primary hover:underline mb-4"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
           <span className="material-icons mr-1">arrow_back</span>
           Back to all agents
         </Link>
@@ -167,7 +176,10 @@ const AgentDetail = () => {
                   
                   return (
                     <Link key={related.id} href={`/agent/${related.id}`}>
-                      <div className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer">
+                      <div 
+                        className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                      >
                         <div className="flex justify-between items-start mb-2">
                           <h3 className="font-semibold">{related.name}</h3>
                           <span className={`px-2 py-0.5 text-xs rounded-full ${relatedColors.light} ${relatedColors.text}`}>
