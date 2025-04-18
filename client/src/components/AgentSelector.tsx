@@ -238,71 +238,83 @@ const AgentSelector = () => {
         )}
       </div>
 
-      {/* Business Development Phases */}
+      {/* Phases Selector */}
       <div className="mt-16 mb-12">
-        <h3 className="font-heading text-2xl font-bold mb-6 text-center">Business Development Phases</h3>
+        <h3 className="font-heading text-2xl font-bold mb-6 text-center">Workflow Phases</h3>
         
-        {/* Phase navigation tabs */}
-        <div className="mb-8 border-b border-gray-200">
-          <ul className="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
-            {phases.map((phase, index) => (
-              <li className="mr-2" role="presentation" key={phase.id}>
-                <button 
-                  className={`inline-block p-4 border-b-2 rounded-t-lg hover:text-primary hover:border-primary 
-                    ${activePhase === phase.id ? 'text-primary border-primary' : 'border-transparent'}`}
-                  onClick={() => setActivePhase(phase.id)}
-                  type="button" 
-                  role="tab" 
-                  aria-selected={activePhase === phase.id}
-                >
-                  Phase {phase.id}: {phase.name}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Phase content */}
-        <div className="tab-content">
-          <AnimatePresence mode="wait">
+        {/* Phase cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {phases.map((phase, index) => (
             <motion.div 
-              key={activePhase}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
-              className={`${phaseBackgrounds[activePhase-1]} rounded-lg p-6 mb-8 relative overflow-hidden phase-indicator ${phaseIndicators[activePhase-1]}`}
+              key={phase.id}
+              className={`relative bg-white rounded-lg shadow-card overflow-hidden 
+                border-t-4 ${phase.id === 1 ? 'border-primary' : phase.id === 2 ? 'border-green-600' : phase.id === 3 ? 'border-amber-500' : 'border-secondary'}
+                cursor-pointer hover:shadow-lg`}
+              whileHover={{ y: -5 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setActivePhase(phase.id)}
             >
-              <h3 className="font-heading font-semibold text-2xl mb-2">
-                Phase {currentPhase.id}: {currentPhase.name}
-              </h3>
-              <p className="text-neutral-400 mb-4">{currentPhase.description}</p>
-              
-              <div className={`${activePhase === 1 ? 'bg-primary/10' : activePhase === 2 ? 'bg-green-600/10' : activePhase === 3 ? 'bg-amber-500/10' : 'bg-secondary/10'} rounded-lg p-4 mb-6`}>
-                <div className="flex items-center">
-                  <span className={`material-icons ${activePhase === 1 ? 'text-primary' : activePhase === 2 ? 'text-green-600' : activePhase === 3 ? 'text-amber-500' : 'text-secondary'} mr-2`}>
-                    group_work
-                  </span>
-                  <h4 className="font-heading font-medium">Recommended Workflow</h4>
+              <div className="p-5">
+                <div className="flex justify-between items-start mb-3">
+                  <h5 className="font-heading font-semibold text-lg">Phase {phase.id}: {phase.name}</h5>
                 </div>
-                <p className="text-sm mt-2">{currentPhase.workflowDescription}</p>
-                <Link
-                  href={`/workflow/${activePhase}`}
-                  onClick={() => window.scrollTo(0, 0)}
-                  className={`mt-3 inline-block ${phaseButtonColors[activePhase-1].bg} text-white px-4 py-2 rounded-lg text-sm ${phaseButtonColors[activePhase-1].hover} transition-colors`}
-                >
-                  Use this workflow
-                </Link>
-              </div>
-              
-              {/* Phase agents grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredAgents.map(agent => (
-                  <AgentCard key={agent.id} agent={agent} phase={activePhase} />
-                ))}
+                <p className="text-neutral-400 text-sm mb-12">{phase.description}</p>
+                
+                {/* Workflow button positioned at bottom right */}
+                <div className="absolute bottom-3 right-3">
+                  <Link
+                    href={`/workflow/${phase.id}`}
+                    onClick={(e) => {
+                      e.stopPropagation(); // Prevent triggering the parent div's onClick
+                      window.scrollTo(0, 0);
+                    }}
+                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm ${
+                      phase.id === 1 ? 'bg-primary hover:bg-primary-dark' : 
+                      phase.id === 2 ? 'bg-green-600 hover:bg-green-700' : 
+                      phase.id === 3 ? 'bg-amber-500 hover:bg-amber-600' : 
+                      'bg-secondary hover:bg-secondary-dark'
+                    } text-white transition-colors`}
+                  >
+                    <span className="material-icons text-sm mr-1">workflow</span>
+                    Use Workflow
+                  </Link>
+                </div>
+                
+                {/* Workflow description below the title */}
+                <div className={`absolute bottom-12 left-5 right-5 mb-2 text-xs ${
+                  phase.id === 1 ? 'text-primary/70' : 
+                  phase.id === 2 ? 'text-green-600/70' : 
+                  phase.id === 3 ? 'text-amber-500/70' : 
+                  'text-secondary/70'
+                }`}>
+                  <span className="font-medium">Workflow: </span>{phase.workflowDescription}
+                </div>
               </div>
             </motion.div>
-          </AnimatePresence>
+          ))}
+        </div>
+        
+        {/* Agents by selected phase */}
+        <div className="mt-8">
+          <h4 className="font-heading text-xl font-medium mb-4">
+            <span className={
+              activePhase === 1 ? 'text-primary' : 
+              activePhase === 2 ? 'text-green-600' : 
+              activePhase === 3 ? 'text-amber-500' : 
+              'text-secondary'
+            }>Phase {activePhase}</span> Agents
+          </h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {agents
+              .filter(agent => 
+                agent.phase === activePhase &&
+                (filter === 'All Agents' || agent.category === filter)
+              )
+              .map(agent => (
+                <AgentCard key={agent.id} agent={agent} phase={activePhase} />
+              ))
+            }
+          </div>
         </div>
       </div>
     </section>
