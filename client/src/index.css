@@ -12,8 +12,18 @@
     @apply border-border;
   }
 
-  body {
+  html, body {
     @apply font-sans antialiased bg-background text-foreground;
+    scroll-behavior: auto;
+    scroll-padding-top: 0;
+    height: 100%;
+    overflow-x: hidden;
+  }
+  
+  #root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   
   .font-heading {
