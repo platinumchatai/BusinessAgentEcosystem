@@ -212,7 +212,19 @@ const AgentSelector = () => {
         )}
       </div>
 
-
+      {/* Consultation Button */}
+      <div className="mt-12 mb-16 text-center">
+        <Link 
+          href="/consultation" 
+          className="inline-flex items-center px-5 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+        >
+          <span className="material-icons text-sm mr-2">chat</span>
+          Start Agency Consultation
+        </Link>
+        <p className="text-sm text-gray-500 mt-2">
+          Chat with our agency assistant to learn about our services and subscription options
+        </p>
+      </div>
     </section>
   );
 };
