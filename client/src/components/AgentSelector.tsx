@@ -18,11 +18,6 @@ const AgentCard = ({ agent, phase }: AgentCardProps) => {
   
   const color = phaseColors[phase - 1];
   
-  // Function to handle click and scroll to top
-  const handleClick = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-  
   return (
     <motion.div 
       className={`agent-card bg-white rounded-lg shadow-card overflow-hidden 
@@ -30,7 +25,6 @@ const AgentCard = ({ agent, phase }: AgentCardProps) => {
         cursor-pointer hover:shadow-lg`}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.2 }}
-      onClick={handleClick}
     >
       <Link href={`/agent/${agent.id}`}>
         <div className="p-5">
