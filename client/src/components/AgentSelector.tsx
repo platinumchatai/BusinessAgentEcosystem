@@ -212,22 +212,8 @@ const AgentSelector = () => {
         )}
       </div>
 
-      {/* Consultation Button */}
-      <div className="mt-12 mb-16 text-center">
-        <Link 
-          href="/consultation" 
-          className="inline-flex items-center px-5 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
-        >
-          <span className="material-icons text-sm mr-2">chat</span>
-          Start Agency Consultation
-        </Link>
-        <p className="text-sm text-gray-500 mt-2">
-          Chat with our agency assistant to learn about our services and subscription options
-        </p>
-      </div>
-      
-      {/* Agent Workflow Preview based on image */}
-      <div className="mt-16 mb-16 max-w-4xl mx-auto bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      {/* Agent Workflow Section */}
+      <div className="mt-12 mb-16 max-w-4xl mx-auto bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 text-center">
           <h3 className="font-heading text-xl font-medium mb-2">Agent Workflows</h3>
           <p className="text-gray-500 text-sm mb-6">
