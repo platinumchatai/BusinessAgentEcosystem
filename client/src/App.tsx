@@ -6,19 +6,20 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/Home";
 import AgentDetail from "@/pages/AgentDetail";
 import WorkflowDetail from "@/pages/WorkflowDetail";
-import MainLayout from "@/layouts/MainLayout";
+import Consultation from "@/pages/Consultation";
+import Subscribe from "@/pages/Subscribe";
 import { useEffect } from 'react';
 
 function Router() {
   return (
-    <MainLayout>
-      <Switch>
-        <Route path="/" component={Home} />
-        <Route path="/agent/:id" component={AgentDetail} />
-        <Route path="/workflow/:id" component={WorkflowDetail} />
-        <Route component={NotFound} />
-      </Switch>
-    </MainLayout>
+    <Switch>
+      <Route path="/" component={Home} />
+      <Route path="/agent/:id" component={AgentDetail} />
+      <Route path="/workflow/:id" component={WorkflowDetail} />
+      <Route path="/consultation" component={Consultation} />
+      <Route path="/subscribe" component={Subscribe} />
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 

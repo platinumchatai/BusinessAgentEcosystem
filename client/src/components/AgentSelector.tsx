@@ -177,17 +177,6 @@ const AgentSelector = () => {
         {/* Other Agents Section - Simplified */}
         {showAllAgents && (
           <div className="mt-8">
-            <div className="relative w-full max-w-md mx-auto mb-6">
-              <input 
-                type="text" 
-                placeholder="Search agents..." 
-                className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 focus:border-gray-400"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <span className="material-icons absolute left-3 top-2 text-gray-400">search</span>
-            </div>
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {agents
                 .filter(agent => 
@@ -227,13 +216,17 @@ const AgentSelector = () => {
 
       {/* Consultation Button */}
       <div className="mt-12 mb-16 text-center">
-        <a 
-          href="mailto:contact@platinumchat.ai" 
+        <Link 
+          href="/consultation" 
+          onClick={() => window.scrollTo(0, 0)}
           className="inline-flex items-center px-5 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
         >
           <span className="material-icons text-sm mr-2">chat</span>
-          Start a Consultation
-        </a>
+          Start Agency Consultation
+        </Link>
+        <p className="text-sm text-gray-500 mt-2">
+          Chat with our agency assistant to learn about our services and subscription options
+        </p>
       </div>
       
       {/* Agent Workflow Preview based on image */}
