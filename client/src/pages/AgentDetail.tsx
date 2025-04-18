@@ -15,7 +15,7 @@ const AgentDetail = () => {
   
   // Scroll to top when component mounts or when agent ID changes
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
   }, [id]);
   
   // Find the agent from the data

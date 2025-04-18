@@ -11,7 +11,7 @@ const WorkflowDetail = () => {
   
   // Always scroll to top when this page loads
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo(0, 0);
   }, [id]);
   
   // Find the workflow data
@@ -36,7 +36,7 @@ const WorkflowDetail = () => {
         <Link 
           href="/" 
           className="flex items-center text-primary hover:underline mb-4"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'auto' })}
+          onClick={() => window.scrollTo(0, 0)}
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back to all workflows

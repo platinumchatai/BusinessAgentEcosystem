@@ -6,12 +6,10 @@ import AgentInteraction from '@/components/AgentInteraction';
 import ScrollToTop from '@/components/ScrollToTop';
 
 const Home = () => {
-  // Ensure page starts at the top when component mounts
+  // Ensure page starts at the top on first render
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'instant' // Use 'instant' instead of 'smooth' to prevent scrolling during page load
-    });
+    // Simple and direct scroll to top
+    window.scrollTo(0, 0);
   }, []);
   
   return (

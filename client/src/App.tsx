@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import AgentDetail from "@/pages/AgentDetail";
 import WorkflowDetail from "@/pages/WorkflowDetail";
 import MainLayout from "@/layouts/MainLayout";
+import { useEffect } from 'react';
 
 function Router() {
   return (
@@ -22,6 +23,14 @@ function Router() {
 }
 
 function App() {
+  // Force scroll to top on initial app load
+  useEffect(() => {
+    // Double ensure scroll to top when the app first loads
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router />

@@ -11,11 +11,14 @@ interface MainLayoutProps {
 const MainLayout = ({ children }: MainLayoutProps) => {
   const [location] = useLocation();
   
-  // Scroll to top on route changes
+  // Scroll to top on route changes and on initial mount
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'instant'
+    // Force immediate scroll to top
+    window.scrollTo(0, 0);
+    
+    // Use rAF to ensure it happens after render
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
     });
   }, [location]);
   
