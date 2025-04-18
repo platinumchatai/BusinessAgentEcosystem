@@ -1,13 +1,23 @@
 import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { workflows } from "@/data/workflows";
-import { phases } from "@/data/agents";
-import { ArrowLeft, Users } from "lucide-react";
+import { phases, agents, AgentType } from "@/data/agents";
+import { ArrowLeft, Users, Send, User, Bot } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const WorkflowDetail = () => {
   const { id } = useParams();
   const workflowId = parseInt(id || "1");
+  const [userInput, setUserInput] = useState("");
+  const [messages, setMessages] = useState<{role: string, content: string, from?: string}[]>([
+    {
+      role: "assistant",
+      content: "Welcome to the workflow chat! I'll help coordinate this entire process. What would you like to know or discuss about your business needs?",
+      from: "Coordinator"
+    }
+  ]);
+  const [isLoading, setIsLoading] = useState(false);
   
   // Always scroll to top when this page loads
   useEffect(() => {
@@ -20,6 +30,12 @@ const WorkflowDetail = () => {
   // Find the phase this workflow belongs to
   const phase = phases.find(p => p.id === workflow.phaseId);
   
+  // Find agents involved in this workflow
+  const workflowAgents = agents.filter(agent => 
+    workflow.steps.some(step => step.agent === agent.name) || 
+    agent.name === workflow.coordinator
+  );
+  
   // Background colors based on workflow's phase
   const phaseColors = [
     { bg: 'bg-phase1', light: 'bg-primary/10', text: 'text-primary', dark: 'bg-primary' },
@@ -29,6 +45,34 @@ const WorkflowDetail = () => {
   ];
   
   const colors = phaseColors[workflow.phaseId - 1];
+  
+  // Handle chat submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!userInput.trim()) return;
+    
+    // Add user message
+    setMessages(prev => [...prev, {
+      role: "user",
+      content: userInput
+    }]);
+    
+    // Clear input and set loading
+    setUserInput("");
+    setIsLoading(true);
+    
+    // Simulate response time
+    setTimeout(() => {
+      // Add mock response from coordinator
+      setMessages(prev => [...prev, {
+        role: "assistant",
+        content: `This is a simulated response. In the actual application, this would be a response from our AI agents working together to address your query: "${userInput}"`,
+        from: "Coordinator"
+      }]);
+      setIsLoading(false);
+    }, 1500);
+  };
 
   return (
     <div id="top" className="container mx-auto px-4 py-12">
@@ -62,44 +106,159 @@ const WorkflowDetail = () => {
         </div>
       </div>
       
-      <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
-        <h2 className="text-2xl font-bold mb-6">Workflow Process</h2>
-        <div className="relative">
+      {/* Horizontal Workflow Process */}
+      <div className="bg-white rounded-lg shadow-md border border-gray-100 p-8 mb-10">
+        <h2 className="text-lg font-medium mb-6">Workflow Process</h2>
+        
+        {/* Horizontal Steps */}
+        <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+          {/* Connecting line */}
+          <div className="hidden md:block absolute left-0 right-0 top-8 h-0.5 bg-gray-200 -z-10"></div>
+          
           {workflow.steps.map((step, index) => (
             <motion.div 
               key={step.id}
-              className="mb-8 relative"
+              className="mb-8 md:mb-0 relative flex flex-col items-center max-w-[250px] text-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
-              <div className="flex">
-                <div className="relative mr-4 flex flex-col items-center">
-                  <div className={`w-10 h-10 flex items-center justify-center rounded-full ${colors.dark} text-white text-sm font-semibold`}>
-                    {step.stepNumber}
-                  </div>
-                  {index < workflow.steps.length - 1 && (
-                    <div className="w-0.5 h-full bg-gray-200 absolute top-10"></div>
-                  )}
-                </div>
-                <div className="bg-gray-50 rounded-lg p-6 flex-1">
-                  <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                  <p className="text-neutral-600 mb-4">{step.description}</p>
-                  <div className="flex items-center text-sm">
-                    <span className={`px-3 py-1 rounded-full ${colors.light} ${colors.text}`}>
-                      Agent: {step.agent}
-                    </span>
-                  </div>
-                </div>
+              <div className={`w-16 h-16 flex items-center justify-center rounded-full ${colors.dark} text-white text-xl font-medium mb-4 z-10`}>
+                {step.stepNumber}
               </div>
+              <h3 className="text-base font-medium mb-2">{step.title}</h3>
+              <p className="text-sm text-gray-500 mb-2">{step.description}</p>
+              <span className={`px-3 py-1 rounded-full text-xs ${colors.light} ${colors.text}`}>
+                {step.agent}
+              </span>
             </motion.div>
+          ))}
+        </div>
+        
+        {/* Workflow Coordinator info */}
+        <div className="bg-blue-50 p-4 rounded-md mt-6">
+          <div className="flex items-center">
+            <span className="material-icons text-blue-600 mr-2">hub</span>
+            <h5 className="font-medium text-sm">Workflow Coordinator</h5>
+          </div>
+          <p className="text-sm text-gray-600 mt-2">
+            The {workflow.coordinator} oversees this entire workflow, ensuring all specialized agents work together coherently.
+          </p>
+        </div>
+      </div>
+      
+      {/* Workflow Agents */}
+      <div className="bg-white rounded-lg shadow-md border border-gray-100 p-8 mb-10">
+        <h2 className="text-lg font-medium mb-6">Workflow Agents</h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {workflowAgents.map(agent => (
+            <div 
+              key={agent.id}
+              className="bg-gray-50 rounded-md p-4 border border-gray-100"
+            >
+              <div className="flex justify-between items-start mb-2">
+                <h5 className="font-medium text-base">{agent.name}</h5>
+                <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                  {agent.category}
+                </span>
+              </div>
+              <p className="text-gray-500 text-sm mb-3 line-clamp-2">{agent.description}</p>
+              <div className="flex justify-between items-center text-xs text-gray-400">
+                <span>Phase {agent.phase}</span>
+                {agent.coordinator && (
+                  <span className="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full">
+                    Coordinator
+                  </span>
+                )}
+              </div>
+            </div>
           ))}
         </div>
       </div>
       
-      <div className="flex justify-center">
+      {/* Chat Interface */}
+      <div className="bg-white rounded-lg shadow-md border border-gray-100 p-0 mb-8 overflow-hidden">
+        <div className="border-b border-gray-100 p-4">
+          <h2 className="text-lg font-medium">Workflow Chat</h2>
+          <p className="text-sm text-gray-500">
+            Ask questions or describe your needs to engage with all agents in this workflow
+          </p>
+        </div>
+        
+        {/* Chat Messages */}
+        <div className="h-96 overflow-y-auto p-4 bg-gray-50">
+          {messages.map((message, index) => (
+            <div 
+              key={index}
+              className={cn(
+                "mb-4 max-w-[80%]",
+                message.role === "user" ? "ml-auto" : "mr-auto"
+              )}
+            >
+              <div className={cn(
+                "rounded-lg p-3",
+                message.role === "user" 
+                  ? "bg-blue-600 text-white rounded-br-none" 
+                  : "bg-white border border-gray-200 text-gray-700 rounded-bl-none"
+              )}>
+                {message.content}
+              </div>
+              <div className="flex items-center mt-1 text-xs text-gray-500">
+                {message.role === "user" ? (
+                  <div className="ml-auto flex items-center">
+                    <span>You</span>
+                    <User className="h-3 w-3 ml-1" />
+                  </div>
+                ) : (
+                  <div className="flex items-center">
+                    <Bot className="h-3 w-3 mr-1" />
+                    <span>{message.from || "Assistant"}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+          
+          {isLoading && (
+            <div className="flex justify-start mb-4">
+              <div className="bg-gray-200 rounded-full h-8 w-8 flex items-center justify-center p-1">
+                <div className="animate-pulse flex space-x-1">
+                  <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                  <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                  <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        
+        {/* Chat Input */}
+        <form onSubmit={handleSubmit} className="border-t border-gray-100 p-4 flex">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Type your message here..."
+            className="flex-grow px-4 py-2 border border-gray-200 rounded-l-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+          />
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={cn(
+              "px-4 py-2 rounded-r-md flex items-center justify-center",
+              "bg-blue-600 text-white",
+              isLoading && "opacity-70 cursor-not-allowed"
+            )}
+          >
+            <Send className="h-4 w-4" />
+          </button>
+        </form>
+      </div>
+      
+      <div className="flex justify-center mb-10">
         <button 
-          className={`${colors.dark} text-white px-6 py-3 rounded-lg shadow-lg hover:opacity-90 transition-colors`}
+          className="bg-gray-100 text-gray-700 px-6 py-3 rounded-md hover:bg-gray-200 transition-colors"
           onClick={() => window.history.back()}
         >
           Return to Selection
