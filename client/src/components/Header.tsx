@@ -40,35 +40,35 @@ const Header = () => {
           </Link>
         </div>
         
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
           <a 
-            href="#about" 
+            href="/#about" 
             className="text-neutral-400 hover:text-primary transition-colors font-medium"
             onClick={handleNavClick}
           >
             About
           </a>
           <a 
-            href="#agents" 
+            href="/#agents-section" 
             className="text-neutral-400 hover:text-primary transition-colors font-medium"
             onClick={handleNavClick}
           >
             Agents
           </a>
-          <a 
-            href="#workflows" 
+          <Link 
+            href="/consultation" 
             className="text-neutral-400 hover:text-primary transition-colors font-medium"
             onClick={handleNavClick}
           >
-            Workflows
-          </a>
-          <a 
-            href="#chat" 
-            className="text-neutral-400 hover:text-primary transition-colors font-medium"
+            Consultation
+          </Link>
+          <Link 
+            href="/subscribe" 
+            className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-colors font-medium"
             onClick={handleNavClick}
           >
-            Contact
-          </a>
+            Subscribe
+          </Link>
         </nav>
         
         <div className="flex items-center md:hidden">

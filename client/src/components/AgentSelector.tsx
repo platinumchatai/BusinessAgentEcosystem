@@ -103,7 +103,7 @@ const AgentSelector = () => {
   ];
   
   return (
-    <section id="agents" className="mb-16">
+    <section id="agents-section" className="mb-16">
       <div className="text-center mb-12 max-w-3xl mx-auto">
         <h2 className="font-heading font-medium text-2xl mb-3">
           AI Agent Ecosystem
