@@ -2,6 +2,7 @@ import Hero from '@/components/Hero';
 import AgentSelector from '@/components/AgentSelector';
 import WorkflowVisualizer from '@/components/WorkflowVisualizer';
 import AgentInteraction from '@/components/AgentInteraction';
+import ScrollToTop from '@/components/ScrollToTop';
 
 const Home = () => {
   return (
@@ -12,6 +13,9 @@ const Home = () => {
         <WorkflowVisualizer />
         <AgentInteraction />
       </div>
+      
+      {/* Floating scroll to top button */}
+      <ScrollToTop />
     </div>
   );
 };

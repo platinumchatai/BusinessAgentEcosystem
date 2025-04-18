@@ -3,11 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --secondary: 342 89% 48%; /* Vibrant pink for secondary color */
+    --secondary-foreground: 0 0% 100%;
+  }
+
   * {
     @apply border-border;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+  }
+  
+  .font-heading {
+    @apply font-semibold tracking-tight;
+  }
+  
+  .primary-dark {
+    @apply bg-primary/80;
   }
 }
