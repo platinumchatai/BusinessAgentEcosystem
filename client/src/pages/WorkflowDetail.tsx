@@ -21,7 +21,18 @@ const WorkflowDetail = () => {
   
   // Always scroll to top when this page loads
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Force scroll to top with immediate effect
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'auto' // Use 'auto' instead of 'smooth' for immediate positioning
+    });
+    
+    // Set a fallback in case the first method doesn't work
+    setTimeout(() => {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0; // For Safari
+    }, 0);
   }, [id]);
   
   // Find the workflow data
@@ -78,9 +89,8 @@ const WorkflowDetail = () => {
     <div id="top" className="container mx-auto px-4 py-12">
       <div className="mb-8">
         <Link 
-          href="/" 
+          href="/#workflows" 
           className="flex items-center text-primary hover:underline mb-4"
-          onClick={() => window.scrollTo(0, 0)}
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
           Back to all workflows
