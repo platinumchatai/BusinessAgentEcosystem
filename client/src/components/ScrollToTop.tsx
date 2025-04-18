@@ -32,7 +32,7 @@ const ScrollToTop = () => {
     <AnimatePresence>
       {isVisible && (
         <motion.div
-          className="fixed bottom-10 right-10 z-[9999]"
+          className="fixed bottom-32 right-10 z-[9999]"
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.5 }}
@@ -40,10 +40,10 @@ const ScrollToTop = () => {
         >
           <button
             onClick={scrollToTop}
-            className="bg-secondary text-white p-3 rounded-full shadow-lg hover:bg-secondary/80 transition-colors focus:outline-none"
+            className="bg-secondary text-white p-4 rounded-full shadow-xl hover:bg-secondary/80 transition-colors focus:outline-none"
             aria-label="Scroll to top"
           >
-            <ArrowUp size={24} strokeWidth={2.5} />
+            <ArrowUp size={28} strokeWidth={2.5} />
           </button>
         </motion.div>
       )}
