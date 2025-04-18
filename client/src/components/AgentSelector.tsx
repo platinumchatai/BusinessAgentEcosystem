@@ -26,7 +26,10 @@ const AgentCard = ({ agent, phase }: AgentCardProps) => {
       whileHover={{ y: -5 }}
       transition={{ duration: 0.2 }}
     >
-      <Link href={`/agent/${agent.id}`}>
+      <Link 
+        href={`/agent/${agent.id}`}
+        onClick={() => window.scrollTo(0, 0)}
+      >
         <div className="p-5">
           <div className="flex justify-between items-start mb-3">
             <h5 className="font-heading font-semibold text-lg">{agent.name}</h5>
@@ -63,10 +66,20 @@ const AgentSelector = () => {
   // Category filters for top-level agents
   const categoryFilters = ['All Agents', 'Marketing', 'Finance', 'Product', 'Strategy'];
   
-  // Top-level featured agents (4 of them)
-  const featuredAgents = agents.filter(agent => 
-    agent.coordinator && agent.phase <= 2
-  ).slice(0, 4);
+  // Exactly 4 featured agents - prioritize coordinators, but fill with others if needed
+  const coordinatorAgents = agents.filter(agent => agent.coordinator)
+    .sort((a, b) => a.phase - b.phase); // Sort by phase
+  
+  // Take 4 agents, either all coordinators or coordinators + other important agents
+  const featuredAgents = coordinatorAgents.length >= 4 
+    ? coordinatorAgents.slice(0, 4) 
+    : [...coordinatorAgents, ...agents
+        .filter(agent => !agent.coordinator)
+        .sort((a, b) => (a.phase === b.phase) 
+          ? a.category.localeCompare(b.category) 
+          : a.phase - b.phase)
+        .slice(0, 4 - coordinatorAgents.length)
+      ];
   
   // Filtered agents for each phase
   const filteredAgents = agents.filter(agent => 
@@ -135,7 +148,10 @@ const AgentSelector = () => {
               whileHover={{ y: -5 }}
               transition={{ duration: 0.2 }}
             >
-              <Link href={`/agent/${agent.id}`}>
+              <Link 
+                href={`/agent/${agent.id}`}
+                onClick={() => window.scrollTo(0, 0)}
+              >
                 <div className="p-5">
                   <div className="flex justify-between items-start mb-3">
                     <h5 className="font-heading font-semibold text-lg">{agent.name}</h5>
@@ -197,7 +213,10 @@ const AgentSelector = () => {
                     whileHover={{ y: -3 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Link href={`/agent/${agent.id}`}>
+                    <Link 
+                      href={`/agent/${agent.id}`}
+                      onClick={() => window.scrollTo(0, 0)}
+                    >
                       <div className="flex flex-col h-full">
                         <div className="flex justify-between items-start mb-2">
                           <h5 className="font-medium text-base">{agent.name}</h5>
@@ -269,6 +288,7 @@ const AgentSelector = () => {
                 <p className="text-sm mt-2">{currentPhase.workflowDescription}</p>
                 <Link
                   href={`/workflow/${activePhase}`}
+                  onClick={() => window.scrollTo(0, 0)}
                   className={`mt-3 inline-block ${phaseButtonColors[activePhase-1].bg} text-white px-4 py-2 rounded-lg text-sm ${phaseButtonColors[activePhase-1].hover} transition-colors`}
                 >
                   Use this workflow
