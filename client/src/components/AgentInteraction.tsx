@@ -80,10 +80,8 @@ const AgentInteraction = () => {
     );
   };
 
-  // Auto-scroll to the most recent message
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, showConnecting]);
+  // REMOVED: Auto-scroll to the most recent message
+  // This was causing the page to automatically scroll to the bottom
 
   const selectedAgentNames = agents
     .filter(agent => selectedAgents.includes(agent.id))

@@ -20,21 +20,9 @@ const ScrollToTop = () => {
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);
 
-  // Scroll to top smoothly
+  // Simple scroll to top without smooth scrolling or focus manipulation
   const scrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
-    
-    // Set focus to the top for accessibility
-    const topElement = document.getElementById('top');
-    if (topElement) {
-      setTimeout(() => {
-        topElement.setAttribute('tabindex', '-1');
-        topElement.focus({preventScroll: true});
-      }, 500);
-    }
+    window.scrollTo(0, 0);
   };
 
   return (
