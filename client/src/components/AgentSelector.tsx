@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { agents, AgentType, phases } from "@/data/agents";
+import { cn } from "@/lib/utils";
 
 interface AgentCardProps {
   agent: AgentType;
@@ -238,73 +239,106 @@ const AgentSelector = () => {
         )}
       </div>
 
-      {/* Phases Selector */}
+      {/* Workflow Phases */}
       <div className="mt-16 mb-12">
-        <h3 className="font-heading text-2xl font-bold mb-6 text-center">Workflow Phases</h3>
+        <h3 className="font-heading text-2xl font-bold mb-6 text-center">Business Development Phases</h3>
         
-        {/* Phase cards */}
+        {/* Simple phase cards with clean layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {phases.map((phase, index) => (
-            <motion.div 
+          {phases.map((phase) => (
+            <div 
               key={phase.id}
-              className={`relative bg-white rounded-lg shadow-card overflow-hidden 
-                border-t-4 ${phase.id === 1 ? 'border-primary' : phase.id === 2 ? 'border-green-600' : phase.id === 3 ? 'border-amber-500' : 'border-secondary'}
-                cursor-pointer hover:shadow-lg`}
-              whileHover={{ y: -5 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => setActivePhase(phase.id)}
+              className={cn(
+                "bg-white rounded-lg shadow-md overflow-hidden border-t-4",
+                phase.id === 1 ? "border-primary" : 
+                phase.id === 2 ? "border-green-600" : 
+                phase.id === 3 ? "border-amber-500" : 
+                "border-secondary"
+              )}
             >
-              <div className="p-5">
-                <div className="flex justify-between items-start mb-3">
-                  <h5 className="font-heading font-semibold text-lg">Phase {phase.id}: {phase.name}</h5>
-                </div>
-                <p className="text-neutral-400 text-sm mb-12">{phase.description}</p>
-                
-                {/* Workflow button positioned at bottom right */}
-                <div className="absolute bottom-3 right-3">
+              {/* Phase header */}
+              <div 
+                className={cn(
+                  "p-4 cursor-pointer",
+                  phase.id === activePhase && "bg-gray-50"
+                )}
+                onClick={() => setActivePhase(phase.id)}
+              >
+                <div className="flex justify-between items-center">
+                  <h4 className="font-heading font-semibold text-lg">
+                    Phase {phase.id}: {phase.name}
+                  </h4>
+                  
+                  {/* Use Workflow button */}
                   <Link
                     href={`/workflow/${phase.id}`}
                     onClick={(e) => {
-                      e.stopPropagation(); // Prevent triggering the parent div's onClick
+                      e.stopPropagation();
                       window.scrollTo(0, 0);
                     }}
-                    className={`inline-flex items-center px-3 py-1.5 rounded-lg text-sm ${
-                      phase.id === 1 ? 'bg-primary hover:bg-primary-dark' : 
-                      phase.id === 2 ? 'bg-green-600 hover:bg-green-700' : 
-                      phase.id === 3 ? 'bg-amber-500 hover:bg-amber-600' : 
-                      'bg-secondary hover:bg-secondary-dark'
-                    } text-white transition-colors`}
+                    className={cn(
+                      "inline-flex items-center px-3 py-1.5 rounded-lg text-sm text-white",
+                      phase.id === 1 ? "bg-primary hover:bg-primary-dark" : 
+                      phase.id === 2 ? "bg-green-600 hover:bg-green-700" : 
+                      phase.id === 3 ? "bg-amber-500 hover:bg-amber-600" : 
+                      "bg-secondary hover:bg-secondary-dark"
+                    )}
                   >
-                    <span className="material-icons text-sm mr-1">workflow</span>
+                    <span className="material-icons text-sm mr-1">play_arrow</span>
                     Use Workflow
                   </Link>
                 </div>
                 
-                {/* Workflow description below the title */}
-                <div className={`absolute bottom-12 left-5 right-5 mb-2 text-xs ${
-                  phase.id === 1 ? 'text-primary/70' : 
-                  phase.id === 2 ? 'text-green-600/70' : 
-                  phase.id === 3 ? 'text-amber-500/70' : 
-                  'text-secondary/70'
-                }`}>
-                  <span className="font-medium">Workflow: </span>{phase.workflowDescription}
+                {/* Phase description */}
+                <p className="text-neutral-500 text-sm mt-2">{phase.description}</p>
+                
+                {/* Workflow description */}
+                <div className={cn(
+                  "mt-3 pt-3 text-sm border-t border-gray-100",
+                  phase.id === 1 ? "text-primary/80" : 
+                  phase.id === 2 ? "text-green-600/80" : 
+                  phase.id === 3 ? "text-amber-500/80" : 
+                  "text-secondary/80"
+                )}>
+                  <span className="font-medium">Workflow:</span> {phase.workflowDescription}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
         
-        {/* Agents by selected phase */}
-        <div className="mt-8">
-          <h4 className="font-heading text-xl font-medium mb-4">
-            <span className={
-              activePhase === 1 ? 'text-primary' : 
-              activePhase === 2 ? 'text-green-600' : 
-              activePhase === 3 ? 'text-amber-500' : 
-              'text-secondary'
-            }>Phase {activePhase}</span> Agents
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Phase-specific agents */}
+        <div className="mt-12">
+          <div className="flex items-center justify-between mb-6">
+            <h4 className="font-heading text-xl font-medium">
+              <span className={cn(
+                activePhase === 1 ? "text-primary" : 
+                activePhase === 2 ? "text-green-600" : 
+                activePhase === 3 ? "text-amber-500" : 
+                "text-secondary"
+              )}>
+                Phase {activePhase}
+              </span> Specialist Agents
+            </h4>
+            
+            {/* Phase selector for mobile */}
+            <div className="md:hidden">
+              <select 
+                className="p-2 border border-gray-200 rounded-lg"
+                value={activePhase}
+                onChange={(e) => setActivePhase(Number(e.target.value))}
+              >
+                {phases.map(phase => (
+                  <option key={phase.id} value={phase.id}>
+                    Phase {phase.id}: {phase.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          
+          {/* Phase agents grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {agents
               .filter(agent => 
                 agent.phase === activePhase &&
@@ -314,6 +348,16 @@ const AgentSelector = () => {
                 <AgentCard key={agent.id} agent={agent} phase={activePhase} />
               ))
             }
+            
+            {/* Empty state */}
+            {agents.filter(agent => 
+              agent.phase === activePhase &&
+              (filter === 'All Agents' || agent.category === filter)
+            ).length === 0 && (
+              <div className="col-span-3 py-10 text-center text-gray-500">
+                No agents found for the selected phase and category.
+              </div>
+            )}
           </div>
         </div>
       </div>
