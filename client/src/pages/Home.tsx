@@ -8,7 +8,10 @@ import ScrollToTop from '@/components/ScrollToTop';
 const Home = () => {
   // Ensure page starts at the top when component mounts
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({
+      top: 0,
+      behavior: 'instant' // Use 'instant' instead of 'smooth' to prevent scrolling during page load
+    });
   }, []);
   
   return (

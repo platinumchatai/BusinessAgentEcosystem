@@ -177,12 +177,12 @@ const AgentSelector = () => {
                 <h4 className="font-heading font-medium">Recommended Workflow</h4>
               </div>
               <p className="text-sm mt-2">{currentPhase.workflowDescription}</p>
-              <button 
-                className={`mt-3 ${phaseButtonColors[activePhase-1].bg} text-white px-4 py-2 rounded-lg text-sm ${phaseButtonColors[activePhase-1].hover} transition-colors`}
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              <Link
+                href={`/workflow/${activePhase}`}
+                className={`mt-3 inline-block ${phaseButtonColors[activePhase-1].bg} text-white px-4 py-2 rounded-lg text-sm ${phaseButtonColors[activePhase-1].hover} transition-colors`}
               >
                 Use this workflow
-              </button>
+              </Link>
             </div>
             
             {/* Agents grid */}
