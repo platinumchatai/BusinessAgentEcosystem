@@ -18,4 +18,12 @@ vite.config.ts.*
 .netlify
 *secret*
 *apikey*
+*api_key*
+*api-key*
 credentials.json
+config.json
+secrets.json
+*OPENAI_API_KEY*
+*STRIPE_SECRET_KEY*
+*SENDGRID_API_KEY*
+*DATABASE_URL*
