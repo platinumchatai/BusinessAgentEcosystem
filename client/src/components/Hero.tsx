@@ -10,7 +10,7 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="bg-gradient-to-r from-primary to-primary-dark text-white min-h-[90vh] flex items-center py-16 md:py-24">
+    <section id="hero" className="bg-gradient-to-r from-primary/95 to-primary-dark/95 text-white min-h-[90vh] flex items-center py-16 md:py-24">
       <div className="container mx-auto px-4">
         <motion.div 
           className="max-w-4xl mx-auto text-center"
@@ -81,22 +81,22 @@ const Hero = () => {
           </div>
           
           <div className="flex flex-col md:flex-row justify-center gap-4">
-            <motion.button
-              onClick={() => scrollToSection("agents")}
-              className="bg-white text-primary font-semibold px-8 py-4 rounded-lg shadow hover:bg-opacity-90 transition-all text-lg"
+            <motion.a
+              href="#agents-section"
+              className="bg-white text-primary font-semibold px-8 py-4 rounded-lg shadow hover:bg-opacity-90 transition-all text-lg inline-block"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Explore Agents
-            </motion.button>
-            <motion.button
-              onClick={() => scrollToSection("chat")}
-              className="bg-secondary text-white font-semibold px-8 py-4 rounded-lg shadow hover:bg-opacity-90 transition-all text-lg"
+            </motion.a>
+            <motion.a
+              href="/consultation"
+              className="bg-secondary text-white font-semibold px-8 py-4 rounded-lg shadow hover:bg-opacity-90 transition-all text-lg inline-block"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
               Start a Consultation
-            </motion.button>
+            </motion.a>
           </div>
           
           <motion.div 
