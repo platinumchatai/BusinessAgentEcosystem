@@ -110,10 +110,10 @@ const WorkflowVisualizer = () => {
   }, []);
 
   const phaseColors = [
-    { bg: 'bg-phase1', indicator: 'phase1-indicator', text: 'text-primary', accent: 'bg-primary' },
-    { bg: 'bg-phase2', indicator: 'phase2-indicator', text: 'text-green-600', accent: 'bg-green-600' },
-    { bg: 'bg-phase3', indicator: 'phase3-indicator', text: 'text-amber-500', accent: 'bg-amber-500' },
-    { bg: 'bg-phase4', indicator: 'phase4-indicator', text: 'text-secondary', accent: 'bg-secondary' },
+    { bg: 'bg-phase1', indicator: 'phase1-indicator', text: 'text-blue-700', accent: 'bg-blue-700' },
+    { bg: 'bg-phase2', indicator: 'phase2-indicator', text: 'text-blue-700', accent: 'bg-blue-700' },
+    { bg: 'bg-phase3', indicator: 'phase3-indicator', text: 'text-blue-700', accent: 'bg-blue-700' },
+    { bg: 'bg-phase4', indicator: 'phase4-indicator', text: 'text-blue-700', accent: 'bg-blue-700' },
   ];
 
   const colors = phaseColors[activeWorkflow.phaseId - 1];
@@ -200,9 +200,9 @@ const WorkflowVisualizer = () => {
           </div>
           
           {/* Coordinator indicator */}
-          <div className={`${activeWorkflow.phaseId === 1 ? 'bg-primary/10' : activeWorkflow.phaseId === 2 ? 'bg-green-600/10' : activeWorkflow.phaseId === 3 ? 'bg-amber-500/10' : 'bg-secondary/10'} rounded-lg p-4 mt-4`}>
+          <div className="bg-blue-50 rounded-lg p-4 mt-4">
             <div className="flex items-center">
-              <span className={`material-icons ${activeWorkflow.phaseId === 1 ? 'text-primary' : activeWorkflow.phaseId === 2 ? 'text-green-600' : activeWorkflow.phaseId === 3 ? 'text-amber-500' : 'text-secondary'} mr-2`}>
+              <span className="material-icons text-blue-700 mr-2">
                 hub
               </span>
               <h4 className="font-heading font-medium">Workflow Coordinator</h4>
