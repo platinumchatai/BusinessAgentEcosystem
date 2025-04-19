@@ -187,7 +187,59 @@ const WorkflowDetail = () => {
         </div>
       </div>
       
-
+      {/* Chat Interface */}
+      <div className="bg-white rounded-lg shadow-md border border-gray-100 p-6 mb-10">
+        <h2 className="text-lg font-medium mb-6">Workflow Chat</h2>
+        
+        {/* Chat Messages */}
+        <div className="bg-gray-50 rounded-lg p-4 mb-4 h-[400px] overflow-y-auto">
+          {messages.map((message, index) => (
+            <div key={index} className={`mb-4 ${message.role === 'user' ? 'text-right' : ''}`}>
+              <div className={`inline-block max-w-[80%] px-4 py-2 rounded-lg ${
+                message.role === 'user' 
+                  ? 'bg-primary text-white rounded-tr-none' 
+                  : 'bg-gray-200 text-gray-800 rounded-tl-none'
+              }`}>
+                {message.content}
+              </div>
+              <div className={`mt-1 text-xs text-gray-500 ${message.role === 'user' ? 'text-right' : ''}`}>
+                {message.role === 'user' ? 'You' : message.from || 'Assistant'}
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="flex items-center space-x-2 text-gray-500">
+              <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse"></div>
+              <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+              <div className="w-2 h-2 rounded-full bg-gray-400 animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+            </div>
+          )}
+        </div>
+        
+        {/* Chat Input */}
+        <form onSubmit={handleSubmit} className="flex space-x-2">
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            placeholder="Ask a question about this workflow..."
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+          />
+          <button 
+            type="submit"
+            disabled={isLoading || !userInput.trim()}
+            className={`px-4 py-2 bg-primary text-white rounded-lg flex items-center justify-center ${
+              isLoading || !userInput.trim() ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary/90'
+            }`}
+          >
+            <Send className="h-5 w-5" />
+          </button>
+        </form>
+        
+        <div className="mt-4 text-xs text-gray-500">
+          <p>This chat connects you with our AI agent ecosystem. The {workflow.coordinator} will coordinate responses from all relevant agents in this workflow.</p>
+        </div>
+      </div>
       
       <div className="flex justify-center mb-10">
         <button 
