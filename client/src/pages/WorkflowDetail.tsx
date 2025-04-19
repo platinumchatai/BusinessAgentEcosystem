@@ -89,7 +89,14 @@ const WorkflowDetail = () => {
     <div id="top" className="container mx-auto px-4 py-12">
       <div className="mb-8">
         <Link 
-          href="/#workflows" 
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            // Navigate to home page
+            window.location.href = "/";
+            // Set a flag in sessionStorage to indicate we should scroll to workflows
+            sessionStorage.setItem("scrollToWorkflows", "true");
+          }}
           className="flex items-center text-primary hover:underline mb-4"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />

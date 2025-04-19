@@ -6,9 +6,25 @@ import ScrollToTop from '@/components/ScrollToTop';
 
 const Home = () => {
   // Ensure page starts at the top on first render
+  // Or scrolls to workflows section if coming from a workflow detail page
   useEffect(() => {
-    // Simple and direct scroll to top
-    window.scrollTo(0, 0);
+    const scrollToWorkflows = sessionStorage.getItem("scrollToWorkflows");
+    
+    if (scrollToWorkflows === "true") {
+      // Clear the flag
+      sessionStorage.removeItem("scrollToWorkflows");
+      
+      // Small delay to ensure the page is fully rendered before scrolling
+      setTimeout(() => {
+        const workflowsSection = document.getElementById("workflows");
+        if (workflowsSection) {
+          workflowsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // Simple and direct scroll to top
+      window.scrollTo(0, 0);
+    }
   }, []);
   
   return (
