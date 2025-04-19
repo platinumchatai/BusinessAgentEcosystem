@@ -21,7 +21,7 @@ const Hero = () => {
           transition={{ duration: 0.5 }}
         >
           <h1 className="font-heading font-bold text-4xl md:text-6xl mb-8">
-            Your Business Growth Powered by AI Agents
+            Your Business Growth Powered by Platinum Chat AI Agents
           </h1>
           <p className="text-xl mb-10 text-white/90 max-w-3xl mx-auto">
             Access 16 specialized AI agents that work together to help your business thrive from ideation to scaling beyond $10M.
@@ -36,7 +36,7 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <div className="flex justify-center mb-4">
-                <Layers className="w-10 h-10 text-secondary" />
+                <Layers className="w-10 h-10 text-blue-400" />
               </div>
               <h3 className="font-medium text-lg mb-2">Phased Approach</h3>
               <p className="text-white/80 text-sm">Strategic agents grouped by business development phase</p>
@@ -49,7 +49,7 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <div className="flex justify-center mb-4">
-                <Globe className="w-10 h-10 text-secondary" />
+                <Globe className="w-10 h-10 text-blue-400" />
               </div>
               <h3 className="font-medium text-lg mb-2">Ecosystem Integration</h3>
               <p className="text-white/80 text-sm">Agents collaborate seamlessly on complex business challenges</p>
@@ -62,7 +62,7 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="flex justify-center mb-4">
-                <BrainCircuit className="w-10 h-10 text-secondary" />
+                <BrainCircuit className="w-10 h-10 text-blue-400" />
               </div>
               <h3 className="font-medium text-lg mb-2">Advanced AI</h3>
               <p className="text-white/80 text-sm">Powered by the latest AI language models for accurate advice</p>
@@ -75,7 +75,7 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <div className="flex justify-center mb-4">
-                <BarChart className="w-10 h-10 text-secondary" />
+                <BarChart className="w-10 h-10 text-blue-400" />
               </div>
               <h3 className="font-medium text-lg mb-2">Business Growth</h3>
               <p className="text-white/80 text-sm">Expert guidance from ideation through scaling your company</p>
@@ -85,7 +85,7 @@ const Hero = () => {
           <div className="flex flex-col md:flex-row justify-center gap-4">
             <motion.a
               href="#agents-section"
-              className="bg-white text-primary font-semibold px-8 py-4 rounded-lg shadow hover:bg-opacity-90 transition-all text-lg inline-block"
+              className="bg-blue-50 text-blue-900 font-semibold px-8 py-4 rounded-lg shadow hover:bg-blue-100 transition-all text-lg inline-block"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -93,7 +93,7 @@ const Hero = () => {
             </motion.a>
             <motion.a
               href="/consultation"
-              className="bg-secondary text-white font-semibold px-8 py-4 rounded-lg shadow hover:bg-opacity-90 transition-all text-lg inline-block"
+              className="bg-gradient-to-r from-blue-800 to-blue-900 text-white font-semibold px-8 py-4 rounded-lg shadow hover:opacity-90 transition-all text-lg inline-block"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
