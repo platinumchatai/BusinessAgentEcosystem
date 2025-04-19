@@ -144,7 +144,7 @@ const WorkflowVisualizer = () => {
         {workflows.map((workflow) => (
           <button 
             key={workflow.id}
-            className={`px-4 py-2 rounded-lg transition-colors ${activeWorkflow.id === workflow.id ? 'bg-primary text-white' : 'bg-white border border-gray-200 hover:bg-gray-100'}`}
+            className={`px-4 py-2 rounded-lg transition-colors ${activeWorkflow.id === workflow.id ? 'bg-blue-900 text-white' : 'bg-white border border-gray-200 hover:bg-blue-50'}`}
             onClick={() => setActiveWorkflow(workflow)}
           >
             Phase {workflow.phaseId}: {workflow.name}
@@ -166,7 +166,7 @@ const WorkflowVisualizer = () => {
           </h3>
           <Link 
             href={`/workflow/${activeWorkflow.phaseId}`}
-            className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-900 text-white rounded-md hover:opacity-90 transition-colors"
           >
             Use this workflow
           </Link>

@@ -64,8 +64,8 @@ const Hero = () => {
               <div className="flex justify-center mb-4">
                 <BrainCircuit className="w-10 h-10 text-blue-400" />
               </div>
-              <h3 className="font-medium text-lg mb-2">Advanced AI</h3>
-              <p className="text-white/80 text-sm">Powered by the latest AI language models for accurate advice</p>
+              <h3 className="font-medium text-lg mb-2">Specialized AI Ecosystem</h3>
+              <p className="text-white/80 text-sm">Custom-trained AI agents with industry-specific knowledge you can't find elsewhere</p>
             </motion.div>
             
             <motion.div 
