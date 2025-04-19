@@ -10,9 +10,9 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="bg-gradient-to-r from-primary to-primary-dark/90 text-white min-h-[90vh] flex items-center py-16 md:py-24 relative">
-      {/* Overlay to ensure text readability */}
-      <div className="absolute inset-0 bg-black/20 -z-10"></div>
+    <section id="hero" className="bg-gradient-to-r from-blue-900 to-blue-950 text-white min-h-[90vh] flex items-center py-16 md:py-24 relative">
+      {/* Deep blue background overlay */}
+      <div className="absolute inset-0 bg-blue-950/70 -z-10"></div>
       <div className="container mx-auto px-4">
         <motion.div 
           className="max-w-4xl mx-auto text-center"
