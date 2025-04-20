@@ -27,18 +27,18 @@ const Hero = () => {
               transition={{ duration: 0.5 }}
             >
               <h1 className="font-heading font-bold text-4xl md:text-6xl mb-6 leading-tight">
-                Upgrade your business
+                Your Business Growth 
                 <br />
-                with <span className="accent-text">real-time insights</span>
+                Powered by <span className="accent-text">Platinum</span>
                 <br />
-                and automation
+                Chat AI Agents
               </h1>
               
               {/* Decorative line */}
               <div className="w-20 h-1 bg-white/30 rounded-full my-8"></div>
               
               <p className="text-lg mb-10 text-white/80 max-w-xl">
-                Track spending, set goals, and automate investments — everything you need to build wealth and stay financially confident. From budgeting to investing, get complete control over your business.
+                Access 16 specialized AI agents that work together to help your business thrive from ideation to scaling beyond $10M.
               </p>
               
               <div className="flex flex-wrap gap-4 mt-8">
@@ -46,14 +46,14 @@ const Hero = () => {
                   href="#agents-section"
                   className="btn-light"
                 >
-                  Get Started
+                  Explore Agents
                   <MoveRight className="w-4 h-4" />
                 </a>
                 <a
                   href="/consultation"
                   className="btn-accent"
                 >
-                  Learn More
+                  Start a Consultation
                   <MoveRight className="w-4 h-4" />
                 </a>
               </div>
@@ -67,11 +67,11 @@ const Hero = () => {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="relative"
             >
-              {/* Dashboard/Analytics card */}
+              {/* Agent Analytics card */}
               <div className="bg-blue-900/40 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-                <div className="text-sm text-white/70 mb-2">Monthly Stats</div>
-                <div className="text-5xl font-bold mb-2">192</div>
-                <div className="text-xs text-white/50 mb-3">active users</div>
+                <div className="text-sm text-white/70 mb-2">Agent Performance</div>
+                <div className="text-5xl font-bold mb-2">97%</div>
+                <div className="text-xs text-white/50 mb-3">satisfaction rate</div>
                 
                 {/* Simplified chart bars */}
                 <div className="flex items-end h-20 gap-1 mb-2">
@@ -85,8 +85,8 @@ const Hero = () => {
                 </div>
                 
                 <div className="flex justify-between text-xs text-white/50">
-                  <span>$8,000</span>
-                  <span>$2,500</span>
+                  <span>Phase 1</span>
+                  <span>Phase 4</span>
                 </div>
               </div>
               
@@ -104,30 +104,30 @@ const Hero = () => {
         {/* Stats Section */}
         <div className="stats-container mt-20 border-t border-white/10 pt-10">
           <div className="stat-item">
-            <div className="stat-number">100%</div>
-            <div className="stat-label">Client satisfaction</div>
+            <div className="stat-number">16</div>
+            <div className="stat-label">AI Agents</div>
           </div>
           
           <div className="stat-item">
-            <div className="stat-number">300+</div>
-            <div className="stat-label">Active clients</div>
+            <div className="stat-number">4</div>
+            <div className="stat-label">Growth Phases</div>
           </div>
           
           <div className="stat-item">
             <div className="stat-number">24/7</div>
-            <div className="stat-label">We available</div>
+            <div className="stat-label">AI Assistance</div>
           </div>
         </div>
         
-        {/* Partner Logos Section */}
+        {/* Business Benefits Section */}
         <motion.div 
           className="mt-20 accent-bg-light p-8 rounded-xl flex flex-wrap justify-around items-center gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          {['FOX6 MILWAUKEE', 'BARRON\'S', 'AMERICAN BANKER', 'NEWSWEEK', 'LUXURY DAILY'].map((partner, index) => (
-            <div key={index} className="text-secondary font-bold text-lg">{partner}</div>
+          {['IDEATION', 'MARKET FIT', 'GROWTH', 'SCALING', 'OPTIMIZATION'].map((phase, index) => (
+            <div key={index} className="text-secondary font-bold text-lg">{phase}</div>
           ))}
         </motion.div>
       </div>
