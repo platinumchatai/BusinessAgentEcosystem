@@ -60,27 +60,38 @@
   
   .navbar {
     @apply flex items-center justify-between py-4 px-6;
-    background-color: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
     border-radius: 100px;
   }
   
+  .nav-link {
+    @apply text-white/90 hover:text-white font-semibold px-4 py-2 transition-all;
+    letter-spacing: 0.01em;
+  }
+  
+  .nav-link.active {
+    @apply text-accent;
+  }
+  
   .btn-accent {
-    @apply bg-primary text-white rounded-full px-6 py-3 font-medium transition-all;
+    @apply bg-accent text-white rounded-full px-6 py-3 font-semibold transition-all hover:bg-accent/90 shadow-md;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    letter-spacing: 0.01em;
   }
   
   .btn-light {
-    @apply bg-white text-secondary rounded-full px-6 py-3 font-medium transition-all;
+    @apply bg-white text-secondary rounded-full px-6 py-3 font-semibold transition-all hover:bg-gray-100 shadow-md;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    letter-spacing: 0.01em;
   }
   
   .stats-container {
-    @apply flex flex-wrap justify-center gap-8 py-10;
+    @apply flex flex-wrap justify-center gap-12 py-10;
   }
   
   .stat-item {
@@ -88,10 +99,10 @@
   }
   
   .stat-number {
-    @apply text-4xl font-bold text-white;
+    @apply text-4xl font-extrabold text-white;
   }
   
   .stat-label {
-    @apply text-sm text-gray-300;
+    @apply text-sm font-medium text-white/80;
   }
 }

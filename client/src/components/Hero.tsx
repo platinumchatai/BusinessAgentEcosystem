@@ -127,7 +127,7 @@ const Hero = () => {
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           {['IDEATION', 'MARKET FIT', 'GROWTH', 'SCALING', 'OPTIMIZATION'].map((phase, index) => (
-            <div key={index} className="text-secondary font-bold text-lg">{phase}</div>
+            <div key={index} className="text-secondary font-extrabold text-lg tracking-wide">{phase}</div>
           ))}
         </motion.div>
       </div>

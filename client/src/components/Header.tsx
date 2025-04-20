@@ -43,45 +43,45 @@ const Header = () => {
           </Link>
         </div>
         
-        <nav className="hidden md:flex items-center space-x-4">
+        <nav className="hidden md:flex items-center space-x-2">
           <a 
             href="/#about" 
-            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            className="nav-link"
             onClick={handleNavClick}
           >
             Who We Serve
           </a>
           <a 
             href="/#agents-section" 
-            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            className="nav-link"
             onClick={handleNavClick}
           >
             Agents
           </a>
           <a 
             href="/#workflows" 
-            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            className="nav-link"
             onClick={handleNavClick}
           >
             Services
           </a>
           <Link 
             href="/consultation" 
-            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            className="nav-link"
             onClick={handleNavClick}
           >
             Insights
           </Link>
           <Link 
             href="/about" 
-            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            className="nav-link"
             onClick={handleNavClick}
           >
             About
           </Link>
           <Link 
             href="/contact" 
-            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            className="nav-link"
             onClick={handleNavClick}
           >
             Career
@@ -118,49 +118,49 @@ const Header = () => {
             <nav className="flex flex-col space-y-3">
               <a 
                 href="/#about" 
-                className="text-white/80 hover:text-white py-2 transition-colors"
+                className="text-white hover:text-accent py-2 transition-colors font-semibold"
                 onClick={handleNavClick}
               >
                 Who We Serve
               </a>
               <a 
                 href="/#agents-section" 
-                className="text-white/80 hover:text-white py-2 transition-colors"
+                className="text-white hover:text-accent py-2 transition-colors font-semibold"
                 onClick={handleNavClick}
               >
                 Agents
               </a>
               <a 
                 href="/#workflows" 
-                className="text-white/80 hover:text-white py-2 transition-colors"
+                className="text-white hover:text-accent py-2 transition-colors font-semibold"
                 onClick={handleNavClick}
               >
                 Services
               </a>
               <Link 
                 href="/consultation" 
-                className="text-white/80 hover:text-white py-2 transition-colors"
+                className="text-white hover:text-accent py-2 transition-colors font-semibold"
                 onClick={handleNavClick}
               >
                 Insights
               </Link>
               <Link 
                 href="/about" 
-                className="text-white/80 hover:text-white py-2 transition-colors"
+                className="text-white hover:text-accent py-2 transition-colors font-semibold"
                 onClick={handleNavClick}
               >
                 About
               </Link>
               <Link 
                 href="/contact" 
-                className="text-white/80 hover:text-white py-2 transition-colors"
+                className="text-white hover:text-accent py-2 transition-colors font-semibold"
                 onClick={handleNavClick}
               >
                 Career
               </Link>
               <Link 
                 href="/subscribe" 
-                className="text-primary font-medium py-2 transition-colors"
+                className="text-accent font-bold py-2 transition-colors"
                 onClick={handleNavClick}
               >
                 LET'S TALK
