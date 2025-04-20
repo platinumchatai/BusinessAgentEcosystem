@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
+import { Phone, Mail } from "lucide-react";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,52 +28,84 @@ const Header = () => {
   };
 
   return (
-    <header className={`bg-white sticky top-0 z-50 transition-shadow duration-300 ${scrolled ? 'shadow-md' : ''}`}>
-      <div className="container mx-auto px-4 py-3 flex items-center justify-between">
+    <header className={`sticky top-4 z-50 transition-all duration-300 max-w-6xl mx-auto px-4`}>
+      <div className="navbar">
         <div className="flex items-center">
-          <div className="bg-primary p-2 rounded-lg mr-3">
-            <span className="material-icons text-white">business</span>
-          </div>
           <Link href="/">
-            <h1 className="font-heading font-bold text-lg md:text-2xl text-primary cursor-pointer">
-              BusinessAgency.ai
+            <h1 className="font-heading text-lg md:text-xl text-white cursor-pointer flex items-center">
+              <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
+                <path d="M2 17L12 22L22 17" fill="currentColor"/>
+                <path d="M2 12L12 17L22 12" fill="currentColor"/>
+              </svg>
+              PlatinumAI
             </h1>
           </Link>
         </div>
         
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex items-center space-x-4">
           <a 
             href="/#about" 
-            className="text-neutral-400 hover:text-primary transition-colors font-medium"
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
             onClick={handleNavClick}
           >
-            About
+            Who We Serve
           </a>
           <a 
             href="/#agents-section" 
-            className="text-neutral-400 hover:text-primary transition-colors font-medium"
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
             onClick={handleNavClick}
           >
             Agents
           </a>
+          <a 
+            href="/#workflows" 
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            onClick={handleNavClick}
+          >
+            Services
+          </a>
           <Link 
             href="/consultation" 
-            className="text-neutral-400 hover:text-primary transition-colors font-medium"
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
             onClick={handleNavClick}
           >
-            Consultation
+            Insights
           </Link>
           <Link 
-            href="/subscribe" 
-            className="bg-blue-600 text-white px-4 py-1.5 rounded-md hover:bg-blue-700 transition-colors font-medium"
+            href="/about" 
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
             onClick={handleNavClick}
           >
-            Subscribe
+            About
+          </Link>
+          <Link 
+            href="/contact" 
+            className="text-white/80 hover:text-white transition-colors font-medium text-sm px-2 py-1"
+            onClick={handleNavClick}
+          >
+            Career
           </Link>
         </nav>
         
+        <div className="hidden md:flex items-center space-x-3">
+          <a href="tel:+1234567890" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+            <Phone className="w-4 h-4" />
+          </a>
+          <a href="mailto:contact@platinumai.com" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
+            <Mail className="w-4 h-4" />
+          </a>
+          <Link 
+            href="/subscribe" 
+            className="btn-accent ml-2"
+            onClick={handleNavClick}
+          >
+            LET'S TALK
+          </Link>
+        </div>
+        
         <div className="flex items-center md:hidden">
-          <button onClick={toggleMenu} className="p-2">
+          <button onClick={toggleMenu} className="p-2 text-white">
             <span className="material-icons">{mobileMenuOpen ? 'close' : 'menu'}</span>
           </button>
         </div>
@@ -80,36 +113,57 @@ const Header = () => {
       
       {/* Mobile navigation */}
       {mobileMenuOpen && (
-        <div className="bg-white shadow-lg absolute w-full z-50 md:hidden">
+        <div className="bg-secondary shadow-lg absolute w-full z-50 md:hidden mt-2 rounded-lg">
           <div className="container mx-auto px-4 py-3">
             <nav className="flex flex-col space-y-3">
               <a 
                 href="/#about" 
-                className="text-neutral-400 hover:text-primary py-2 transition-colors"
+                className="text-white/80 hover:text-white py-2 transition-colors"
                 onClick={handleNavClick}
               >
-                About
+                Who We Serve
               </a>
               <a 
                 href="/#agents-section" 
-                className="text-neutral-400 hover:text-primary py-2 transition-colors"
+                className="text-white/80 hover:text-white py-2 transition-colors"
                 onClick={handleNavClick}
               >
                 Agents
               </a>
-              <Link 
-                href="/consultation" 
-                className="text-neutral-400 hover:text-primary py-2 transition-colors"
+              <a 
+                href="/#workflows" 
+                className="text-white/80 hover:text-white py-2 transition-colors"
                 onClick={handleNavClick}
               >
-                Consultation
+                Services
+              </a>
+              <Link 
+                href="/consultation" 
+                className="text-white/80 hover:text-white py-2 transition-colors"
+                onClick={handleNavClick}
+              >
+                Insights
+              </Link>
+              <Link 
+                href="/about" 
+                className="text-white/80 hover:text-white py-2 transition-colors"
+                onClick={handleNavClick}
+              >
+                About
+              </Link>
+              <Link 
+                href="/contact" 
+                className="text-white/80 hover:text-white py-2 transition-colors"
+                onClick={handleNavClick}
+              >
+                Career
               </Link>
               <Link 
                 href="/subscribe" 
-                className="text-neutral-400 hover:text-primary py-2 transition-colors"
+                className="text-primary font-medium py-2 transition-colors"
                 onClick={handleNavClick}
               >
-                <span className="text-blue-600 font-medium">Subscribe</span>
+                LET'S TALK
               </Link>
             </nav>
           </div>

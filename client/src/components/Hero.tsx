@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Layers, Globe, BrainCircuit, BarChart } from "lucide-react";
+import { Layers, BrainCircuit, MoveRight } from "lucide-react";
 
 const Hero = () => {
   const scrollToSection = (id: string) => {
@@ -10,118 +10,125 @@ const Hero = () => {
   };
 
   return (
-    <section id="hero" className="bg-gradient-to-r from-blue-900 to-blue-950 text-white min-h-[90vh] flex items-center py-16 md:py-24 relative">
-      {/* Deep blue background overlay */}
-      <div className="absolute inset-0 bg-blue-950/70 -z-10"></div>
-      <div className="container mx-auto px-4">
+    <section id="hero" className="hero-gradient text-white min-h-[90vh] flex items-center relative overflow-hidden">
+      {/* Decorative elements */}
+      <div className="absolute top-20 right-10 w-8 h-8 opacity-50">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2L2 16L16 30L30 16L16 2Z" stroke="white" strokeWidth="2"/>
+        </svg>
+      </div>
+      
+      <div className="container mx-auto px-6 py-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-7">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <h1 className="font-heading font-bold text-4xl md:text-6xl mb-6 leading-tight">
+                Upgrade your business
+                <br />
+                with <span className="accent-text">real-time insights</span>
+                <br />
+                and automation
+              </h1>
+              
+              {/* Decorative line */}
+              <div className="w-20 h-1 bg-white/30 rounded-full my-8"></div>
+              
+              <p className="text-lg mb-10 text-white/80 max-w-xl">
+                Track spending, set goals, and automate investments — everything you need to build wealth and stay financially confident. From budgeting to investing, get complete control over your business.
+              </p>
+              
+              <div className="flex flex-wrap gap-4 mt-8">
+                <a
+                  href="#agents-section"
+                  className="btn-light"
+                >
+                  Get Started
+                  <MoveRight className="w-4 h-4" />
+                </a>
+                <a
+                  href="/consultation"
+                  className="btn-accent"
+                >
+                  Learn More
+                  <MoveRight className="w-4 h-4" />
+                </a>
+              </div>
+            </motion.div>
+          </div>
+          
+          <div className="lg:col-span-5">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="relative"
+            >
+              {/* Dashboard/Analytics card */}
+              <div className="bg-blue-900/40 backdrop-blur-sm p-5 rounded-xl border border-white/10">
+                <div className="text-sm text-white/70 mb-2">Monthly Stats</div>
+                <div className="text-5xl font-bold mb-2">192</div>
+                <div className="text-xs text-white/50 mb-3">active users</div>
+                
+                {/* Simplified chart bars */}
+                <div className="flex items-end h-20 gap-1 mb-2">
+                  {[0.5, 0.7, 0.4, 0.8, 0.6, 0.9, 0.7, 0.5, 0.3, 0.6, 0.8, 0.7].map((height, i) => (
+                    <div 
+                      key={i} 
+                      className="flex-1 bg-primary/50 rounded-sm" 
+                      style={{height: `${height * 100}%`}}
+                    ></div>
+                  ))}
+                </div>
+                
+                <div className="flex justify-between text-xs text-white/50">
+                  <span>$8,000</span>
+                  <span>$2,500</span>
+                </div>
+              </div>
+              
+              {/* Decorative orbit lines */}
+              <div className="absolute -bottom-20 -left-20 w-40 h-40 opacity-30">
+                <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="50" cy="50" r="49" stroke="white" strokeOpacity="0.2" />
+                  <circle cx="50" cy="50" r="30" stroke="white" strokeOpacity="0.2" />
+                </svg>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+        
+        {/* Stats Section */}
+        <div className="stats-container mt-20 border-t border-white/10 pt-10">
+          <div className="stat-item">
+            <div className="stat-number">100%</div>
+            <div className="stat-label">Client satisfaction</div>
+          </div>
+          
+          <div className="stat-item">
+            <div className="stat-number">300+</div>
+            <div className="stat-label">Active clients</div>
+          </div>
+          
+          <div className="stat-item">
+            <div className="stat-number">24/7</div>
+            <div className="stat-label">We available</div>
+          </div>
+        </div>
+        
+        {/* Partner Logos Section */}
         <motion.div 
-          className="max-w-4xl mx-auto text-center"
+          className="mt-20 accent-bg-light p-8 rounded-xl flex flex-wrap justify-around items-center gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <h1 className="font-heading font-bold text-4xl md:text-6xl mb-8">
-            Your Business Growth Powered by Platinum Chat AI Agents
-          </h1>
-          <p className="text-xl mb-10 text-white/90 max-w-3xl mx-auto">
-            Access 16 specialized AI agents that work together to help your business thrive from ideation to scaling beyond $10M.
-          </p>
-          
-          {/* Features */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <motion.div 
-              className="bg-white/10 backdrop-blur-sm p-6 rounded-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <div className="flex justify-center mb-4">
-                <Layers className="w-10 h-10 text-blue-400" />
-              </div>
-              <h3 className="font-medium text-lg mb-2">Phased Approach</h3>
-              <p className="text-white/80 text-sm">Strategic agents grouped by business development phase</p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white/10 backdrop-blur-sm p-6 rounded-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              <div className="flex justify-center mb-4">
-                <Globe className="w-10 h-10 text-blue-400" />
-              </div>
-              <h3 className="font-medium text-lg mb-2">Ecosystem Integration</h3>
-              <p className="text-white/80 text-sm">Agents collaborate seamlessly on complex business challenges</p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white/10 backdrop-blur-sm p-6 rounded-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <div className="flex justify-center mb-4">
-                <BrainCircuit className="w-10 h-10 text-blue-400" />
-              </div>
-              <h3 className="font-medium text-lg mb-2">Specialized AI Ecosystem</h3>
-              <p className="text-white/80 text-sm">Custom-trained AI agents with industry-specific knowledge you can't find elsewhere</p>
-            </motion.div>
-            
-            <motion.div 
-              className="bg-white/10 backdrop-blur-sm p-6 rounded-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <div className="flex justify-center mb-4">
-                <BarChart className="w-10 h-10 text-blue-400" />
-              </div>
-              <h3 className="font-medium text-lg mb-2">Business Growth</h3>
-              <p className="text-white/80 text-sm">Expert guidance from ideation through scaling your company</p>
-            </motion.div>
-          </div>
-          
-          <div className="flex flex-col md:flex-row justify-center gap-4">
-            <motion.a
-              href="#agents-section"
-              className="bg-blue-50 text-blue-900 font-semibold px-8 py-4 rounded-lg shadow hover:bg-blue-100 transition-all text-lg inline-block"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Explore Agents
-            </motion.a>
-            <motion.a
-              href="/consultation"
-              className="bg-gradient-to-r from-blue-800 to-blue-900 text-white font-semibold px-8 py-4 rounded-lg shadow hover:opacity-90 transition-all text-lg inline-block"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Start a Consultation
-            </motion.a>
-          </div>
-          
-          <motion.div 
-            className="mt-12 text-white/60"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <p className="text-sm">Scroll down to begin your business transformation</p>
-            <div className="flex justify-center mt-2">
-              <svg 
-                className="w-6 h-6 animate-bounce" 
-                fill="none" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth="2" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-              >
-                <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-              </svg>
-            </div>
-          </motion.div>
+          {['FOX6 MILWAUKEE', 'BARRON\'S', 'AMERICAN BANKER', 'NEWSWEEK', 'LUXURY DAILY'].map((partner, index) => (
+            <div key={index} className="text-secondary font-bold text-lg">{partner}</div>
+          ))}
         </motion.div>
       </div>
     </section>

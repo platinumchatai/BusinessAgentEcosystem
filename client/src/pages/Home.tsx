@@ -28,9 +28,9 @@ const Home = () => {
   }, []);
   
   return (
-    <div id="top" className="bg-gray-50">
+    <div id="top">
       <Hero />
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto px-4 py-12 bg-white rounded-t-[40px] -mt-6 relative z-10">
         <AgentSelector />
         <WorkflowVisualizer />
       </div>
