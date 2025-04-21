@@ -121,13 +121,13 @@ const Hero = () => {
         
         {/* Business Benefits Section */}
         <motion.div 
-          className="mt-20 accent-bg-light p-8 rounded-xl flex flex-wrap justify-around items-center gap-8"
+          className="mt-20 bg-secondary/90 p-8 rounded-xl flex flex-wrap justify-around items-center gap-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
           {['IDEATION', 'MARKET FIT', 'GROWTH', 'SCALING', 'OPTIMIZATION'].map((phase, index) => (
-            <div key={index} className="text-secondary font-extrabold text-lg tracking-wide">{phase}</div>
+            <div key={index} className="text-white font-extrabold text-xl tracking-wide border-b-2 border-accent pb-1">{phase}</div>
           ))}
         </motion.div>
       </div>
