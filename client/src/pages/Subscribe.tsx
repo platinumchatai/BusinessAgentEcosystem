@@ -287,14 +287,14 @@ const Subscribe = () => {
           </div>
           
           <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
-            <Tab.List className="flex border-b border-gray-200">
+            <Tab.List className="flex px-4 py-2 bg-gray-50 border-b border-gray-200">
               <Tab
                 className={({ selected }) =>
                   cn(
-                    "flex items-center py-4 px-6 text-sm font-medium outline-none",
+                    "flex items-center py-3 px-6 text-sm font-medium outline-none rounded-full transition-all",
                     selected
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
+                      ? "text-white bg-accent shadow-sm"
+                      : "text-gray-700 hover:bg-gray-100"
                   )
                 }
               >
@@ -304,10 +304,10 @@ const Subscribe = () => {
               <Tab
                 className={({ selected }) =>
                   cn(
-                    "flex items-center py-4 px-6 text-sm font-medium outline-none",
+                    "flex items-center py-3 px-6 text-sm font-medium outline-none rounded-full transition-all",
                     selected
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
+                      ? "text-white bg-accent shadow-sm"
+                      : "text-gray-700 hover:bg-gray-100"
                   )
                 }
               >
@@ -317,10 +317,10 @@ const Subscribe = () => {
               <Tab
                 className={({ selected }) =>
                   cn(
-                    "flex items-center py-4 px-6 text-sm font-medium outline-none",
+                    "flex items-center py-3 px-6 text-sm font-medium outline-none rounded-full transition-all",
                     selected
-                      ? "text-blue-600 border-b-2 border-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
+                      ? "text-white bg-accent shadow-sm"
+                      : "text-gray-700 hover:bg-gray-100"
                   )
                 }
               >
@@ -435,7 +435,7 @@ const Subscribe = () => {
                     <Button
                       type="button"
                       onClick={handleNextStep}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-accent hover:bg-accent/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
                     >
                       Continue to Payment
                     </Button>
@@ -608,6 +608,7 @@ const Subscribe = () => {
                       type="button"
                       variant="outline"
                       onClick={handlePrevStep}
+                      className="rounded-full px-6 border-gray-300 hover:bg-gray-50"
                     >
                       Back to Account
                     </Button>
@@ -615,7 +616,7 @@ const Subscribe = () => {
                     <Button
                       type="button"
                       onClick={handleNextStep}
-                      className="bg-blue-600 hover:bg-blue-700"
+                      className="bg-accent hover:bg-accent/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
                     >
                       Review Order
                     </Button>
@@ -712,6 +713,7 @@ const Subscribe = () => {
                           type="button"
                           variant="outline"
                           onClick={handlePrevStep}
+                          className="rounded-full px-6 border-gray-300 hover:bg-gray-50"
                         >
                           Back to Payment
                         </Button>
@@ -719,7 +721,7 @@ const Subscribe = () => {
                         <Button
                           type="button"
                           onClick={handleSubmit}
-                          className="bg-blue-600 hover:bg-blue-700"
+                          className="bg-accent hover:bg-accent/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
                         >
                           Complete Subscription
                         </Button>
