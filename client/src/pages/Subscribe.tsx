@@ -250,7 +250,7 @@ const Subscribe = () => {
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
                         <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
+                        <span className="text-sm text-gray-700 font-medium">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -262,7 +262,7 @@ const Subscribe = () => {
                         {plan.limitations.map((limitation, i) => (
                           <li key={i} className="flex items-start">
                             <X className="h-5 w-5 text-red-500 mr-2 flex-shrink-0" />
-                            <span className="text-sm">{limitation}</span>
+                            <span className="text-sm text-gray-700 font-medium">{limitation}</span>
                           </li>
                         ))}
                       </ul>
@@ -586,7 +586,7 @@ const Subscribe = () => {
                         checked={formData.agreeTerms}
                         onChange={handleInputChange}
                       />
-                      <label htmlFor="agreeTerms" className="ml-2 text-sm text-gray-600">
+                      <label htmlFor="agreeTerms" className="ml-2 text-sm text-gray-700 font-medium">
                         I agree to the <a href="#" className="text-blue-600 hover:underline">Terms of Service</a> and <a href="#" className="text-blue-600 hover:underline">Privacy Policy</a>
                       </label>
                     </div>
@@ -629,15 +629,15 @@ const Subscribe = () => {
                       <h3 className="text-lg font-medium mb-2">Subscription Details</h3>
                       <div className="bg-gray-50 p-4 rounded-md">
                         <div className="flex justify-between mb-2">
-                          <span className="text-gray-600">Plan:</span>
+                          <span className="text-gray-700 font-medium">Plan:</span>
                           <span className="font-medium">{subscriptionPlans[selectedPlan].name}</span>
                         </div>
                         <div className="flex justify-between mb-2">
-                          <span className="text-gray-600">Price:</span>
+                          <span className="text-gray-700 font-medium">Price:</span>
                           <span className="font-medium">{subscriptionPlans[selectedPlan].price}/{subscriptionPlans[selectedPlan].frequency}</span>
                         </div>
                         <div className="flex justify-between mb-2">
-                          <span className="text-gray-600">Billing Cycle:</span>
+                          <span className="text-gray-700 font-medium">Billing Cycle:</span>
                           <span className="font-medium">Monthly</span>
                         </div>
                         <div className="flex justify-between pt-2 border-t border-gray-200 mt-2">
@@ -652,15 +652,15 @@ const Subscribe = () => {
                         <h3 className="text-lg font-medium mb-2">Account Information</h3>
                         <div className="bg-gray-50 p-4 rounded-md">
                           <div className="mb-2">
-                            <span className="text-gray-600">Username:</span>
+                            <span className="text-gray-700 font-medium">Username:</span>
                             <span className="font-medium block">{formData.username || 'Not provided'}</span>
                           </div>
                           <div className="mb-2">
-                            <span className="text-gray-600">Email:</span>
+                            <span className="text-gray-700 font-medium">Email:</span>
                             <span className="font-medium block">{formData.email || 'Not provided'}</span>
                           </div>
                           <div>
-                            <span className="text-gray-600">Name:</span>
+                            <span className="text-gray-700 font-medium">Name:</span>
                             <span className="font-medium block">
                               {formData.firstName && formData.lastName
                                 ? `${formData.firstName} ${formData.lastName}`
@@ -674,7 +674,7 @@ const Subscribe = () => {
                         <h3 className="text-lg font-medium mb-2">Payment Method</h3>
                         <div className="bg-gray-50 p-4 rounded-md">
                           <div className="mb-2">
-                            <span className="text-gray-600">Card:</span>
+                            <span className="text-gray-700 font-medium">Card:</span>
                             <span className="font-medium block">
                               {formData.cardNumber
                                 ? `**** **** **** ${formData.cardNumber.slice(-4)}`
@@ -682,7 +682,7 @@ const Subscribe = () => {
                             </span>
                           </div>
                           <div>
-                            <span className="text-gray-600">Billing Address:</span>
+                            <span className="text-gray-700 font-medium">Billing Address:</span>
                             <span className="font-medium block">
                               {formData.billingAddress
                                 ? `${formData.billingAddress}, ${formData.city}, ${formData.state} ${formData.zipCode}`
@@ -694,7 +694,7 @@ const Subscribe = () => {
                     </div>
                     
                     <div className="pt-4 border-t border-gray-200">
-                      <p className="text-sm text-gray-600 mb-6">
+                      <p className="text-sm text-gray-700 font-medium mb-6">
                         By clicking "Complete Subscription", you agree to subscribe to the {subscriptionPlans[selectedPlan].name}. Your payment method will be charged {subscriptionPlans[selectedPlan].price} monthly until you cancel. You can cancel anytime from your account settings.
                       </p>
                       
