@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 const MockReCAPTCHA = ({ onChange }: { onChange: (token: string | null) => void }) => {
   return (
     <div className="flex flex-col items-center justify-center p-4 border border-gray-200 bg-gray-50 rounded-md">
-      <div className="text-sm text-gray-500 mb-2">reCAPTCHA verification</div>
+      <div className="text-sm text-gray-700 font-medium mb-2">reCAPTCHA verification</div>
       <button 
         onClick={() => onChange('mock-token-123')}
         className="px-4 py-1 bg-gray-200 rounded-md text-sm"
@@ -109,8 +109,7 @@ const Subscribe = () => {
     zipCode: '',
     country: 'United States',
     agreeTerms: false,
-    username: '',
-    profileImageUrl: ''
+    username: ''
   });
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -200,7 +199,7 @@ const Subscribe = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h1 className="text-3xl font-bold mb-4">Subscribe to Business Agency AI</h1>
-          <p className="text-gray-600">
+          <p className="text-gray-700 font-medium">
             Get access to our advanced AI agent ecosystem and transform how you build and grow your business
           </p>
         </div>
@@ -226,11 +225,11 @@ const Subscribe = () => {
               
               <div className="p-6 md:p-8">
                 <h3 className="text-xl font-bold text-gray-800">{plan.name}</h3>
-                <p className="text-gray-600 mt-2 text-sm">{plan.description}</p>
+                <p className="text-gray-700 mt-2 text-sm font-medium">{plan.description}</p>
                 
                 <div className="mt-6 flex items-baseline">
                   <span className="text-4xl font-bold text-gray-800">{plan.price}</span>
-                  <span className="text-gray-600 ml-1 text-lg">/{plan.frequency}</span>
+                  <span className="text-gray-700 ml-1 text-lg font-medium">/{plan.frequency}</span>
                 </div>
                 
                 <Button 
@@ -281,7 +280,7 @@ const Subscribe = () => {
             <h2 className="text-xl font-bold">
               Complete Your {subscriptionPlans[selectedPlan].name} Subscription
             </h2>
-            <p className="text-gray-600 mt-1">
+            <p className="text-gray-700 font-medium mt-1">
               {subscriptionPlans[selectedPlan].price}/{subscriptionPlans[selectedPlan].frequency} - {subscriptionPlans[selectedPlan].description}
             </p>
           </div>
@@ -413,16 +412,7 @@ const Subscribe = () => {
                       {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
                     </div>
                     
-                    <div>
-                      <Label htmlFor="profileImageUrl">Profile Image URL (Optional)</Label>
-                      <Input
-                        id="profileImageUrl"
-                        name="profileImageUrl"
-                        placeholder="https://example.com/your-image.jpg"
-                        value={formData.profileImageUrl}
-                        onChange={handleInputChange}
-                      />
-                    </div>
+
                     
                     {/* CAPTCHA verification */}
                     <div className="mt-6">
