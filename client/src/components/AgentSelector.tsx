@@ -74,6 +74,22 @@ const AgentSelector = () => {
     'Product': { bg: 'bg-purple-100', text: 'text-purple-700' },
     'Strategy': { bg: 'bg-blue-100', text: 'text-blue-700' },
     'All Agents': { bg: 'bg-gray-100', text: 'text-gray-700' }
+  } as const;
+  
+  // Helper function to get category color styles
+  const getCategoryColors = (category: string) => {
+    switch (category) {
+      case 'Marketing':
+        return categoryColors['Marketing'];
+      case 'Finance':
+        return categoryColors['Finance'];
+      case 'Product':
+        return categoryColors['Product'];
+      case 'Strategy':
+        return categoryColors['Strategy'];
+      default:
+        return categoryColors['All Agents'];
+    }
   };
   
   // Exactly 4 featured agents - prioritize coordinators, but fill with others if needed
@@ -122,14 +138,18 @@ const AgentSelector = () => {
         </p>
       </div>
 
-      {/* Top-level category filters - with darker backgrounds for better readability */}
+      {/* Top-level category filters - with consistent color scheme */}
       <div className="mb-6 flex flex-wrap gap-2 justify-center max-w-3xl mx-auto">
         {categoryFilters.map(category => (
           <button 
             key={category}
             className={`px-5 py-2 rounded-full text-sm transition-colors ${
               filter === category 
-                ? 'bg-gray-800 text-white font-medium shadow-sm' 
+                ? category === 'Marketing' ? 'bg-amber-600 text-white font-medium shadow-sm' :
+                  category === 'Finance' ? 'bg-green-600 text-white font-medium shadow-sm' :
+                  category === 'Product' ? 'bg-purple-600 text-white font-medium shadow-sm' :
+                  category === 'Strategy' ? 'bg-blue-600 text-white font-medium shadow-sm' :
+                  'bg-gray-800 text-white font-medium shadow-sm'
                 : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
             }`}
             onClick={() => setFilter(category)}
@@ -157,8 +177,8 @@ const AgentSelector = () => {
                 <div className="flex justify-between items-start mb-3">
                   <h5 className="font-medium text-lg text-gray-800">{agent.name}</h5>
                   <span className={`
-                    ${categoryColors[agent.category]?.bg || 'bg-gray-100'} 
-                    ${categoryColors[agent.category]?.text || 'text-gray-700'}
+                    ${getCategoryColors(agent.category).bg} 
+                    ${getCategoryColors(agent.category).text}
                     text-xs px-2.5 py-1 rounded-full font-medium`}
                   >
                     {agent.category}
@@ -218,8 +238,8 @@ const AgentSelector = () => {
                       <div className="flex justify-between items-start mb-2">
                         <h5 className="font-medium text-base text-gray-800">{agent.name}</h5>
                         <span className={`
-                          ${categoryColors[agent.category]?.bg || 'bg-gray-100'} 
-                          ${categoryColors[agent.category]?.text || 'text-gray-700'} 
+                          ${getCategoryColors(agent.category).bg} 
+                          ${getCategoryColors(agent.category).text} 
                           text-xs px-2 py-0.5 rounded-full font-medium`}
                         >
                           {agent.category}
