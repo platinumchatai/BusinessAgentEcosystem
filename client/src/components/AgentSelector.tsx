@@ -11,19 +11,19 @@ interface AgentCardProps {
 
 const AgentCard = ({ agent, phase }: AgentCardProps) => {
   const phaseColors = [
-    { bg: 'text-primary', hover: 'hover:text-primary-dark' },
-    { bg: 'text-green-600', hover: 'hover:text-green-700' },
-    { bg: 'text-amber-500', hover: 'hover:text-amber-600' },
-    { bg: 'text-secondary', hover: 'hover:text-secondary-dark' },
+    { bg: 'bg-blue-600', hover: 'hover:bg-blue-700', textColor: 'text-blue-600' },
+    { bg: 'bg-green-600', hover: 'hover:bg-green-700', textColor: 'text-green-600' },
+    { bg: 'bg-amber-500', hover: 'hover:bg-amber-600', textColor: 'text-amber-500' },
+    { bg: 'bg-secondary', hover: 'hover:bg-secondary-dark', textColor: 'text-secondary' },
   ];
   
   const color = phaseColors[phase - 1];
   
   return (
     <motion.div 
-      className={`agent-card bg-white rounded-lg shadow-card overflow-hidden 
-        ${agent.coordinator ? `border-l-4 ${phase === 1 ? 'border-primary' : phase === 2 ? 'border-green-600' : phase === 3 ? 'border-amber-500' : 'border-secondary'}` : ''}
-        cursor-pointer hover:shadow-lg`}
+      className={`agent-card bg-white rounded-xl shadow-sm overflow-hidden 
+        ${agent.coordinator ? `border-l-4 ${phase === 1 ? 'border-blue-600' : phase === 2 ? 'border-green-600' : phase === 3 ? 'border-amber-500' : 'border-secondary'}` : ''}
+        cursor-pointer hover:shadow-md`}
       whileHover={{ y: -5 }}
       transition={{ duration: 0.2 }}
     >
@@ -33,23 +33,23 @@ const AgentCard = ({ agent, phase }: AgentCardProps) => {
       >
         <div className="p-5">
           <div className="flex justify-between items-start mb-3">
-            <h5 className="font-heading font-semibold text-lg">{agent.name}</h5>
+            <h5 className="font-heading font-semibold text-lg text-gray-800">{agent.name}</h5>
             <span className={`
               ${agent.coordinator 
-                ? `${phase === 1 ? 'bg-primary/10 text-primary' : phase === 2 ? 'bg-green-600/10 text-green-600' : phase === 3 ? 'bg-amber-500/10 text-amber-500' : 'bg-secondary/10 text-secondary'}`
-                : 'bg-gray-100 text-gray-600'} 
-              text-xs px-2 py-1 rounded-full`}
+                ? `${phase === 1 ? 'bg-blue-100 text-blue-700' : phase === 2 ? 'bg-green-100 text-green-700' : phase === 3 ? 'bg-amber-100 text-amber-700' : 'bg-purple-100 text-purple-700'}`
+                : 'bg-gray-100 text-gray-700'} 
+              text-xs px-2 py-1 rounded-full font-medium`}
             >
               {agent.coordinator ? 'Coordinator' : agent.category}
             </span>
           </div>
-          <p className="text-neutral-400 text-sm mb-4">{agent.description}</p>
+          <p className="text-gray-600 text-sm mb-4">{agent.description}</p>
           <div className="flex justify-between items-center">
-            <span className="text-xs text-neutral-300">
+            <span className="text-xs font-medium text-gray-500">
               {`Phase ${phase}${agent.coordinator ? ' Primary' : ''}`}
             </span>
-            <button className={`${color.bg} ${color.hover}`}>
-              <span className="material-icons">arrow_forward</span>
+            <button className={`w-8 h-8 rounded-full flex items-center justify-center ${color.bg} text-white ${color.hover}`}>
+              <span className="material-icons text-sm">arrow_forward</span>
             </button>
           </div>
         </div>
@@ -126,34 +126,40 @@ const AgentSelector = () => {
         ))}
       </div>
 
-      {/* Featured Agents - Simplified */}
+      {/* Featured Agents - Improved */}
       <div className="mb-12 max-w-4xl mx-auto">
         <h3 className="font-heading text-xl font-medium mb-6 text-center">Featured Agents</h3>
         
         {/* 2x2 Grid for Featured Agents */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {featuredAgents.map(agent => (
             <div 
               key={agent.id}
-              className="bg-white border border-gray-200 rounded-md hover:shadow-sm transition-shadow p-4"
+              className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md transition-all p-5"
             >
               <Link 
                 href={`/agent/${agent.id}`}
                 className="block"
               >
-                <div className="flex justify-between items-start mb-2">
-                  <h5 className="font-medium text-lg">{agent.name}</h5>
-                  <span className="bg-gray-50 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                <div className="flex justify-between items-start mb-3">
+                  <h5 className="font-medium text-lg text-gray-800">{agent.name}</h5>
+                  <span className={`
+                    ${agent.phase === 1 ? 'bg-blue-100 text-blue-700' : 
+                      agent.phase === 2 ? 'bg-green-100 text-green-700' : 
+                      agent.phase === 3 ? 'bg-amber-100 text-amber-700' : 
+                      'bg-purple-100 text-purple-700'} 
+                    text-xs px-2.5 py-1 rounded-full font-medium`}
+                  >
                     {agent.category}
                   </span>
                 </div>
-                <p className="text-gray-500 text-sm mb-3 line-clamp-2">{agent.description}</p>
+                <p className="text-gray-600 text-sm mb-3 line-clamp-2">{agent.description}</p>
                 <div className="flex justify-between items-center">
-                  <span className="text-xs text-gray-400">
+                  <span className="text-xs font-medium text-gray-500">
                     Phase {agent.phase}
                   </span>
                   {agent.coordinator && (
-                    <span className="text-xs bg-gray-50 px-2 py-0.5 rounded-full text-gray-500">
+                    <span className="text-xs bg-secondary/10 px-2.5 py-1 rounded-full text-secondary font-medium">
                       Coordinator
                     </span>
                   )}
@@ -163,20 +169,30 @@ const AgentSelector = () => {
           ))}
         </div>
         
-        {/* "See Other Agents" Button - Simplified */}
-        <div className="flex justify-center mt-6">
+        {/* "See Other Agents" Button - Improved */}
+        <div className="flex justify-center mt-8">
           <button 
             onClick={() => setShowAllAgents(!showAllAgents)}
-            className="bg-white text-gray-700 border border-gray-300 px-4 py-1.5 text-sm rounded-md hover:bg-gray-50 transition-colors"
+            className="flex items-center gap-1.5 bg-white text-gray-700 border border-gray-300 px-5 py-2 text-sm rounded-full hover:bg-gray-50 shadow-sm transition-colors font-medium"
           >
-            {showAllAgents ? 'Hide Other Agents' : 'See Other Agents'}
+            {showAllAgents ? (
+              <>
+                <span className="material-icons text-sm">expand_less</span>
+                Hide Other Agents
+              </>
+            ) : (
+              <>
+                <span className="material-icons text-sm">expand_more</span>
+                See Other Agents
+              </>
+            )}
           </button>
         </div>
         
-        {/* Other Agents Section - Simplified */}
+        {/* Other Agents Section - Improved */}
         {showAllAgents && (
           <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {agents
                 .filter(agent => 
                   !featuredAgents.some(featured => featured.id === agent.id) &&
@@ -187,21 +203,27 @@ const AgentSelector = () => {
                 .map(agent => (
                   <div 
                     key={agent.id}
-                    className="bg-white border border-gray-200 rounded-md p-4 hover:shadow-sm transition-shadow"
+                    className="bg-white border border-gray-200 rounded-xl p-5 hover:shadow-sm transition-all"
                   >
                     <Link 
                       href={`/agent/${agent.id}`}
                       className="block"
                     >
                       <div className="flex justify-between items-start mb-2">
-                        <h5 className="font-medium text-base">{agent.name}</h5>
-                        <span className="bg-gray-50 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                        <h5 className="font-medium text-base text-gray-800">{agent.name}</h5>
+                        <span className={`
+                          ${agent.phase === 1 ? 'bg-blue-50 text-blue-700' : 
+                            agent.phase === 2 ? 'bg-green-50 text-green-700' : 
+                            agent.phase === 3 ? 'bg-amber-50 text-amber-700' : 
+                            'bg-purple-50 text-purple-700'} 
+                          text-xs px-2 py-0.5 rounded-full font-medium`}
+                        >
                           {agent.category}
                         </span>
                       </div>
-                      <p className="text-gray-500 text-sm mb-3 line-clamp-2">{agent.description}</p>
+                      <p className="text-gray-600 text-sm mb-3 line-clamp-2">{agent.description}</p>
                       <div className="flex justify-end">
-                        <span className="text-xs text-gray-400">Phase {agent.phase}</span>
+                        <span className="text-xs font-medium text-gray-500">Phase {agent.phase}</span>
                       </div>
                     </Link>
                   </div>
@@ -212,16 +234,16 @@ const AgentSelector = () => {
         )}
       </div>
 
-      {/* Consultation Button */}
+      {/* Consultation Button - Improved */}
       <div className="mt-12 mb-16 text-center">
         <Link 
           href="/consultation" 
-          className="inline-flex items-center px-5 py-2.5 rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white bg-accent hover:bg-accent/90 transition-all shadow-md font-semibold"
         >
-          <span className="material-icons text-sm mr-2">chat</span>
+          <span className="material-icons text-sm">chat</span>
           Start Agency Consultation
         </Link>
-        <p className="text-sm text-gray-500 mt-2">
+        <p className="text-sm text-gray-600 mt-3 max-w-md mx-auto">
           Chat with our agency assistant to learn about our services and subscription options
         </p>
       </div>

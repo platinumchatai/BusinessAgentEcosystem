@@ -110,10 +110,10 @@ const WorkflowVisualizer = () => {
   }, []);
 
   const phaseColors = [
-    { bg: 'bg-blue-50', indicator: 'phase1-indicator', text: 'text-blue-900', accent: 'bg-blue-700' },
-    { bg: 'bg-blue-50', indicator: 'phase2-indicator', text: 'text-blue-900', accent: 'bg-blue-700' },
-    { bg: 'bg-blue-50', indicator: 'phase3-indicator', text: 'text-blue-900', accent: 'bg-blue-700' },
-    { bg: 'bg-blue-50', indicator: 'phase4-indicator', text: 'text-blue-900', accent: 'bg-blue-700' },
+    { bg: 'bg-blue-50', indicator: 'phase1-indicator', text: 'text-blue-700', accent: 'bg-blue-600' },
+    { bg: 'bg-green-50', indicator: 'phase2-indicator', text: 'text-green-700', accent: 'bg-green-600' },
+    { bg: 'bg-amber-50', indicator: 'phase3-indicator', text: 'text-amber-700', accent: 'bg-amber-500' },
+    { bg: 'bg-purple-50', indicator: 'phase4-indicator', text: 'text-purple-700', accent: 'bg-purple-600' },
   ];
 
   const colors = phaseColors[activeWorkflow.phaseId - 1];
@@ -122,7 +122,7 @@ const WorkflowVisualizer = () => {
     <section id="workflows" className="mb-16">
       <div className="text-center mb-12">
         <motion.h2 
-          className="font-heading font-bold text-3xl mb-4"
+          className="font-heading font-bold text-3xl mb-4 text-gray-800"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -130,7 +130,7 @@ const WorkflowVisualizer = () => {
           Agent Workflows
         </motion.h2>
         <motion.p 
-          className="text-neutral-700 max-w-2xl mx-auto font-medium"
+          className="text-gray-600 max-w-2xl mx-auto font-medium"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
@@ -139,34 +139,44 @@ const WorkflowVisualizer = () => {
         </motion.p>
       </div>
       
-      {/* Workflow selector tabs */}
+      {/* Workflow selector tabs - Improved */}
       <div className="flex flex-wrap gap-3 mb-8 justify-center">
-        {workflows.map((workflow) => (
-          <button 
-            key={workflow.id}
-            className={`workflow-tab ${activeWorkflow.id === workflow.id ? 'active' : 'inactive'}`}
-            onClick={() => setActiveWorkflow(workflow)}
-          >
-            Phase {workflow.phaseId}: {workflow.name}
-          </button>
-        ))}
+        {workflows.map((workflow) => {
+          const isActive = activeWorkflow.id === workflow.id;
+          const phaseColor = phaseColors[workflow.phaseId - 1];
+          
+          return (
+            <button 
+              key={workflow.id}
+              className={`px-5 py-2.5 rounded-full transition-all shadow-sm font-medium text-sm
+                ${isActive 
+                  ? `${phaseColor.accent} text-white shadow-md`
+                  : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                }`
+              }
+              onClick={() => setActiveWorkflow(workflow)}
+            >
+              Phase {workflow.phaseId}: {workflow.name}
+            </button>
+          );
+        })}
       </div>
       
       {/* Workflow visualization */}
       <motion.div 
-        className="bg-white rounded-lg shadow-lg p-6 mb-8"
+        className="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         key={activeWorkflow.id}
       >
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="font-heading font-semibold text-xl">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+          <h3 className="font-heading font-semibold text-xl text-gray-800">
             Phase {activeWorkflow.phaseId}: {activeWorkflow.name} Workflow
           </h3>
           <Link 
             href={`/workflow/${activeWorkflow.phaseId}`}
-            className="btn-accent font-bold"
+            className="px-5 py-2 rounded-full text-white bg-accent hover:bg-accent/90 transition-all shadow-sm font-medium text-sm whitespace-nowrap"
           >
             Use this workflow
           </Link>
@@ -178,16 +188,16 @@ const WorkflowVisualizer = () => {
             {activeWorkflow.steps.map((step, index) => (
               <motion.div 
                 key={step.id}
-                className={`workflow-step flex-1 ${colors.bg} rounded-lg p-4 relative z-10`}
+                className={`workflow-step flex-1 ${colors.bg} rounded-xl p-5 relative z-10 border border-${colors.accent}/10`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.1 }}
               >
-                <div className={`${colors.accent} text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mb-3`}>
+                <div className={`${colors.accent} text-white w-8 h-8 rounded-full flex items-center justify-center font-bold mb-3 shadow-sm`}>
                   {step.stepNumber}
                 </div>
-                <h4 className="font-heading font-semibold text-lg mb-2">{step.title}</h4>
-                <p className="text-sm text-neutral-700 font-medium">{step.description}</p>
+                <h4 className="font-heading font-semibold text-lg mb-2 text-gray-800">{step.title}</h4>
+                <p className="text-sm text-gray-600 font-medium">{step.description}</p>
                 <div className={`mt-3 flex items-center ${colors.text} text-sm font-semibold`}>
                   <span className="material-icons text-sm mr-1">person</span>
                   <span>{step.agent}</span>
@@ -200,14 +210,14 @@ const WorkflowVisualizer = () => {
           </div>
           
           {/* Coordinator indicator */}
-          <div className="bg-blue-100 rounded-lg p-4 mt-4 border border-blue-200">
+          <div className="bg-blue-50 rounded-xl p-5 mt-4 border border-blue-100">
             <div className="flex items-center">
-              <span className="material-icons text-blue-700 mr-2">
+              <span className="material-icons text-blue-600 mr-2">
                 hub
               </span>
-              <h4 className="font-heading font-semibold text-blue-900">Workflow Coordinator</h4>
+              <h4 className="font-heading font-semibold text-blue-800">Workflow Coordinator</h4>
             </div>
-            <p className="text-sm mt-2 text-blue-900 font-medium">
+            <p className="text-sm mt-2 text-blue-700 font-medium">
               The {activeWorkflow.coordinator} oversees this entire workflow, ensuring all specialized agents work together coherently.
             </p>
           </div>

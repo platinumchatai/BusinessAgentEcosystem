@@ -219,34 +219,34 @@ const Subscribe = () => {
               onClick={() => setSelectedPlan(index)}
             >
               {plan.recommended && (
-                <div className="bg-blue-600 text-white text-center py-1 text-sm font-medium">
-                  Recommended
+                <div className="bg-accent text-white text-center py-2 text-sm font-medium">
+                  Recommended Plan
                 </div>
               )}
               
-              <div className="p-6">
-                <h3 className="text-xl font-bold">{plan.name}</h3>
-                <p className="text-gray-600 mt-2">{plan.description}</p>
+              <div className="p-6 md:p-8">
+                <h3 className="text-xl font-bold text-gray-800">{plan.name}</h3>
+                <p className="text-gray-600 mt-2 text-sm">{plan.description}</p>
                 
-                <div className="mt-4 flex items-baseline">
-                  <span className="text-3xl font-bold">{plan.price}</span>
-                  <span className="text-gray-500 ml-1">/{plan.frequency}</span>
+                <div className="mt-6 flex items-baseline">
+                  <span className="text-4xl font-bold text-gray-800">{plan.price}</span>
+                  <span className="text-gray-600 ml-1 text-lg">/{plan.frequency}</span>
                 </div>
                 
                 <Button 
                   className={cn(
-                    "w-full mt-6",
+                    "w-full mt-6 py-3 rounded-full font-medium shadow-sm",
                     selectedPlan === index 
-                      ? "bg-blue-600 hover:bg-blue-700" 
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      ? "bg-accent hover:bg-accent/90 text-white" 
+                      : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
                   )}
                   onClick={() => setSelectedPlan(index)}
                 >
                   {selectedPlan === index ? 'Selected' : plan.buttonText}
                 </Button>
                 
-                <div className="mt-6">
-                  <h4 className="font-medium mb-2">Features:</h4>
+                <div className="mt-8">
+                  <h4 className="font-medium mb-3 text-gray-800">Features:</h4>
                   <ul className="space-y-2">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
