@@ -67,6 +67,15 @@ const AgentSelector = () => {
   // Category filters for top-level agents
   const categoryFilters = ['All Agents', 'Marketing', 'Finance', 'Product', 'Strategy'];
   
+  // Category color mapping
+  const categoryColors = {
+    'Marketing': { bg: 'bg-amber-100', text: 'text-amber-700' },
+    'Finance': { bg: 'bg-green-100', text: 'text-green-700' },
+    'Product': { bg: 'bg-purple-100', text: 'text-purple-700' },
+    'Strategy': { bg: 'bg-blue-100', text: 'text-blue-700' },
+    'All Agents': { bg: 'bg-gray-100', text: 'text-gray-700' }
+  };
+  
   // Exactly 4 featured agents - prioritize coordinators, but fill with others if needed
   const coordinatorAgents = agents.filter(agent => agent.coordinator)
     .sort((a, b) => a.phase - b.phase); // Sort by phase
@@ -148,10 +157,8 @@ const AgentSelector = () => {
                 <div className="flex justify-between items-start mb-3">
                   <h5 className="font-medium text-lg text-gray-800">{agent.name}</h5>
                   <span className={`
-                    ${agent.phase === 1 ? 'bg-blue-100 text-blue-700' : 
-                      agent.phase === 2 ? 'bg-green-100 text-green-700' : 
-                      agent.phase === 3 ? 'bg-amber-100 text-amber-700' : 
-                      'bg-purple-100 text-purple-700'} 
+                    ${categoryColors[agent.category]?.bg || 'bg-gray-100'} 
+                    ${categoryColors[agent.category]?.text || 'text-gray-700'}
                     text-xs px-2.5 py-1 rounded-full font-medium`}
                   >
                     {agent.category}
@@ -211,10 +218,8 @@ const AgentSelector = () => {
                       <div className="flex justify-between items-start mb-2">
                         <h5 className="font-medium text-base text-gray-800">{agent.name}</h5>
                         <span className={`
-                          ${agent.phase === 1 ? 'bg-blue-50 text-blue-700' : 
-                            agent.phase === 2 ? 'bg-green-50 text-green-700' : 
-                            agent.phase === 3 ? 'bg-amber-50 text-amber-700' : 
-                            'bg-purple-50 text-purple-700'} 
+                          ${categoryColors[agent.category]?.bg || 'bg-gray-100'} 
+                          ${categoryColors[agent.category]?.text || 'text-gray-700'} 
                           text-xs px-2 py-0.5 rounded-full font-medium`}
                         >
                           {agent.category}
