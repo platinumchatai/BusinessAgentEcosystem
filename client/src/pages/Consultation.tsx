@@ -198,13 +198,13 @@ const Consultation = () => {
                   )}
                 >
                   <div className={cn(
-                    "rounded-lg p-3",
+                    "rounded-lg p-3 shadow-sm",
                     message.role === "user" 
-                      ? "bg-blue-600 text-white rounded-br-none" 
-                      : "bg-white border border-gray-200 text-gray-700 rounded-bl-none"
+                      ? "bg-primary text-white font-medium rounded-br-none" 
+                      : "bg-gray-100 border border-gray-200 text-gray-800 font-medium rounded-bl-none"
                   )}>
                     {message.role === "assistant" ? (
-                      <div dangerouslySetInnerHTML={{ __html: message.content }} />
+                      <div dangerouslySetInnerHTML={{ __html: message.content }} className="prose prose-sm max-w-none" />
                     ) : (
                       message.content
                     )}
@@ -226,13 +226,9 @@ const Consultation = () => {
               ))}
               
               {isLoading && (
-                <div className="flex justify-start mb-4">
-                  <div className="bg-gray-200 rounded-full h-8 w-8 flex items-center justify-center p-1">
-                    <div className="animate-pulse flex space-x-1">
-                      <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                      <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                      <div className="w-1 h-1 bg-gray-400 rounded-full"></div>
-                    </div>
+                <div className="flex items-center justify-center my-4">
+                  <div className="bg-gray-100 shadow-sm rounded-full px-4 py-1">
+                    <span className="text-xs text-gray-600 font-medium">Agency Assistant is thinking...</span>
                   </div>
                 </div>
               )}

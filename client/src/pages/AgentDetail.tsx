@@ -179,12 +179,12 @@ const AgentDetail = () => {
                         className="border rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
                       >
                         <div className="flex justify-between items-start mb-2">
-                          <h3 className="font-semibold">{related.name}</h3>
-                          <span className={`px-2 py-0.5 text-xs rounded-full ${relatedColors.light} ${relatedColors.text}`}>
+                          <h3 className="font-semibold text-gray-800">{related.name}</h3>
+                          <span className={`px-2 py-0.5 text-xs rounded-full ${relatedColors.light} ${relatedColors.text} font-medium`}>
                             Phase {related.phase}
                           </span>
                         </div>
-                        <p className="text-sm text-neutral-500">{related.description.substring(0, 100)}...</p>
+                        <p className="text-sm text-gray-600">{related.description.substring(0, 100)}...</p>
                       </div>
                     </Link>
                   );
@@ -212,7 +212,7 @@ const AgentDetail = () => {
                     <span className="material-icons text-white text-sm">smart_toy</span>
                   </div>
                   <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                    <p className="text-sm">
+                    <p className="text-sm text-gray-800 font-medium">
                       Hello! I'm your {agent.name}. How can I assist you with {agent.expertise.join(', ')} today?
                     </p>
                   </div>
@@ -222,7 +222,7 @@ const AgentDetail = () => {
                   <>
                     <div className="flex mb-4 justify-end">
                       <div className="bg-primary/10 rounded-lg p-3 max-w-[80%]">
-                        <p className="text-sm">{message}</p>
+                        <p className="text-sm text-primary-dark font-medium">{message}</p>
                       </div>
                       <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center ml-2 flex-shrink-0">
                         <span className="material-icons text-white text-sm">person</span>
@@ -234,15 +234,17 @@ const AgentDetail = () => {
                         <span className="material-icons text-white text-sm">smart_toy</span>
                       </div>
                       <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                        <p className="text-sm">{agentResponse}</p>
+                        <p className="text-sm text-gray-800 font-medium">{agentResponse}</p>
                       </div>
                     </div>
                   </>
                 )}
                 
                 {showConnecting && (
-                  <div className="text-center text-xs text-neutral-400 my-4">
-                    <span>{agent.name} is thinking...</span>
+                  <div className="flex items-center justify-center my-4">
+                    <div className="bg-gray-100 rounded-full px-4 py-1">
+                      <span className="text-xs text-gray-600 font-medium">{agent.name} is thinking...</span>
+                    </div>
                   </div>
                 )}
               </div>
