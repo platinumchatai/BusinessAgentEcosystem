@@ -10,16 +10,10 @@ const WorkflowDetail = () => {
   const { id } = useParams();
   const workflowId = parseInt(id || "1");
   const [userInput, setUserInput] = useState("");
-  const [messages, setMessages] = useState<{role: string, content: string, from?: string}[]>([
-    {
-      role: "assistant",
-      content: "Welcome to the workflow chat! I'll help coordinate this entire process. What would you like to know or discuss about your business needs?",
-      from: "Coordinator"
-    }
-  ]);
+  const [messages, setMessages] = useState<{role: string, content: string, from?: string}[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   
-  // Always scroll to top when this page loads
+  // Always scroll to top when this page loads and initialize welcome message
   useEffect(() => {
     // Force scroll to top with immediate effect
     window.scrollTo({
@@ -33,7 +27,17 @@ const WorkflowDetail = () => {
       document.documentElement.scrollTop = 0;
       document.body.scrollTop = 0; // For Safari
     }, 0);
-  }, [id]);
+    
+    // Find the workflow data
+    const currentWorkflow = workflows.find(wf => wf.id === workflowId) || workflows[0];
+    
+    // Initialize welcome message with workflow name
+    setMessages([{
+      role: "assistant",
+      content: `Welcome to the ${currentWorkflow.name} chat! I'll help coordinate this entire process. What would you like to know or discuss about your business needs?`,
+      from: currentWorkflow.coordinator
+    }]);
+  }, [id, workflowId]);
   
   // Find the workflow data
   const workflow = workflows.find(wf => wf.id === workflowId) || workflows[0];
@@ -75,11 +79,11 @@ const WorkflowDetail = () => {
     
     // Simulate response time
     setTimeout(() => {
-      // Add mock response from coordinator
+      // Add mock response from coordinator using workflow name
       setMessages(prev => [...prev, {
         role: "assistant",
-        content: `This is a simulated response. In the actual application, this would be a response from our AI agents working together to address your query: "${userInput}"`,
-        from: "Coordinator"
+        content: `This is a simulated response for the ${workflow.name}. In the actual application, this would be a response from our AI agents working together to address your query: "${userInput}"`,
+        from: workflow.coordinator
       }]);
       setIsLoading(false);
     }, 1500);
@@ -116,8 +120,8 @@ const WorkflowDetail = () => {
                 </span>
               </div>
               
-              <h1 className="text-3xl font-bold mb-4">{workflow.name}</h1>
-              <p className="text-neutral-600 max-w-3xl">{workflow.description}</p>
+              <h1 className="text-3xl font-bold mb-4 text-white">{workflow.name}</h1>
+              <p className="text-white max-w-3xl font-light">{workflow.description}</p>
             </div>
           </div>
         </div>
@@ -176,7 +180,13 @@ const WorkflowDetail = () => {
             >
               <div className="flex justify-between items-start mb-2">
                 <h5 className="font-medium text-base">{agent.name}</h5>
-                <span className="bg-gray-100 text-gray-600 text-xs px-2 py-0.5 rounded-full">
+                <span className={`text-xs px-2 py-0.5 rounded-full ${
+                  agent.category === 'Marketing' ? 'bg-amber-100 text-amber-700' :
+                  agent.category === 'Finance' ? 'bg-green-100 text-green-700' :
+                  agent.category === 'Product' ? 'bg-purple-100 text-purple-700' :
+                  agent.category === 'Strategy' ? 'bg-blue-100 text-blue-700' :
+                  'bg-gray-100 text-gray-600'
+                }`}>
                   {agent.category}
                 </span>
               </div>
