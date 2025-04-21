@@ -198,8 +198,8 @@ const Subscribe = () => {
     <MainLayout>
       <div className="container mx-auto px-4 py-12">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h1 className="text-3xl font-bold mb-4">Subscribe to Business Agency AI</h1>
-          <p className="text-gray-700 font-medium">
+          <h1 className="text-3xl font-bold mb-4 text-gray-900">Subscribe to Business Agency AI</h1>
+          <p className="text-gray-800 font-medium text-lg">
             Get access to our advanced AI agent ecosystem and transform how you build and grow your business
           </p>
         </div>
@@ -277,10 +277,10 @@ const Subscribe = () => {
         {/* Subscription Form with Tabs */}
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
           <div className="p-6 bg-gray-50 border-b border-gray-200">
-            <h2 className="text-xl font-bold">
+            <h2 className="text-2xl font-bold text-gray-900">
               Complete Your {subscriptionPlans[selectedPlan].name} Subscription
             </h2>
-            <p className="text-gray-700 font-medium mt-1">
+            <p className="text-gray-800 font-medium mt-2">
               {subscriptionPlans[selectedPlan].price}/{subscriptionPlans[selectedPlan].frequency} - {subscriptionPlans[selectedPlan].description}
             </p>
           </div>
