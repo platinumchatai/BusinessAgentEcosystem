@@ -98,25 +98,25 @@ const AgentDetail = () => {
             <div className="flex items-start justify-between flex-wrap gap-4">
               <div>
                 <div className="mb-4 flex items-center">
-                  <span className={`px-3 py-1 rounded-full text-sm ${colors.light} ${colors.text} mr-3`}>
+                  <span className={`px-3 py-1 rounded-full text-sm font-medium ${colors.light} ${colors.text} mr-3`}>
                     {agent.coordinator ? 'Coordinator' : agent.category}
                   </span>
-                  <span className="text-sm text-neutral-500">
+                  <span className="text-sm text-white font-medium">
                     Phase {agent.phase}: {phase?.name}
                   </span>
                 </div>
                 
-                <h1 className="text-3xl font-bold mb-4">{agent.name}</h1>
-                <p className="text-neutral-600 max-w-3xl">{agent.description}</p>
+                <h1 className="text-3xl font-bold mb-4 text-white">{agent.name}</h1>
+                <p className="text-white font-light max-w-3xl">{agent.description}</p>
               </div>
               
-              <div className={`${colors.light} p-4 rounded-lg self-start`}>
-                <h3 className="font-medium mb-2">Expertise Areas</h3>
+              <div className={`bg-white/20 p-4 rounded-lg self-start shadow-sm`}>
+                <h3 className="font-medium mb-2 text-white">Expertise Areas</h3>
                 <ul className="space-y-1">
                   {agent.expertise.map((item, index) => (
-                    <li key={index} className="flex items-center">
+                    <li key={index} className="flex items-center text-white">
                       <span className="material-icons text-sm mr-2">check_circle</span>
-                      <span>{item}</span>
+                      <span className="font-light">{item}</span>
                     </li>
                   ))}
                 </ul>
