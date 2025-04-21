@@ -134,7 +134,9 @@ const AgentDetail = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
           >
-            <h2 className="text-2xl font-bold mb-6">About {agent.name}</h2>
+            <div className="border-b pb-3 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">About {agent.name}</h2>
+            </div>
             <div className="prose max-w-none">
               <p>
                 The {agent.name} is a specialized AI assistant focused on helping businesses
@@ -165,7 +167,9 @@ const AgentDetail = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.2 }}
             >
-              <h2 className="text-2xl font-bold mb-6">Related Agents</h2>
+              <div className="border-b pb-3 mb-6">
+                <h2 className="text-2xl font-bold text-gray-800">Related Agents</h2>
+              </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {agent.relatedAgents.map(relatedId => {
                   const related = agents.find(a => a.id === relatedId);
