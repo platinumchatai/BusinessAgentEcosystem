@@ -113,12 +113,16 @@ const AgentSelector = () => {
         </p>
       </div>
 
-      {/* Top-level category filters - simplified */}
+      {/* Top-level category filters - with darker backgrounds for better readability */}
       <div className="mb-6 flex flex-wrap gap-2 justify-center max-w-3xl mx-auto">
         {categoryFilters.map(category => (
           <button 
             key={category}
-            className={`px-3 py-1.5 border border-gray-200 rounded-md text-sm transition-colors ${filter === category ? 'bg-gray-100 font-medium' : 'bg-white hover:bg-gray-50'}`}
+            className={`px-5 py-2 rounded-full text-sm transition-colors ${
+              filter === category 
+                ? 'bg-gray-800 text-white font-medium shadow-sm' 
+                : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+            }`}
             onClick={() => setFilter(category)}
           >
             {category}
@@ -154,15 +158,10 @@ const AgentSelector = () => {
                   </span>
                 </div>
                 <p className="text-gray-600 text-sm mb-3 line-clamp-2">{agent.description}</p>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-start items-center">
                   <span className="text-xs font-medium text-gray-500">
                     Phase {agent.phase}
                   </span>
-                  {agent.coordinator && (
-                    <span className="text-xs bg-secondary/10 px-2.5 py-1 rounded-full text-secondary font-medium">
-                      Coordinator
-                    </span>
-                  )}
                 </div>
               </Link>
             </div>

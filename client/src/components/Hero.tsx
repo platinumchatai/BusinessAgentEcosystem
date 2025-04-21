@@ -29,9 +29,7 @@ const Hero = () => {
               <h1 className="font-heading font-bold text-4xl md:text-6xl mb-6 leading-tight">
                 Your Business Growth 
                 <br />
-                Powered by <span className="accent-text">Platinum</span>
-                <br />
-                Chat AI Agents
+                Powered by <span className="accent-text">Platinum Chat AI Agents</span>
               </h1>
               
               {/* Decorative line */}
@@ -121,7 +119,7 @@ const Hero = () => {
         
         {/* Business Benefits Section */}
         <motion.div 
-          className="mt-20 bg-secondary/90 p-8 rounded-xl flex flex-wrap justify-around items-center gap-8"
+          className="mt-20 bg-blue-800 p-8 rounded-xl flex flex-wrap justify-around items-center gap-8 shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
