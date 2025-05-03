@@ -48,10 +48,10 @@ const Header = () => {
             <Link href="/consultation" className={`transition-colors ${isActivePath('/consultation') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Consultation
             </Link>
-            <Link href="/workflow" className={`transition-colors ${isActivePath('/workflow') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/#workflows" className={`transition-colors ${isActivePath('/#workflows') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Workflows
             </Link>
-            <Link href="/agents" className={`transition-colors ${isActivePath('/agents') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/#agents" className={`transition-colors ${isActivePath('/#agents') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Agents
             </Link>
             <Link href="/subscribe" className={`transition-colors ${isActivePath('/subscribe') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
@@ -85,10 +85,10 @@ const Header = () => {
               <Link href="/consultation" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
                 Consultation
               </Link>
-              <Link href="/workflow" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/#workflows" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
                 Workflows
               </Link>
-              <Link href="/agents" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/#agents" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
                 Agents
               </Link>
               <Link href="/subscribe" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
