@@ -1,11 +1,15 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Phone, Mail, Menu, X } from "lucide-react";
+import { Mail, Menu, X } from "lucide-react";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
+
+  const isActivePath = (path: string) => {
+    return location === path;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,38 +31,35 @@ const Header = () => {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between">
           <Link href="/">
-            <div className="font-heading text-lg md:text-xl text-secondary cursor-pointer flex items-center">
+            <div className="font-heading text-lg md:text-xl text-secondary cursor-pointer flex items-center font-normal">
               <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
                 <path d="M2 17L12 22L22 17" fill="currentColor"/>
                 <path d="M2 12L12 17L22 12" fill="currentColor"/>
               </svg>
-              PlatinumAI
+              Platinum Chat AI
             </div>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className="text-gray-700 hover:text-accent transition-colors">
+            <Link href="/" className={`transition-colors ${isActivePath('/') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Home
             </Link>
-            <Link href="/consultation" className="text-gray-700 hover:text-accent transition-colors">
+            <Link href="/consultation" className={`transition-colors ${isActivePath('/consultation') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Consultation
             </Link>
-            <Link href="/workflow" className="text-gray-700 hover:text-accent transition-colors">
+            <Link href="/workflow" className={`transition-colors ${isActivePath('/workflow') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Workflows
             </Link>
-            <Link href="/agents" className="text-gray-700 hover:text-accent transition-colors">
+            <Link href="/agents" className={`transition-colors ${isActivePath('/agents') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Agents
             </Link>
-            <Link href="/subscribe" className="text-gray-700 hover:text-accent transition-colors">
+            <Link href="/subscribe" className={`transition-colors ${isActivePath('/subscribe') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
               Subscribe
             </Link>
           </nav>
 
           <div className="hidden md:flex items-center gap-4">
-            <a href="tel:+1234567890" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-gray-200 transition-colors">
-              <Phone className="w-4 h-4" />
-            </a>
             <a href="mailto:contact@platinumai.com" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-gray-200 transition-colors">
               <Mail className="w-4 h-4" />
             </a>
