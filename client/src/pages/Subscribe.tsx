@@ -26,67 +26,67 @@ const MockReCAPTCHA = ({ onChange }: { onChange: (token: string | null) => void 
 // Define subscription tiers
 const subscriptionPlans = [
   {
-    id: 'basic',
-    name: 'Basic Plan',
-    description: 'Essential AI assistance for small businesses and startups',
-    price: '$29',
+    id: 'starter',
+    name: 'Starter Tier',
+    description: 'Essential Platinum Chat AI experience for beginners',
+    price: '$49',
     frequency: 'month',
     features: [
-      'Access to individual AI agents',
-      'Basic customer support',
-      'Up to 100 agent interactions per month',
-      'Export generated content',
-      'Web-based access only'
+      'Access to 3 AI Agents of your choice',
+      'Unlimited conversations with your selected agents',
+      'Basic document formatting by Editor-in-Chief',
+      'Export documents in HTML format',
+      'Email support',
+      'Limited to 100 queries per month'
     ],
     limitations: [
-      'No workflow access',
-      'No API access',
-      'Limited storage (1GB)'
+      'No workflow automations',
+      'Limited export formats',
+      'Basic support only'
     ],
     recommended: false,
     buttonText: 'Get Started'
   },
   {
-    id: 'professional',
-    name: 'Professional Plan',
-    description: 'Complete AI ecosystem for established businesses',
+    id: 'growth',
+    name: 'Growth Tier',
+    description: 'Expanded Platinum Chat AI capabilities for growing businesses',
     price: '$79',
     frequency: 'month',
     features: [
-      'Access to all AI agents',
-      'Full workflow access',
-      'Unlimited agent interactions',
-      'Priority customer support',
-      'Export in multiple formats',
-      'Web and mobile access',
-      '5GB storage for interactions'
+      'Access to 5 AI Agents of your choice',
+      '1 Workflow automation of your choice',
+      'Unlimited conversations with your selected agents',
+      'Advanced document formatting by Editor-in-Chief',
+      'Export in multiple formats (HTML, PDF, DOCX)',
+      'Priority email support',
+      'Up to 250 queries per month'
     ],
     limitations: [
-      'No custom agent creation',
-      'Standard API limits'
+      'Limited workflow access',
+      'Limited number of agents'
     ],
     recommended: true,
     buttonText: 'Subscribe Now'
   },
   {
-    id: 'enterprise',
-    name: 'Enterprise Plan',
-    description: 'Custom AI solutions for large organizations',
-    price: '$199',
+    id: 'accelerator',
+    name: 'Accelerator Tier',
+    description: 'Full Platinum Chat AI ecosystem for maximum growth',
+    price: '$129',
     frequency: 'month',
     features: [
-      'Custom AI agent creation',
-      'Dedicated account manager',
-      'Custom workflow development',
-      'Unlimited storage',
-      'Advanced analytics dashboard',
-      'Full API access',
-      'White-label option',
-      'Enhanced security features'
+      'Access to all 16 AI Agents',
+      'All 4 Workflow automations',
+      'Unlimited conversations with all agents',
+      'Premium document formatting by Editor-in-Chief',
+      'Export in all formats',
+      'Priority email & chat support',
+      'Unlimited queries per month'
     ],
     limitations: [],
     recommended: false,
-    buttonText: 'Contact Sales'
+    buttonText: 'Scale Now'
   }
 ];
 

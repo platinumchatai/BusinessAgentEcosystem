@@ -29,7 +29,7 @@ const Hero = () => {
               <h1 className="font-heading font-bold text-4xl md:text-6xl mb-6 leading-tight">
                 Your Business Growth 
                 <br />
-                Powered by <span className="accent-text">Platinum Chat AI Agents</span>
+                Powered by <span className="accent-text">Platinum Chat AI</span>
               </h1>
               
               {/* Decorative line */}
