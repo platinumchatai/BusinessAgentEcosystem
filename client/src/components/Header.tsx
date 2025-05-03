@@ -22,8 +22,23 @@ const Header = () => {
     };
   }, []);
 
-  const handleNavClick = () => {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     setMobileMenuOpen(false);
+    const href = e.currentTarget.getAttribute('href');
+    if (href?.startsWith('/#')) {
+      e.preventDefault();
+      const targetId = href.substring(2);
+      const element = document.getElementById(targetId);
+      if (element) {
+        const headerOffset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }
   };
 
   return (
