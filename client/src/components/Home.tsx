@@ -8,8 +8,8 @@ useEffect(() => {
         const workflowsSection = document.getElementById("workflows");
         if (workflowsSection) {
           const headerOffset = 80;
-          const elementPosition = workflowsSection.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          const elementPosition = workflowsSection.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - headerOffset;
           window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
@@ -21,8 +21,8 @@ useEffect(() => {
         const element = document.getElementById(hash);
         if (element) {
           const headerOffset = 80;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - headerOffset;
           window.scrollTo({
             top: offsetPosition,
             behavior: 'smooth'
