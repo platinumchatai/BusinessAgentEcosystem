@@ -279,7 +279,7 @@ const Consultation = () => {
               <div className="pt-3 border-t border-gray-100">
                 <h4 className="text-sm font-medium text-gray-700">Agent Explorer</h4>
                 <p className="text-sm text-gray-500 mt-1">Browse all available AI business agents</p>
-                <Link href="/#agents">
+                <Link href="/#agents-section">
                   <Button variant="outline" className="w-full mt-2">
                     Explore Agents
                   </Button>
@@ -289,7 +289,7 @@ const Consultation = () => {
               <div className="pt-3 border-t border-gray-100">
                 <h4 className="text-sm font-medium text-gray-700">Workflows</h4>
                 <p className="text-sm text-gray-500 mt-1">See how our agents work together</p>
-                <Link href="/">
+                <Link href="/#workflows">
                   <Button variant="outline" className="w-full mt-2">
                     Browse Workflows
                   </Button>
