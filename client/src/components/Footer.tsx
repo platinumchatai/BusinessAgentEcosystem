@@ -4,27 +4,27 @@ const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-heading font-bold text-xl mb-4">BusinessAgency.ai</h3>
+            <h3 className="font-heading font-bold text-xl mb-4">Platinum Chat AI Business Builders</h3>
             <p className="text-white/80 text-sm">Your AI-powered business growth partner from ideation to scaling beyond $10M.</p>
           </div>
           
           <div>
             <h4 className="font-heading font-semibold mb-4">Agent Categories</h4>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><a href="#" className="hover:text-white">Strategy Agents</a></li>
-              <li><a href="#" className="hover:text-white">Marketing Agents</a></li>
-              <li><a href="#" className="hover:text-white">Finance Agents</a></li>
-              <li><a href="#" className="hover:text-white">Product Agents</a></li>
+              <li><a href="/#agents" className="hover:text-white">Strategy Agents</a></li>
+              <li><a href="/#agents" className="hover:text-white">Marketing Agents</a></li>
+              <li><a href="/#agents" className="hover:text-white">Finance Agents</a></li>
+              <li><a href="/#agents" className="hover:text-white">Product Agents</a></li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-heading font-semibold mb-4">Business Phases</h4>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><a href="#" className="hover:text-white">Ideation & Planning</a></li>
-              <li><a href="#" className="hover:text-white">Launch & Establish</a></li>
-              <li><a href="#" className="hover:text-white">Growth & Optimization</a></li>
-              <li><a href="#" className="hover:text-white">Scaling Beyond $10M</a></li>
+              <li><a href="/#workflows" className="hover:text-white">Ideation & Planning</a></li>
+              <li><a href="/#workflows" className="hover:text-white">Launch & Establish</a></li>
+              <li><a href="/#workflows" className="hover:text-white">Growth & Optimization</a></li>
+              <li><a href="/#workflows" className="hover:text-white">Scaling Beyond $10M</a></li>
             </ul>
           </div>
           
@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm text-white/60">
-          <p>&copy; {new Date().getFullYear()} BusinessAgency.ai. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Platinum Chat AI Business Builders. All rights reserved.</p>
         </div>
       </div>
     </footer>

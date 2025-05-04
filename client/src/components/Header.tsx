@@ -47,7 +47,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link href="/">
             <div className="font-heading text-lg md:text-xl text-white cursor-pointer flex items-center font-normal">
-              Platinum Chat AI Business Builder
+              Platinum Chat AI Business Builders
             </div>
           </Link>
 
