@@ -5,6 +5,7 @@ import { workflows } from "@/data/workflows";
 import { phases, agents, AgentType } from "@/data/agents";
 import { Users, Send, User, Bot, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
+import BackNavigation from "@/components/BackNavigation";
 
 const WorkflowDetail = () => {
   const { id } = useParams();
@@ -92,18 +93,15 @@ const WorkflowDetail = () => {
   return (
     <div id="top" className="container mx-auto px-4 py-12">
       <div className="mb-8">
-        <button 
+        <BackNavigation 
+          text="Back to all workflows"
           onClick={() => {
             // Navigate to home page
             window.location.href = "/";
             // Set a flag in sessionStorage to indicate we should scroll to workflows
             sessionStorage.setItem("scrollToWorkflows", "true");
           }}
-          className="inline-flex items-center text-[#41a4ff] hover:text-[#3190e8] font-medium text-sm mb-4"
-        >
-          <ArrowLeft size={16} className="mr-1.5" />
-          Back to all workflows
-        </button>
+        />
         
         <div className={`${colors.bg} rounded-lg overflow-hidden`}>
           <div className="p-8">
