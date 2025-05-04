@@ -1,5 +1,6 @@
 import { ReactNode, useEffect } from 'react';
 import { useLocation } from 'wouter';
+import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingActionButton from '@/components/FloatingActionButton';
 
@@ -30,7 +31,7 @@ const ConsultationLayout = ({ children }: ConsultationLayoutProps) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* No header to remove logo as requested */}
+      <Header />
       <main id="top" className="flex-grow">
         {children}
       </main>
