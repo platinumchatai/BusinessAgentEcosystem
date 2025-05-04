@@ -3,8 +3,9 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { workflows } from "@/data/workflows";
 import { phases, agents, AgentType } from "@/data/agents";
-import { ArrowLeft, Users, Send, User, Bot } from "lucide-react";
+import { Users, Send, User, Bot } from "lucide-react";
 import { cn } from "@/lib/utils";
+import BackNavigation from "@/components/BackNavigation";
 
 const WorkflowDetail = () => {
   const { id } = useParams();
