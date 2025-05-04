@@ -47,12 +47,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           <Link href="/">
             <div className="font-heading text-lg md:text-xl text-white cursor-pointer flex items-center font-normal">
-              <svg className="w-6 h-6 mr-2 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor"/>
-                <path d="M2 17L12 22L22 17" fill="currentColor"/>
-                <path d="M2 12L12 17L22 12" fill="currentColor"/>
-              </svg>
-              Platinum Chat AI
+              Platinum Chat AI Business Builder
             </div>
           </Link>
 
