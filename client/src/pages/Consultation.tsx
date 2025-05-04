@@ -4,6 +4,7 @@ import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
 import { SendHorizontal, Bot, User, ArrowLeft } from 'lucide-react';
+import BackNavigation from '@/components/BackNavigation';
 import { cn } from '@/lib/utils';
 
 type Message = {
@@ -172,16 +173,13 @@ const Consultation = () => {
   return (
     <MainLayout>
       <div className="container mx-auto px-4 py-12 max-w-5xl">
-        <button 
+        <BackNavigation 
+          text="Back to home"
           onClick={() => {
             // Navigate to home page
             window.location.href = "/";
           }}
-          className="inline-flex items-center text-[#41a4ff] hover:text-[#3190e8] font-medium text-sm mb-4"
-        >
-          <ArrowLeft size={16} className="mr-1.5" />
-          Back to all workflows
-        </button>
+        />
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Chat panel */}
           <div className="flex-1 bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
