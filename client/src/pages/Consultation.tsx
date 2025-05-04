@@ -283,7 +283,11 @@ const Consultation = () => {
                   variant="outline" 
                   className="w-full mt-2"
                   onClick={() => {
-                    window.location.href = "/#agents-section";
+                    // Navigate to home page
+                    window.location.href = "/";
+                    
+                    // Store in session storage that we want to scroll to agents
+                    sessionStorage.setItem("scrollToAgents", "true");
                   }}
                 >
                   Explore Agents
@@ -297,7 +301,11 @@ const Consultation = () => {
                   variant="outline" 
                   className="w-full mt-2"
                   onClick={() => {
-                    window.location.href = "/#workflows";
+                    // Navigate to home page
+                    window.location.href = "/";
+                    
+                    // Store in session storage that we want to scroll to workflows
+                    sessionStorage.setItem("scrollToWorkflows", "true");
                   }}
                 >
                   Browse Workflows
