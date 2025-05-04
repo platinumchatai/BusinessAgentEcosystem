@@ -279,21 +279,29 @@ const Consultation = () => {
               <div className="pt-3 border-t border-gray-100">
                 <h4 className="text-sm font-medium text-gray-700">Agent Explorer</h4>
                 <p className="text-sm text-gray-500 mt-1">Browse all available AI business agents</p>
-                <Link href="/#agents-section">
-                  <Button variant="outline" className="w-full mt-2">
-                    Explore Agents
-                  </Button>
-                </Link>
+                <Button 
+                  variant="outline" 
+                  className="w-full mt-2"
+                  onClick={() => {
+                    window.location.href = "/#agents-section";
+                  }}
+                >
+                  Explore Agents
+                </Button>
               </div>
               
               <div className="pt-3 border-t border-gray-100">
                 <h4 className="text-sm font-medium text-gray-700">Workflows</h4>
                 <p className="text-sm text-gray-500 mt-1">See how our agents work together</p>
-                <Link href="/#workflows">
-                  <Button variant="outline" className="w-full mt-2">
-                    Browse Workflows
-                  </Button>
-                </Link>
+                <Button 
+                  variant="outline" 
+                  className="w-full mt-2"
+                  onClick={() => {
+                    window.location.href = "/#workflows";
+                  }}
+                >
+                  Browse Workflows
+                </Button>
               </div>
               
               <div className="pt-4 mt-3 border-t border-gray-100 bg-blue-50 p-4 -mx-4 rounded-md">
