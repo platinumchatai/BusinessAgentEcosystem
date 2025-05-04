@@ -1,11 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'wouter';
-import ConsultationLayout from '@/layouts/ConsultationLayout';
+import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
-import { SendHorizontal, Bot, User } from 'lucide-react';
+import { SendHorizontal, Bot, User, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import BackNavigation from '@/components/BackNavigation';
 
 type Message = {
   id: string;
@@ -171,15 +170,18 @@ const Consultation = () => {
   };
   
   return (
-    <ConsultationLayout>
+    <MainLayout>
       <div className="container mx-auto px-4 py-12 max-w-5xl">
-        <BackNavigation 
-          text="Back to all workflows"
+        <button 
           onClick={() => {
             // Navigate to home page
             window.location.href = "/";
           }}
-        />
+          className="inline-flex items-center text-[#41a4ff] hover:text-[#3190e8] font-medium text-sm mb-4"
+        >
+          <ArrowLeft size={16} className="mr-1.5" />
+          Back to all workflows
+        </button>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Chat panel */}
           <div className="flex-1 bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
@@ -333,7 +335,7 @@ const Consultation = () => {
           </div>
         </div>
       </div>
-    </ConsultationLayout>
+    </MainLayout>
   );
 };
 

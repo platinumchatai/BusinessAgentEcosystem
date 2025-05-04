@@ -57,19 +57,19 @@ const Header = () => {
           </Link>
 
           <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className={`transition-colors ${isActivePath('/') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/" className={`transition-colors ${isActivePath('/') ? 'text-[#41a4ff] font-medium' : 'text-gray-700 hover:text-[#41a4ff]'}`}>
               Home
             </Link>
-            <Link href="/consultation" className={`transition-colors ${isActivePath('/consultation') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/consultation" className={`transition-colors ${isActivePath('/consultation') ? 'text-[#41a4ff] font-medium' : 'text-gray-700 hover:text-[#41a4ff]'}`}>
               Consultation
             </Link>
-            <Link href="/#workflows" className={`transition-colors ${isActivePath('/#workflows') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/#workflows" className={`transition-colors ${isActivePath('/#workflows') ? 'text-[#41a4ff] font-medium' : 'text-gray-700 hover:text-[#41a4ff]'}`}>
               Workflows
             </Link>
-            <Link href="/#agents" className={`transition-colors ${isActivePath('/#agents') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/#agents" className={`transition-colors ${isActivePath('/#agents') ? 'text-[#41a4ff] font-medium' : 'text-gray-700 hover:text-[#41a4ff]'}`}>
               Agents
             </Link>
-            <Link href="/subscribe" className={`transition-colors ${isActivePath('/subscribe') ? 'text-accent font-medium' : 'text-gray-700 hover:text-accent'}`}>
+            <Link href="/subscribe" className={`transition-colors ${isActivePath('/subscribe') ? 'text-[#41a4ff] font-medium' : 'text-gray-700 hover:text-[#41a4ff]'}`}>
               Subscribe
             </Link>
           </nav>
@@ -78,7 +78,7 @@ const Header = () => {
             <a href="mailto:contact@platinumai.com" className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-700 hover:bg-gray-200 transition-colors">
               <Mail className="w-4 h-4" />
             </a>
-            <Link href="/subscribe" className="bg-accent text-white px-4 py-2 rounded-full hover:bg-accent/90 transition-colors">
+            <Link href="/subscribe" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors">
               Get Started
             </Link>
           </div>
@@ -94,22 +94,22 @@ const Header = () => {
         {mobileMenuOpen && (
           <div className="md:hidden py-4">
             <nav className="flex flex-col gap-4">
-              <Link href="/" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/" className="text-gray-700 hover:text-[#41a4ff] transition-colors" onClick={handleNavClick}>
                 Home
               </Link>
-              <Link href="/consultation" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/consultation" className="text-gray-700 hover:text-[#41a4ff] transition-colors" onClick={handleNavClick}>
                 Consultation
               </Link>
-              <Link href="/#workflows" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/#workflows" className="text-gray-700 hover:text-[#41a4ff] transition-colors" onClick={handleNavClick}>
                 Workflows
               </Link>
-              <Link href="/#agents" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/#agents" className="text-gray-700 hover:text-[#41a4ff] transition-colors" onClick={handleNavClick}>
                 Agents
               </Link>
-              <Link href="/subscribe" className="text-gray-700 hover:text-accent transition-colors" onClick={handleNavClick}>
+              <Link href="/subscribe" className="text-gray-700 hover:text-[#41a4ff] transition-colors" onClick={handleNavClick}>
                 Subscribe
               </Link>
-              <Link href="/subscribe" className="bg-accent text-white px-4 py-2 rounded-full hover:bg-accent/90 transition-colors w-full text-center" onClick={handleNavClick}>
+              <Link href="/subscribe" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors w-full text-center" onClick={handleNavClick}>
                 Get Started
               </Link>
             </nav>
