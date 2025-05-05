@@ -252,7 +252,7 @@ const Consultation = () => {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   placeholder="Ask about our services, agents, or subscriptions..."
-                  className="flex-1 px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-900"
+                  className="flex-1 px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-black"
                   disabled={isLoading}
                 />
                 <Button 

@@ -258,7 +258,7 @@ const AgentDetail = () => {
                   <input 
                     type="text" 
                     placeholder="Ask a question..." 
-                    className="flex-1 p-3 border border-gray-200 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    className="flex-1 p-3 border border-gray-200 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-black"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     disabled={isPending}

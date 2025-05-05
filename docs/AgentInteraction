@@ -1,0 +1,84 @@
+# AI AGENT AGENCY BACKEND INTERACTION MODEL
+# TECHNICAL SPECIFICATION - NOT CUSTOMER FACING
+
+This document defines the interaction patterns between agents, input/output requirements, and response formats for the AI Business Agency.
+
+## AGENT INTERACTION DATA MODEL
+
+{
+  "agentInteractions": {
+    "version": "1.0.0", 
+    "lastUpdated": "2024-01-15",
+    "interactionModels": [
+      // AUTOMATION EXPERT
+      {
+        "agentId": "automation_expert",
+        "name": "Automation Expert",
+        "primaryRole": "Create automated workflows across Make.com, n8n, and Zapier",
+        "inputRequirements": [
+          "Business goal description",
+          "Desired automation platform (Make.com, n8n, or Zapier)", 
+          "Systems/apps to be connected",
+          "Trigger events",
+          "Desired outcomes"
+        ],
+        "outputFormats": [
+          {
+            "format": "detailed_flowchart",
+            "description": "Visual representation of automation workflow",
+            "elements": ["triggers", "actions", "conditions", "connections"]
+          },
+          {
+            "format": "setup_instructions", 
+            "description": "Step-by-step implementation guide",
+            "structure": "Numbered list with code snippets and screenshots"
+          },
+          {
+            "format": "json_config",
+            "description": "Technical configuration in JSON format", 
+            "elements": ["platform_config", "api_connections", "workflow_steps"]
+          }
+        ],
+        "primaryCollaborators": ["business_development", "dashboard_agent", "product_development"],
+        "dataExchangeFormats": {
+          "sends": {
+            "business_development": ["automation_potential_report", "process_efficiency_metrics"],
+            "dashboard_agent": ["automation_status_updates", "performance_metrics"],
+            "product_development": ["integration_specifications", "technical_requirements"]
+          },
+          "receives": {
+            "business_development": ["business_process_diagrams", "optimization_priorities"],
+            "dashboard_agent": ["system_performance_data", "bottleneck_reports"],
+            "product_development": ["product_specifications", "technical_constraints"]
+          }
+        }
+      },
+
+      // Add other agents here...
+    ],
+
+    "workflowModels": [
+      // Define key workflows between agents
+    ],
+
+    "responseFormatSpecifications": {
+      // Define standard formats for agent outputs
+    },
+
+    "dataTransformationRules": [
+      // Define how data transforms between agents  
+    ],
+
+    "agentCoordinationProtocols": [
+      // Define how agents work together
+    ],
+
+    "userQueryRoutingRules": [
+      // Define how to route user queries to agents
+    ],
+
+    "htmlFormattingStandards": {
+      // Define HTML formatting requirements
+    }
+  }
+}

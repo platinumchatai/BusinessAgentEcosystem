@@ -332,7 +332,7 @@ const AgencyChatbot: React.FC = () => {
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
           onKeyPress={handleKeyPress}
-          className="text-gray-900"
+          className="text-gray-800"
         />
         <button onClick={handleSendMessage}>Send</button>
       </div>
