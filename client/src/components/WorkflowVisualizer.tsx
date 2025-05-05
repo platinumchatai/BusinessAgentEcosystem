@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
 import { workflows, WorkflowType } from "@/data/workflows";
+import { agents } from "@/data/agents";
 
 const WorkflowVisualizer = () => {
   const [activeWorkflow, setActiveWorkflow] = useState<WorkflowType>(workflows[0]);

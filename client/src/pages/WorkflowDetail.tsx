@@ -145,9 +145,12 @@ const WorkflowDetail = () => {
               </div>
               <h3 className="text-base font-medium mb-2">{step.title}</h3>
               <p className="text-sm text-gray-500 mb-2">{step.description}</p>
-              <span className={`px-3 py-1 rounded-full text-xs ${colors.light} ${colors.text}`}>
+              <Link 
+                to={`/agent/${agents.find(a => a.name === step.agent)?.id || 1}`}
+                className={`px-3 py-1 rounded-full text-xs ${colors.light} ${colors.text} hover:underline cursor-pointer`}
+              >
                 {step.agent}
-              </span>
+              </Link>
             </motion.div>
           ))}
         </div>

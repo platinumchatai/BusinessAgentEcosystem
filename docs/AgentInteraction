@@ -1,23 +1,27 @@
 # AI AGENT AGENCY BACKEND INTERACTION MODEL
 # TECHNICAL SPECIFICATION - NOT CUSTOMER FACING
 
-This document defines the interaction patterns between agents, input/output requirements, and response formats for the AI Business Agency.
+/*
+This document defines the interaction patterns between agents, 
+input/output requirements, and response formats for the Platinum Chat AI Business Agency.
+*/
 
 ## AGENT INTERACTION DATA MODEL
 
 {
   "agentInteractions": {
-    "version": "1.0.0", 
-    "lastUpdated": "2024-01-15",
+    "version": "1.0.0",
+    "lastUpdated": "2025-05-03",
     "interactionModels": [
+      
       // AUTOMATION EXPERT
       {
         "agentId": "automation_expert",
         "name": "Automation Expert",
         "primaryRole": "Create automated workflows across Make.com, n8n, and Zapier",
         "inputRequirements": [
-          "Business goal description",
-          "Desired automation platform (Make.com, n8n, or Zapier)", 
+          "Business goal description", 
+          "Desired automation platform (Make.com, n8n, or Zapier)",
           "Systems/apps to be connected",
           "Trigger events",
           "Desired outcomes"
@@ -29,13 +33,13 @@ This document defines the interaction patterns between agents, input/output requ
             "elements": ["triggers", "actions", "conditions", "connections"]
           },
           {
-            "format": "setup_instructions", 
+            "format": "setup_instructions",
             "description": "Step-by-step implementation guide",
             "structure": "Numbered list with code snippets and screenshots"
           },
           {
             "format": "json_config",
-            "description": "Technical configuration in JSON format", 
+            "description": "Technical configuration in JSON format",
             "elements": ["platform_config", "api_connections", "workflow_steps"]
           }
         ],
@@ -53,32 +57,1825 @@ This document defines the interaction patterns between agents, input/output requ
           }
         }
       },
-
-      // Add other agents here...
+      
+      // BLS DATA HANDLER
+      {
+        "agentId": "bls_data_handler",
+        "name": "BLS Data Handler",
+        "primaryRole": "Pull and analyze data from BLS.gov",
+        "inputRequirements": [
+          "Industry sector/NAICS code", 
+          "Geographic area",
+          "Time period",
+          "Data series ID(s)",
+          "Analysis objectives"
+        ],
+        "outputFormats": [
+          {
+            "format": "data_tables",
+            "description": "Structured tables with BLS data",
+            "elements": ["headers", "data_rows", "source_attribution", "timestamp"]
+          },
+          {
+            "format": "trend_charts",
+            "description": "Visualizations of labor market trends",
+            "types": ["line_charts", "bar_charts", "heat_maps", "scatter_plots"]
+          },
+          {
+            "format": "market_analysis_report",
+            "description": "Comprehensive analysis of BLS data implications",
+            "structure": "Executive summary, methodology, findings, implications, recommendations"
+          }
+        ],
+        "primaryCollaborators": ["ideation_agent", "business_development", "finance_budgeting"],
+        "dataExchangeFormats": {
+          "sends": {
+            "ideation_agent": ["market_size_data", "growth_trend_data", "employment_patterns"],
+            "business_development": ["labor_market_analysis", "competitive_wage_data"],
+            "finance_budgeting": ["salary_benchmark_data", "labor_cost_projections"]
+          },
+          "receives": {
+            "ideation_agent": ["business_concept_parameters", "target_market_queries"],
+            "business_development": ["industry_analysis_requests", "competitive_research_parameters"],
+            "finance_budgeting": ["financial_projection_parameters", "cost_structure_queries"]
+          }
+        }
+      },
+      
+      // BUSINESS DEVELOPMENT AGENT
+      {
+        "agentId": "business_development",
+        "name": "Business Development Agent",
+        "primaryRole": "Build comprehensive business strategy",
+        "inputRequirements": [
+          "Business description/concept", 
+          "Industry sector",
+          "Target customer segments",
+          "Current stage of business",
+          "Growth objectives"
+        ],
+        "outputFormats": [
+          {
+            "format": "business_plan",
+            "description": "Comprehensive business strategy document",
+            "structure": "Executive summary, market analysis, business model, competitive analysis, operations plan, financial projections, implementation roadmap",
+            "formatting": "Properly formatted HTML with headings (H1-H4), sections, tables, bullet points, and executive summary callout"
+          },
+          {
+            "format": "strategy_presentation",
+            "description": "Slide-based presentation of key strategy elements",
+            "structure": "Title slide, problem/opportunity, solution, market size, business model, competitive advantage, financial highlights, implementation timeline"
+          },
+          {
+            "format": "swot_analysis",
+            "description": "Structured analysis of strengths, weaknesses, opportunities, threats",
+            "structure": "2x2 HTML table with detailed bullet points in each quadrant"
+          },
+          {
+            "format": "business_model_canvas",
+            "description": "Business model visualization following standardized canvas approach",
+            "elements": ["value_propositions", "customer_segments", "channels", "customer_relationships", "revenue_streams", "key_resources", "key_activities", "key_partnerships", "cost_structure"]
+          }
+        ],
+        "primaryCollaborators": ["ideation_agent", "finance_budgeting", "marketing_branding", "product_development"],
+        "dataExchangeFormats": {
+          "sends": {
+            "ideation_agent": ["concept_feedback", "viability_assessment"],
+            "finance_budgeting": ["revenue_model", "growth_projections", "pricing_strategy"],
+            "marketing_branding": ["positioning_requirements", "target_audience_definition"],
+            "product_development": ["product_roadmap", "feature_prioritization", "market_requirements"]
+          },
+          "receives": {
+            "ideation_agent": ["business_concepts", "opportunity_analysis"],
+            "finance_budgeting": ["financial_projections", "funding_requirements", "profitability_analysis"],
+            "marketing_branding": ["brand_strategy", "market_positioning", "competition_analysis"],
+            "product_development": ["product_specifications", "development_timelines", "technical_constraints"]
+          }
+        }
+      },
+      
+      // CONTENT PLANNER
+      {
+        "agentId": "content_planner",
+        "name": "Content Planner",
+        "primaryRole": "Build social media presence through strategic content planning",
+        "inputRequirements": [
+          "Business description", 
+          "Target audience demographics",
+          "Social media platforms",
+          "Content goals (awareness, engagement, conversion)",
+          "Brand voice guidelines"
+        ],
+        "outputFormats": [
+          {
+            "format": "content_calendar",
+            "description": "Scheduled content plan with post types and timings",
+            "structure": "HTML table with dates, platforms, content types, themes, and notes",
+            "timeframe": "Weekly, monthly, or quarterly view options"
+          },
+          {
+            "format": "platform_strategy",
+            "description": "Platform-specific approach to content",
+            "structure": "HTML sections with platform overview, audience analysis, content types, posting frequency, and success metrics"
+          },
+          {
+            "format": "content_ideas_list",
+            "description": "Categorized list of content ideas for different platforms",
+            "structure": "HTML lists organized by content themes, types, or campaigns"
+          }
+        ],
+        "primaryCollaborators": ["content_strategist", "engagement_hooks_agent", "marketing_branding", "editor_in_chief"],
+        "dataExchangeFormats": {
+          "sends": {
+            "content_strategist": ["content_calendar", "platform_priorities", "audience_targeting_plan"],
+            "engagement_hooks_agent": ["content_schedule", "engagement_opportunities", "campaign_themes"],
+            "marketing_branding": ["social_media_plan", "content_themes_alignment"],
+            "editor_in_chief": ["draft_content_plan", "formatting_requirements"]
+          },
+          "receives": {
+            "content_strategist": ["content_strategy", "messaging_framework", "topic_priorities"],
+            "engagement_hooks_agent": ["engagement_techniques", "viral_content_ideas"],
+            "marketing_branding": ["brand_guidelines", "campaign_objectives", "visual_identity"],
+            "editor_in_chief": ["content_feedback", "editorial_standards", "formatting_improvements"]
+          }
+        }
+      },
+      
+      // CONTENT STRATEGIST
+      {
+        "agentId": "content_strategist",
+        "name": "Content Strategist",
+        "primaryRole": "Create effective content strategy aligned with business goals",
+        "inputRequirements": [
+          "Business objectives", 
+          "Target audience profiles",
+          "Current content inventory",
+          "Competitor content analysis",
+          "Content performance metrics"
+        ],
+        "outputFormats": [
+          {
+            "format": "content_strategy_document",
+            "description": "Comprehensive strategy with goals, audience, messaging, and distribution",
+            "structure": "HTML document with executive summary, audience analysis, strategic pillars, content types, distribution channels, measurement framework"
+          },
+          {
+            "format": "audience_personas",
+            "description": "Detailed buyer/user personas for content targeting",
+            "structure": "HTML profiles with demographics, psychographics, pain points, goals, content preferences"
+          },
+          {
+            "format": "content_audit",
+            "description": "Analysis of existing content performance and gaps",
+            "structure": "HTML tables with content inventory, performance metrics, gap analysis, recommendations"
+          },
+          {
+            "format": "messaging_hierarchy",
+            "description": "Structured content messaging framework",
+            "structure": "HTML document with core message, supporting messages, proof points, and use cases"
+          }
+        ],
+        "primaryCollaborators": ["content_planner", "seo_strategist", "copywriter_author", "marketing_branding"],
+        "dataExchangeFormats": {
+          "sends": {
+            "content_planner": ["strategic_content_direction", "topic_pillars", "editorial_guidelines"],
+            "seo_strategist": ["content_topics", "priority_pages", "content_gaps"],
+            "copywriter_author": ["content_briefs", "tone_guidelines", "messaging_framework"],
+            "marketing_branding": ["content_strategy", "storytelling_approach", "editorial_plan"]
+          },
+          "receives": {
+            "content_planner": ["channel_performance_data", "engagement_metrics", "content_calendar"],
+            "seo_strategist": ["keyword_research", "search_trends", "SEO_content_recommendations"],
+            "copywriter_author": ["content_drafts", "creative_concepts", "messaging_applications"],
+            "marketing_branding": ["brand_positioning", "visual_identity", "campaign_themes"]
+          }
+        }
+      },
+      
+      // COPYWRITER & AUTHOR
+      {
+        "agentId": "copywriter_author",
+        "name": "Copywriter & Author",
+        "primaryRole": "Create compelling written content for various business needs",
+        "inputRequirements": [
+          "Content brief", 
+          "Target audience",
+          "Content type/format",
+          "Key messages/points to cover",
+          "Tone of voice",
+          "Word count/length requirements"
+        ],
+        "outputFormats": [
+          {
+            "format": "blog_post",
+            "description": "SEO-optimized blog content",
+            "structure": "HTML with headline, introduction, subheadings, body content, conclusion, call-to-action"
+          },
+          {
+            "format": "ebook",
+            "description": "In-depth downloadable content asset",
+            "structure": "HTML with cover, table of contents, chapter breakdowns, images, citations, author bio"
+          },
+          {
+            "format": "website_copy",
+            "description": "Page-specific website content",
+            "structure": "HTML with headlines, subheadings, body copy, CTAs, meta descriptions"
+          },
+          {
+            "format": "social_media_copy",
+            "description": "Platform-specific social content",
+            "structure": "HTML table with platform, copy, character count, hashtags, visuals"
+          },
+          {
+            "format": "email_content",
+            "description": "Email marketing copy",
+            "structure": "HTML with subject line options, preview text, body copy, CTA, footer"
+          },
+          {
+            "format": "job_aid",
+            "description": "Instructional content for employee guidance",
+            "structure": "HTML with objective, steps, tips, examples, related resources"
+          }
+        ],
+        "primaryCollaborators": ["content_strategist", "editor_in_chief", "seo_strategist", "marketing_branding"],
+        "dataExchangeFormats": {
+          "sends": {
+            "content_strategist": ["draft_content", "creative_concepts", "content_variations"],
+            "editor_in_chief": ["draft_content", "revision_requests", "source_citations"],
+            "seo_strategist": ["SEO_content_drafts", "meta_description_options"],
+            "marketing_branding": ["brand_message_applications", "campaign_copy", "value_proposition_framing"]
+          },
+          "receives": {
+            "content_strategist": ["content_briefs", "messaging_guidelines", "strategic_priorities"],
+            "editor_in_chief": ["editorial_feedback", "revision_requirements", "style_guide_application"],
+            "seo_strategist": ["keyword_targets", "SEO_best_practices", "search_intent_data"],
+            "marketing_branding": ["brand_voice_guidelines", "positioning_statements", "value_propositions"]
+          }
+        }
+      },
+      
+      // CUSTOMER EXPERIENCE FEEDBACK SPECIALIST
+      {
+        "agentId": "customer_experience_specialist",
+        "name": "Customer Experience Feedback Specialist",
+        "primaryRole": "Analyze and apply customer feedback to improve business",
+        "inputRequirements": [
+          "Customer feedback data", 
+          "Business objectives",
+          "Current customer journey map",
+          "KPIs and metrics",
+          "Product/service specifications"
+        ],
+        "outputFormats": [
+          {
+            "format": "feedback_analysis_report",
+            "description": "Structured analysis of customer feedback themes",
+            "structure": "HTML with executive summary, methodology, key themes, quantitative analysis, qualitative insights, recommendations"
+          },
+          {
+            "format": "sentiment_analysis",
+            "description": "Analysis of customer sentiment patterns",
+            "structure": "HTML with sentiment scores, trend analysis, key drivers of positive/negative sentiment"
+          },
+          {
+            "format": "customer_journey_map",
+            "description": "Visual representation of customer experience",
+            "structure": "HTML with stages, touchpoints, customer emotions, pain points, opportunities"
+          },
+          {
+            "format": "improvement_prioritization_matrix",
+            "description": "Framework for prioritizing CX improvements",
+            "structure": "HTML table with impact vs. effort scoring for potential improvements"
+          },
+          {
+            "format": "voice_of_customer_dashboard",
+            "description": "Interactive display of customer feedback metrics",
+            "structure": "HTML with KPI visualizations, feedback trends, comparison to benchmarks"
+          }
+        ],
+        "primaryCollaborators": ["product_development", "onboarding_agent", "business_development", "dashboard_agent"],
+        "dataExchangeFormats": {
+          "sends": {
+            "product_development": ["feature_requests", "usability_issues", "satisfaction_drivers"],
+            "onboarding_agent": ["onboarding_friction_points", "new_user_feedback", "training_needs"],
+            "business_development": ["customer_loyalty_factors", "competitive_insights", "retention_opportunities"],
+            "dashboard_agent": ["cx_metrics", "satisfaction_scores", "customer_feedback_trends"]
+          },
+          "receives": {
+            "product_development": ["product_roadmap", "release_notes", "feature_specifications"],
+            "onboarding_agent": ["onboarding_process", "new_user_data", "training_effectiveness"],
+            "business_development": ["strategic_priorities", "customer_segments", "value_proposition"],
+            "dashboard_agent": ["performance_metrics", "operational_data", "benchmark_comparisons"]
+          }
+        }
+      },
+      
+      // DASHBOARD AGENT
+      {
+        "agentId": "dashboard_agent",
+        "name": "Dashboard Agent",
+        "primaryRole": "Provide real-time visibility into agent activity and business metrics",
+        "inputRequirements": [
+          "Data sources and APIs", 
+          "Key metrics to track",
+          "Visualization preferences",
+          "Update frequency",
+          "User access requirements"
+        ],
+        "outputFormats": [
+          {
+            "format": "agent_activity_dashboard",
+            "description": "Real-time visualization of agent interactions",
+            "structure": "HTML with agent status indicators, active collaborations, workload metrics"
+          },
+          {
+            "format": "workflow_progress_tracker",
+            "description": "Visual representation of workflow completion status",
+            "structure": "HTML with phase breakdowns, completion percentages, milestone tracking"
+          },
+          {
+            "format": "business_metrics_dashboard",
+            "description": "Key performance indicators visualization",
+            "structure": "HTML with financial metrics, marketing KPIs, operational metrics, customer metrics"
+          },
+          {
+            "format": "data_integration_map",
+            "description": "Visual representation of data flow between systems",
+            "structure": "HTML with data source connections, transformation rules, refresh schedules"
+          }
+        ],
+        "primaryCollaborators": ["automation_expert", "finance_budgeting", "business_development", "customer_experience_specialist"],
+        "dataExchangeFormats": {
+          "sends": {
+            "automation_expert": ["process_performance_data", "automation_effectiveness_metrics"],
+            "finance_budgeting": ["financial_performance_dashboards", "budget_tracking_visuals"],
+            "business_development": ["strategic_KPI_dashboards", "business_performance_metrics"],
+            "customer_experience_specialist": ["customer_feedback_visualizations", "sentiment_trend_data"]
+          },
+          "receives": {
+            "automation_expert": ["automation_status_data", "workflow_efficiency_metrics"],
+            "finance_budgeting": ["financial_KPIs", "budget_allocation_data"],
+            "business_development": ["strategic_goals", "priority_metrics", "benchmark_targets"],
+            "customer_experience_specialist": ["customer_satisfaction_data", "feedback_metrics"]
+          }
+        }
+      },
+      
+      // EDITOR-IN-CHIEF
+      {
+        "agentId": "editor_in_chief",
+        "name": "Editor-in-Chief",
+        "primaryRole": "Ensure quality and proper HTML formatting of all content",
+        "inputRequirements": [
+          "Draft content", 
+          "Content purpose/context",
+          "Target audience",
+          "Platform/channel for publication",
+          "Style guide/brand standards"
+        ],
+        "outputFormats": [
+          {
+            "format": "html_formatted_document",
+            "description": "Properly structured HTML content",
+            "elements": {
+              "document_structure": {
+                "headings": "Properly nested H1-H6 tags",
+                "sections": "Logical content grouping with appropriate HTML5 semantic elements",
+                "paragraphs": "Well-structured p tags with appropriate length and flow"
+              },
+              "content_elements": {
+                "lists": "Properly formatted ordered and unordered lists",
+                "tables": "Well-structured tables with appropriate headers and data cells",
+                "quotes": "Properly formatted blockquotes and citations",
+                "links": "Semantic hyperlinks with appropriate anchor text"
+              },
+              "metadata": {
+                "meta_title": "SEO-optimized title tag",
+                "meta_description": "Compelling meta description",
+                "schema_markup": "Appropriate structured data markup"
+              }
+            }
+          },
+          {
+            "format": "editorial_feedback",
+            "description": "Structured feedback on content improvements",
+            "structure": "HTML with general assessment, specific recommendations, style guide compliance notes"
+          },
+          {
+            "format": "style_guide_updates",
+            "description": "Documentation of editorial standards",
+            "structure": "HTML with writing principles, grammar rules, formatting standards, best practices"
+          }
+        ],
+        "primaryCollaborators": ["copywriter_author", "content_strategist", "marketing_branding", "seo_strategist"],
+        "dataExchangeFormats": {
+          "sends": {
+            "copywriter_author": ["edited_content", "revision_requests", "style_guidance"],
+            "content_strategist": ["content_quality_assessment", "editorial_standards"],
+            "marketing_branding": ["brand_voice_consistency_reviews", "messaging_alignment_feedback"],
+            "seo_strategist": ["SEO_formatting_implementation", "structured_data_markup"]
+          },
+          "receives": {
+            "copywriter_author": ["draft_content", "content_purpose_context", "source_materials"],
+            "content_strategist": ["content_briefs", "messaging_priorities", "strategic_objectives"],
+            "marketing_branding": ["brand_guidelines", "visual_identity_standards", "messaging_framework"],
+            "seo_strategist": ["keyword_targets", "meta_tag_requirements", "schema_specifications"]
+          }
+        },
+        "htmlFormatting": {
+          "businessDocuments": {
+            "structure": "Semantic HTML5 with proper heading hierarchy (H1-H6)",
+            "elements": ["Executive summary section", "Table of contents", "Numbered sections", "Appendices"],
+            "components": ["Data tables", "Charts/graphs", "Bullet points/numbered lists", "Callout boxes"]
+          },
+          "socialMedia": {
+            "structure": "Platform-specific formatting with character counts",
+            "elements": ["Post text", "Hashtag formatting", "Link previews", "CTA elements"]
+          },
+          "blogs": {
+            "structure": "SEO-optimized HTML with schema markup",
+            "elements": ["Featured image", "H1 title", "H2/H3 subheadings", "Intro paragraph", "Body sections", "Conclusion", "Author bio"]
+          },
+          "newsletters": {
+            "structure": "Email-compatible HTML with responsive design",
+            "elements": ["Subject line", "Preview text", "Header", "Body sections", "CTA buttons", "Footer"]
+          }
+        }
+      },
+      
+      // ENGAGEMENT HOOKS AGENT
+      {
+        "agentId": "engagement_hooks_agent",
+        "name": "Engagement Hooks Agent",
+        "primaryRole": "Create compelling hooks to drive social media engagement",
+        "inputRequirements": [
+          "Content theme/topic", 
+          "Target audience demographics",
+          "Platform (Instagram, Twitter, LinkedIn, etc.)",
+          "Engagement goals (comments, shares, clicks, etc.)",
+          "Brand voice guidelines"
+        ],
+        "outputFormats": [
+          {
+            "format": "hook_variations",
+            "description": "Multiple hook options for testing",
+            "structure": "HTML table with hook text, character count, hook type, target emotion"
+          },
+          {
+            "format": "platform_specific_hooks",
+            "description": "Hooks optimized for different social platforms",
+            "structure": "HTML with platform-specific formatting, examples, and best practices"
+          },
+          {
+            "format": "hook_frameworks",
+            "description": "Reusable templates for creating hooks",
+            "structure": "HTML with hook formulas, fill-in-the-blank templates, examples"
+          },
+          {
+            "format": "trend_based_hooks",
+            "description": "Hooks leveraging current trends and discussions",
+            "structure": "HTML with trend analysis, hook applications, relevance duration"
+          }
+        ],
+        "primaryCollaborators": ["content_planner", "content_strategist", "marketing_branding", "seo_strategist"],
+        "dataExchangeFormats": {
+          "sends": {
+            "content_planner": ["hook_recommendations", "engagement_optimization_suggestions"],
+            "content_strategist": ["engagement_performance_data", "content_format_recommendations"],
+            "marketing_branding": ["audience_engagement_insights", "messaging_effectiveness_data"],
+            "seo_strategist": ["trending_topics", "high-engagement_keywords"]
+          },
+          "receives": {
+            "content_planner": ["content_calendar", "platform_priorities", "campaign_themes"],
+            "content_strategist": ["content_pillars", "audience_personas", "messaging_framework"],
+            "marketing_branding": ["brand_voice_guidelines", "visual_identity", "campaign_objectives"],
+            "seo_strategist": ["trending_keywords", "search_intent_data", "competition_analysis"]
+          }
+        }
+      },
+      
+      // FINANCE & BUDGETING
+      {
+        "agentId": "finance_budgeting",
+        "name": "Finance & Budgeting",
+        "primaryRole": "Develop and monitor financial plans to achieve scaling goals",
+        "inputRequirements": [
+          "Business model details", 
+          "Historical financial data (if available)",
+          "Growth objectives",
+          "Industry benchmarks",
+          "Resource requirements",
+          "Time horizon for projections"
+        ],
+        "outputFormats": [
+          {
+            "format": "financial_projections",
+            "description": "Comprehensive financial forecasts",
+            "structure": "HTML tables with income statement, balance sheet, cash flow projections",
+            "timeframes": ["Monthly (12 months)", "Quarterly (3 years)", "Annual (5 years)"]
+          },
+          {
+            "format": "budget_allocation",
+            "description": "Detailed budget breakdown by category",
+            "structure": "HTML tables and charts showing expense categories, allocations, and assumptions"
+          },
+          {
+            "format": "unit_economics",
+            "description": "Analysis of per-unit profitability",
+            "structure": "HTML with CAC, LTV, payback period, contribution margin analysis"
+          },
+          {
+            "format": "funding_requirements",
+            "description": "Capital needs and investment strategy",
+            "structure": "HTML with funding rounds, use of funds, investor ROI projections"
+          },
+          {
+            "format": "financial_scenario_analysis",
+            "description": "Multiple scenario projections based on assumptions",
+            "structure": "HTML with base case, optimistic case, conservative case comparisons"
+          },
+          {
+            "format": "breakeven_analysis",
+            "description": "Calculation of breakeven points",
+            "structure": "HTML with fixed costs, variable costs, contribution margin, breakeven units/revenue"
+          }
+        ],
+        "primaryCollaborators": ["business_development", "dashboard_agent", "bls_data_handler", "marketing_branding"],
+        "dataExchangeFormats": {
+          "sends": {
+            "business_development": ["financial_feasibility_assessment", "resource_allocation_recommendations", "unit_economics_analysis"],
+            "dashboard_agent": ["financial_KPIs", "budget_tracking_metrics", "forecast_vs_actual_data"],
+            "bls_data_handler": ["compensation_budget_parameters", "labor_cost_queries"],
+            "marketing_branding": ["marketing_budget_allocation", "ROI_targets", "campaign_performance_metrics"]
+          },
+          "receives": {
+            "business_development": ["business_model", "growth_projections", "pricing_strategy"],
+            "dashboard_agent": ["performance_metrics", "operational_data", "industry_benchmarks"],
+            "bls_data_handler": ["labor_market_data", "compensation_benchmarks", "industry_economic_indicators"],
+            "marketing_branding": ["marketing_plan", "campaign_budgets", "channel_ROI_data"]
+          }
+        }
+      },
+      
+      // IDEATION AGENT
+      {
+        "agentId": "ideation_agent",
+        "name": "Ideation Agent",
+        "primaryRole": "Generate and refine business concepts and opportunities",
+        "inputRequirements": [
+          "Entrepreneur's interests/expertise", 
+          "Target market/industry",
+          "Available resources",
+          "Initial business concept (if exists)",
+          "Problem to solve"
+        ],
+        "outputFormats": [
+          {
+            "format": "business_concept_generator",
+            "description": "Multiple business ideas based on parameters",
+            "structure": "HTML table with concept, description, target market, revenue model, key advantages"
+          },
+          {
+            "format": "concept_evaluation_matrix",
+            "description": "Framework for assessing business concepts",
+            "structure": "HTML table with weighted criteria scoring for each concept"
+          },
+          {
+            "format": "idea_refinement_guide",
+            "description": "Structured process for improving a concept",
+            "structure": "HTML with concept evolution, key questions, improvement areas, pivot considerations"
+          },
+          {
+            "format": "brainstorming_session",
+            "description": "Interactive ideation framework",
+            "structure": "HTML with prompts, thought starters, mind maps, idea clustering"
+          },
+          {
+            "format": "opportunity_analysis",
+            "description": "Assessment of market opportunity",
+            "structure": "HTML with problem validation, market size, competitive landscape, differentiation"
+          }
+        ],
+        "primaryCollaborators": ["business_development", "bls_data_handler", "marketing_branding", "product_development"],
+        "dataExchangeFormats": {
+          "sends": {
+            "business_development": ["refined_business_concepts", "opportunity_assessment"],
+            "bls_data_handler": ["market_research_queries", "demographic_target_parameters"],
+            "marketing_branding": ["value_proposition_concepts", "brand_positioning_options"],
+            "product_development": ["product_concept", "feature_ideas", "user_need_hypotheses"]
+          },
+          "receives": {
+            "business_development": ["concept_validation_feedback", "strategic_filters", "execution_requirements"],
+            "bls_data_handler": ["market_size_data", "industry_trends", "economic_indicators"],
+            "marketing_branding": ["brand_alignment_feedback", "market_perception_data"],
+            "product_development": ["technical_feasibility_assessment", "development_requirements", "product_constraints"]
+          }
+        }
+      },
+      
+      // MARKETING & BRANDING
+      {
+        "agentId": "marketing_branding",
+        "name": "Marketing & Branding",
+        "primaryRole": "Develop comprehensive marketing strategy and brand identity",
+        "inputRequirements": [
+          "Business model/concept", 
+          "Target audience profiles",
+          "Competitive landscape",
+          "Budget parameters",
+          "Business objectives",
+          "Timeline"
+        ],
+        "outputFormats": [
+          {
+            "format": "brand_identity_system",
+            "description": "Comprehensive brand guidelines",
+            "structure": "HTML with brand story, positioning, personality, voice, visual identity (logo, colors, typography, imagery)"
+          },
+          {
+            "format": "marketing_strategy",
+            "description": "Master marketing plan",
+            "structure": "HTML with executive summary, situation analysis, objectives, target audience, positioning, tactics, budget, timeline, metrics"
+          },
+          {
+            "format": "campaign_plan",
+            "description": "Specific marketing campaign framework",
+            "structure": "HTML with campaign brief, messaging, channels, assets, timeline, budget, KPIs"
+          },
+          {
+            "format": "channel_strategy",
+            "description": "Breakdown of marketing channel approach",
+            "structure": "HTML table with channels, objectives, audience, content types, KPIs, budget allocation"
+          },
+          {
+            "format": "style_guide",
+            "description": "Technical brand standards documentation",
+            "structure": "HTML with logo usage, color specifications (HEX/RGB/CMYK), typography, imagery, iconography, templates"
+          }
+        ],
+        "primaryCollaborators": ["business_development", "content_strategist", "seo_strategist", "finance_budgeting"],
+        "dataExchangeFormats": {
+          "sends": {
+            "business_development": ["market_positioning", "brand_strategy", "competitive_differentiation"],
+"business_development": ["market_positioning", "brand_strategy", "competitive_differentiation"],
+            "content_strategist": ["brand_voice_guidelines", "messaging_hierarchy", "editorial_standards"],
+            "seo_strategist": ["brand_keyword_strategy", "content_discovery_approach"],
+            "finance_budgeting": ["marketing_budget_allocation", "ROI_projections", "acquisition_costs"]
+          },
+          "receives": {
+            "business_development": ["target_market_definition", "value_proposition", "business_goals"],
+            "content_strategist": ["content_strategy_requirements", "audience_insights", "messaging_needs"],
+            "seo_strategist": ["keyword_research", "SERP_competitive_analysis", "technical_SEO_requirements"],
+            "finance_budgeting": ["budget_constraints", "performance_metrics", "ROI_expectations"]
+          }
+        }
+      },
+      
+      // ONBOARDING AGENT
+      {
+        "agentId": "onboarding_agent",
+        "name": "Onboarding Agent",
+        "primaryRole": "Guide new customers through platform adoption",
+        "inputRequirements": [
+          "Customer profile/segment", 
+          "Product/service tier",
+          "Customer goals/objectives",
+          "Technical skill level",
+          "Prerequisite knowledge",
+          "Current onboarding step"
+        ],
+        "outputFormats": [
+          {
+            "format": "onboarding_journey",
+            "description": "Step-by-step customer onboarding process",
+            "structure": "HTML with stages, actions, timelines, completion indicators"
+          },
+          {
+            "format": "getting_started_guide",
+            "description": "Initial orientation document",
+            "structure": "HTML with welcome message, quick wins, essential features, next steps"
+          },
+          {
+            "format": "feature_tutorial",
+            "description": "Specific feature instruction",
+            "structure": "HTML with step-by-step guides, screenshots, GIFs, examples, practice exercises"
+          },
+          {
+            "format": "knowledge_base_article",
+            "description": "Self-service support content",
+            "structure": "HTML with overview, detailed steps, troubleshooting, related resources"
+          },
+          {
+            "format": "success_plan",
+            "description": "Personalized adoption roadmap",
+            "structure": "HTML with goals, milestones, actions, resources, progress tracking"
+          }
+        ],
+        "primaryCollaborators": ["customer_experience_specialist", "product_development", "editor_in_chief", "dashboard_agent"],
+        "dataExchangeFormats": {
+          "sends": {
+            "customer_experience_specialist": ["onboarding_feedback", "adoption_metrics", "common_questions"],
+            "product_development": ["feature_confusion_points", "usability_issues", "feature_request_patterns"],
+            "editor_in_chief": ["onboarding_content_drafts", "help_documentation"],
+            "dashboard_agent": ["user_adoption_metrics", "feature_usage_data", "onboarding_completion_rates"]
+          },
+          "receives": {
+            "customer_experience_specialist": ["user_feedback_trends", "satisfaction_factors", "friction_points"],
+            "product_development": ["product_updates", "new_feature_documentation", "technical_specifications"],
+            "editor_in_chief": ["edited_onboarding_content", "formatting_standards"],
+            "dashboard_agent": ["user_activity_data", "engagement_metrics", "comparative_benchmarks"]
+          }
+        }
+      },
+      
+      // PRODUCT DEVELOPMENT
+      {
+        "agentId": "product_development",
+        "name": "Product Development",
+        "primaryRole": "Create marketable products aligned with business strategy",
+        "inputRequirements": [
+          "Business objectives", 
+          "Target market description",
+          "Customer needs/pain points",
+          "Competitive landscape",
+          "Resource constraints",
+          "Timeline expectations"
+        ],
+        "outputFormats": [
+          {
+            "format": "product_roadmap",
+            "description": "Strategic product development plan",
+            "structure": "HTML with vision, strategic themes, feature timeline, release schedule, milestones"
+          },
+          {
+            "format": "product_requirements_document",
+            "description": "Detailed product specifications",
+            "structure": "HTML with user stories, acceptance criteria, technical requirements, constraints, dependencies"
+          },
+          {
+            "format": "mvp_definition",
+            "description": "Minimum viable product specification",
+            "structure": "HTML with core features, success criteria, development phases, go-to-market strategy"
+          },
+          {
+            "format": "feature_prioritization",
+            "description": "Analysis of feature importance and sequence",
+            "structure": "HTML with priority matrix, impact vs. effort analysis, MoSCoW categorization"
+          },
+          {
+            "format": "technical_specification",
+            "description": "Detailed technical implementation guidelines",
+            "structure": "HTML with architecture, data models, APIs, integrations, performance requirements"
+          }
+        ],
+        "primaryCollaborators": ["business_development", "customer_experience_specialist", "automation_expert", "finance_budgeting"],
+        "dataExchangeFormats": {
+          "sends": {
+            "business_development": ["product_roadmap", "feature_set", "competitive_differentiation"],
+            "customer_experience_specialist": ["product_specifications", "feature_descriptions", "release_notes"],
+            "automation_expert": ["integration_requirements", "workflow_specifications", "technical_constraints"],
+            "finance_budgeting": ["development_cost_projections", "resource_requirements", "timeline_estimates"]
+          },
+          "receives": {
+            "business_development": ["market_requirements", "strategic_priorities", "competitive_analysis"],
+            "customer_experience_specialist": ["user_feedback", "feature_requests", "usability_issues"],
+            "automation_expert": ["technical_feasibility_assessment", "integration_capabilities", "automation_requirements"],
+            "finance_budgeting": ["budget_constraints", "ROI_requirements", "investment_parameters"]
+          }
+        }
+      },
+      
+      // SEO STRATEGIST
+      {
+        "agentId": "seo_strategist",
+        "name": "SEO Strategist",
+        "primaryRole": "Optimize online visibility and search engine ranking",
+        "inputRequirements": [
+          "Business website/online presence", 
+          "Target audience",
+          "Competitive landscape",
+          "Current search performance",
+          "Business objectives",
+          "Content inventory"
+        ],
+        "outputFormats": [
+          {
+            "format": "keyword_research",
+            "description": "Comprehensive keyword analysis",
+            "structure": "HTML table with keywords, search volume, competition, difficulty, intent, priority"
+          },
+          {
+            "format": "seo_audit",
+            "description": "Technical and content SEO assessment",
+            "structure": "HTML with technical issues, content gaps, on-page optimization, backlink analysis, recommendations"
+          },
+          {
+            "format": "content_optimization_plan",
+            "description": "Strategy for improving content SEO performance",
+            "structure": "HTML with content inventory, performance metrics, optimization priorities, specific recommendations"
+          },
+          {
+            "format": "technical_seo_roadmap",
+            "description": "Plan for addressing technical SEO issues",
+            "structure": "HTML with prioritized issues, solutions, implementation steps, expected impact"
+          },
+          {
+            "format": "seo_performance_dashboard",
+            "description": "Tracking of key SEO metrics",
+            "structure": "HTML with rankings, organic traffic, conversions, visibility scores, competitor comparison"
+          }
+        ],
+        "primaryCollaborators": ["content_strategist", "marketing_branding", "copywriter_author", "editor_in_chief"],
+        "dataExchangeFormats": {
+          "sends": {
+            "content_strategist": ["keyword_strategy", "content_gap_analysis", "search_intent_data"],
+            "marketing_branding": ["organic_search_strategy", "online_visibility_plan", "SERP_feature_opportunities"],
+            "copywriter_author": ["SEO_content_briefs", "keyword_targets", "on-page_optimization_guidelines"],
+            "editor_in_chief": ["meta_tag_requirements", "heading_structure_guidelines", "schema_markup_specifications"]
+          },
+          "receives": {
+            "content_strategist": ["content_strategy", "topic_clusters", "content_calendar"],
+            "marketing_branding": ["brand_guidelines", "target_audience", "value_proposition"],
+            "copywriter_author": ["optimized_content_drafts", "meta_descriptions", "title_options"],
+            "editor_in_chief": ["formatted_content", "HTML_implementation", "structure_feedback"]
+          }
+        }
+      }
     ],
-
+    
+    // WORKFLOW DEFINITIONS
     "workflowModels": [
-      // Define key workflows between agents
+      {
+        "workflowId": "phase1_ideation_planning",
+        "name": "Phase 1: Ideation and Planning",
+        "description": "Business concept development, market research, and strategic planning",
+        "leadAgent": "ideation_agent",
+        "supportingAgents": ["business_development", "bls_data_handler", "finance_budgeting", "marketing_branding"],
+        "stages": [
+          {
+            "stageId": "concept_development",
+            "name": "Business Concept Development",
+            "steps": [
+              {
+                "stepId": "idea_generation",
+                "primaryAgent": "ideation_agent",
+                "supportingAgents": [],
+                "inputRequirements": ["Entrepreneur interests", "Market opportunities", "Initial concept ideas"],
+                "outputFormat": "business_concept_generator",
+                "nextStep": "market_research"
+              },
+              {
+                "stepId": "market_research",
+                "primaryAgent": "bls_data_handler",
+                "supportingAgents": ["ideation_agent"],
+                "inputRequirements": ["Business concepts", "Target industries", "Geographic focus"],
+                "outputFormat": "market_analysis_report",
+                "nextStep": "concept_refinement"
+              },
+              {
+                "stepId": "concept_refinement",
+                "primaryAgent": "ideation_agent",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Initial concepts", "Market research", "Feasibility constraints"],
+                "outputFormat": "idea_refinement_guide",
+                "nextStep": "brand_concept"
+              },
+              {
+                "stepId": "brand_concept",
+                "primaryAgent": "marketing_branding",
+                "supportingAgents": ["ideation_agent"],
+                "inputRequirements": ["Refined business concept", "Target audience", "Competitive landscape"],
+                "outputFormat": "brand_identity_system",
+                "nextStep": "documentation"
+              },
+              {
+                "stepId": "documentation",
+                "primaryAgent": "copywriter_author",
+                "supportingAgents": ["editor_in_chief"],
+                "inputRequirements": ["Business concept", "Brand identity", "Supporting research"],
+                "outputFormat": "business_concept_document",
+                "responseFormat": {
+                  "structure": "HTML document with proper heading hierarchy",
+                  "sections": ["Executive Summary", "Business Concept", "Market Opportunity", "Brand Positioning", "Next Steps"],
+                  "formatting": "Clean, professional HTML with appropriate headings, bullet points, and emphasis"
+                },
+                "nextStep": null
+              }
+            ]
+          },
+          {
+            "stageId": "strategic_business_planning",
+            "name": "Strategic Business Planning",
+            "steps": [
+              {
+                "stepId": "business_model_definition",
+                "primaryAgent": "business_development",
+                "supportingAgents": ["ideation_agent"],
+                "inputRequirements": ["Refined business concept", "Target market", "Value proposition"],
+                "outputFormat": "business_model_canvas",
+                "nextStep": "market_size_analysis"
+              },
+              {
+                "stepId": "market_size_analysis",
+                "primaryAgent": "bls_data_handler",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Business model", "Target segments", "Geographic scope"],
+                "outputFormat": "market_opportunity_report",
+                "nextStep": "financial_projections"
+              },
+              {
+                "stepId": "financial_projections",
+                "primaryAgent": "finance_budgeting",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Business model", "Market size", "Pricing strategy"],
+                "outputFormat": "financial_projections",
+                "responseFormat": {
+                  "structure": "HTML tables with financial projections",
+                  "elements": ["Income Statement", "Cash Flow", "Balance Sheet", "Key Metrics"],
+                  "timeframes": ["Monthly (Year 1)", "Quarterly (Years 2-3)", "Annual (Years 4-5)"]
+                },
+                "nextStep": "product_service_definition"
+              },
+              {
+                "stepId": "product_service_definition",
+                "primaryAgent": "product_development",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Business model", "Market requirements", "Financial constraints"],
+                "outputFormat": "product_roadmap",
+                "nextStep": "automation_planning"
+              },
+              {
+                "stepId": "automation_planning",
+                "primaryAgent": "automation_expert",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Business processes", "Integration needs", "Workflow requirements"],
+                "outputFormat": "detailed_flowchart",
+                "nextStep": null
+              }
+            ]
+          }
+        ]
+      },
+      
+      {
+        "workflowId": "phase2_launch_establishment",
+        "name": "Phase 2: Launch and Establishment",
+        "description": "Brand implementation, product finalization, and initial customer acquisition",
+        "leadAgent": "business_development",
+        "supportingAgents": ["marketing_branding", "product_development", "content_strategist", "seo_strategist", "onboarding_agent"],
+        "stages": [
+          {
+            "stageId": "market_launch_preparation",
+            "name": "Market Launch Preparation",
+            "steps": [
+              {
+                "stepId": "brand_implementation",
+                "primaryAgent": "marketing_branding",
+                "supportingAgents": ["content_strategist"],
+                "inputRequirements": ["Brand strategy", "Visual identity", "Content needs"],
+                "outputFormat": "brand_identity_system",
+                "nextStep": "product_finalization"
+              },
+              {
+                "stepId": "product_finalization",
+                "primaryAgent": "product_development",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Product specifications", "Market feedback", "Development timeline"],
+                "outputFormat": "product_requirements_document",
+                "nextStep": "digital_presence"
+              },
+              {
+                "stepId": "digital_presence",
+                "primaryAgent": "content_strategist",
+                "supportingAgents": ["seo_strategist", "copywriter_author"],
+                "inputRequirements": ["Brand identity", "Target audience", "Key messages"],
+                "outputFormat": "content_strategy_document",
+                "nextStep": "marketing_materials"
+              },
+              {
+                "stepId": "marketing_materials",
+                "primaryAgent": "copywriter_author",
+                "supportingAgents": ["marketing_branding"],
+                "inputRequirements": ["Brand standards", "Product details", "Campaign strategy"],
+                "outputFormat": "marketing_collateral",
+                "nextStep": "content_review"
+              },
+              {
+                "stepId": "content_review",
+                "primaryAgent": "editor_in_chief",
+                "supportingAgents": [],
+                "inputRequirements": ["Marketing materials", "Digital content", "Brand standards"],
+                "outputFormat": "html_formatted_document",
+                "responseFormat": {
+                  "structure": "Multiple HTML documents with proper formatting",
+                  "elements": ["Website pages", "Marketing collateral", "Sales materials"],
+                  "styling": "Consistent branding, proper heading structure, responsive layouts"
+                },
+                "nextStep": null
+              }
+            ]
+          },
+          {
+            "stageId": "initial_customer_acquisition",
+            "name": "Initial Customer Acquisition",
+            "steps": [
+              {
+                "stepId": "launch_strategy",
+                "primaryAgent": "business_development",
+                "supportingAgents": ["marketing_branding"],
+                "inputRequirements": ["Market analysis", "Product readiness", "Brand strategy"],
+                "outputFormat": "go_to_market_plan",
+                "nextStep": "seo_implementation"
+              },
+              {
+                "stepId": "seo_implementation",
+                "primaryAgent": "seo_strategist",
+                "supportingAgents": ["content_strategist"],
+                "inputRequirements": ["Keyword research", "Content plan", "Technical specifications"],
+                "outputFormat": "seo_audit",
+                "nextStep": "social_media_setup"
+              },
+              {
+                "stepId": "social_media_setup",
+                "primaryAgent": "content_planner",
+                "supportingAgents": ["engagement_hooks_agent"],
+                "inputRequirements": ["Brand identity", "Target audience", "Content strategy"],
+                "outputFormat": "content_calendar",
+                "nextStep": "customer_onboarding"
+              },
+              {
+                "stepId": "customer_onboarding",
+                "primaryAgent": "onboarding_agent",
+                "supportingAgents": ["product_development"],
+                "inputRequirements": ["Product details", "Customer segments", "Common questions"],
+                "outputFormat": "onboarding_journey",
+                "nextStep": "feedback_setup"
+              },
+              {
+                "stepId": "feedback_setup",
+                "primaryAgent": "customer_experience_specialist",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Customer journey", "Key touchpoints", "Success metrics"],
+                "outputFormat": "feedback_analysis_report",
+                "nextStep": null
+              }
+            ]
+          }
+        ]
+      },
+      
+      {
+        "workflowId": "phase3_growth_optimization",
+        "name": "Phase 3: Growth and Optimization",
+        "description": "Customer experience improvement, marketing growth, and process optimization",
+        "leadAgent": "customer_experience_specialist",
+        "supportingAgents": ["content_strategist", "engagement_hooks_agent", "seo_strategist", "finance_budgeting", "automation_expert"],
+        "stages": [
+          {
+            "stageId": "customer_experience_optimization",
+            "name": "Customer Experience Optimization",
+            "steps": [
+              {
+                "stepId": "feedback_collection",
+                "primaryAgent": "customer_experience_specialist",
+                "supportingAgents": ["onboarding_agent"],
+                "inputRequirements": ["Customer segments", "Key touchpoints", "Success metrics"],
+                "outputFormat": "feedback_analysis_report",
+                "nextStep": "experience_analysis"
+              },
+              {
+                "stepId": "experience_analysis",
+                "primaryAgent": "customer_experience_specialist",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Customer feedback", "Business goals", "Industry benchmarks"],
+                "outputFormat": "customer_journey_map",
+                "nextStep": "product_refinement"
+              },
+              {
+                "stepId": "product_refinement",
+                "primaryAgent": "product_development",
+                "supportingAgents": ["customer_experience_specialist"],
+                "inputRequirements": ["Customer feedback", "Usage data", "Market trends"],
+                "outputFormat": "product_roadmap",
+                "nextStep": "process_automation"
+              },
+              {
+                "stepId": "process_automation",
+                "primaryAgent": "automation_expert",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Business processes", "Efficiency gaps", "Integration needs"],
+                "outputFormat": "detailed_flowchart",
+                "responseFormat": {
+                  "structure": "Visual workflow diagrams with supporting documentation",
+                  "platforms": ["Make.com", "n8n", "Zapier"],
+                  "elements": ["Triggers", "Actions", "Logic", "Integrations", "Data mapping"]
+                },
+                "nextStep": "documentation_update"
+              },
+              {
+                "stepId": "documentation_update",
+                "primaryAgent": "copywriter_author",
+                "supportingAgents": ["editor_in_chief"],
+                "inputRequirements": ["Product changes", "Process improvements", "Customer guidance"],
+                "outputFormat": "ebook",
+                "nextStep": null
+              }
+            ]
+          },
+          {
+            "stageId": "marketing_growth_strategy",
+            "name": "Marketing Growth Strategy",
+            "steps": [
+              {
+                "stepId": "content_calendar",
+                "primaryAgent": "content_planner",
+                "supportingAgents": ["content_strategist"],
+                "inputRequirements": ["Content performance", "Business goals", "Audience insights"],
+                "outputFormat": "content_calendar",
+                "nextStep": "seo_optimization"
+              },
+              {
+                "stepId": "seo_optimization",
+                "primaryAgent": "seo_strategist",
+                "supportingAgents": ["content_strategist"],
+                "inputRequirements": ["Current rankings", "Content inventory", "Competitor analysis"],
+                "outputFormat": "content_optimization_plan",
+                "nextStep": "engagement_strategy"
+              },
+              {
+                "stepId": "engagement_strategy",
+                "primaryAgent": "engagement_hooks_agent",
+                "supportingAgents": ["content_planner"],
+                "inputRequirements": ["Content calendar", "Audience behavior", "Platform analytics"],
+                "outputFormat": "hook_variations",
+                "nextStep": "marketing_roi"
+              },
+              {
+                "stepId": "marketing_roi",
+                "primaryAgent": "finance_budgeting",
+                "supportingAgents": ["marketing_branding"],
+                "inputRequirements": ["Marketing spend", "Performance metrics", "Acquisition costs"],
+                "outputFormat": "financial_scenario_analysis",
+                "nextStep": "content_production"
+              },
+              {
+                "stepId": "content_production",
+                "primaryAgent": "copywriter_author",
+                "supportingAgents": ["editor_in_chief"],
+                "inputRequirements": ["Content briefs", "SEO requirements", "Brand standards"],
+                "outputFormat": "blog_post",
+                "responseFormat": {
+                  "structure": "SEO-optimized HTML with proper heading hierarchy",
+                  "elements": ["H1 title", "Meta description", "Intro", "H2/H3 sections", "CTAs", "Schema markup"],
+                  "formatting": "Clean, accessible HTML with semantic structure"
+                },
+                "nextStep": null
+              }
+            ]
+          }
+        ]
+      },
+      
+      {
+        "workflowId": "phase4_scaling_beyond_10m",
+        "name": "Phase 4: Scaling Beyond $10 Million",
+        "description": "Business scaling strategy, market expansion, and enterprise-level automation",
+        "leadAgent": "business_development",
+        "supportingAgents": ["finance_budgeting", "automation_expert", "bls_data_handler", "dashboard_agent", "marketing_branding"],
+        "stages": [
+          {
+            "stageId": "business_scaling_strategy",
+            "name": "Business Scaling Strategy",
+            "steps": [
+              {
+                "stepId": "market_expansion",
+                "primaryAgent": "bls_data_handler",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Current markets", "Growth targets", "Industry trends"],
+                "outputFormat": "market_analysis_report",
+                "nextStep": "financial_model"
+              },
+              {
+                "stepId": "financial_model",
+                "primaryAgent": "finance_budgeting",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Growth targets", "Historical performance", "Market potential"],
+                "outputFormat": "financial_projections",
+                "nextStep": "resource_planning"
+              },
+              {
+                "stepId": "resource_planning",
+                "primaryAgent": "business_development",
+                "supportingAgents": ["finance_budgeting"],
+                "inputRequirements": ["Growth strategy", "Financial projections", "Operational needs"],
+                "outputFormat": "business_plan",
+                "nextStep": "process_optimization"
+              },
+              {
+                "stepId": "process_optimization",
+                "primaryAgent": "automation_expert",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Business processes", "Scale requirements", "Integration needs"],
+                "outputFormat": "setup_instructions",
+                "nextStep": "documentation"
+              },
+              {
+                "stepId": "documentation",
+                "primaryAgent": "copywriter_author",
+                "supportingAgents": ["editor_in_chief"],
+                "inputRequirements": ["Scaling strategy", "Market expansion", "Operational changes"],
+                "outputFormat": "ebook",
+                "responseFormat": {
+                  "structure": "Comprehensive HTML document with proper formatting",
+                  "sections": ["Executive Summary", "Market Expansion Strategy", "Financial Model", "Operational Scaling", "Implementation Roadmap"],
+                  "formatting": "Professional HTML with headers, tables, bullet points, callout boxes"
+                },
+                "nextStep": null
+              }
+            ]
+          },
+          {
+            "stageId": "brand_market_position_scaling",
+            "name": "Brand & Market Position Scaling",
+            "steps": [
+              {
+                "stepId": "brand_evolution",
+                "primaryAgent": "marketing_branding",
+                "supportingAgents": ["business_development"],
+                "inputRequirements": ["Current brand position", "Growth targets", "Market perception"],
+                "outputFormat": "brand_identity_system",
+                "nextStep": "market_position"
+              },
+              {
+                "stepId": "market_position",
+                "primaryAgent": "bls_data_handler",
+                "supportingAgents": ["marketing_branding"],
+                "inputRequirements": ["Industry data", "Competitive landscape", "Market trends"],
+                "outputFormat": "market_analysis_report",
+                "nextStep": "content_scaling"
+              },
+              {
+                "stepId": "content_scaling",
+                "primaryAgent": "content_strategist",
+                "supportingAgents": ["seo_strategist"],
+                "inputRequirements": ["Brand evolution", "Market position", "Audience expansion"],
+                "outputFormat": "content_strategy_document",
+                "nextStep": "customer_experience"
+              },
+              {
+                "stepId": "customer_experience",
+                "primaryAgent": "customer_experience_specialist",
+                "supportingAgents": ["onboarding_agent"],
+                "inputRequirements": ["Scale requirements", "Customer segments", "Service model"],
+                "outputFormat": "customer_journey_map",
+                "nextStep": "performance_dashboard"
+              },
+              {
+                "stepId": "performance_dashboard",
+                "primaryAgent": "dashboard_agent",
+                "supportingAgents": ["finance_budgeting"],
+                "inputRequirements": ["KPIs", "Success metrics", "Reporting requirements"],
+                "outputFormat": "business_metrics_dashboard",
+                "responseFormat": {
+                  "structure": "Interactive HTML dashboard with real-time metrics",
+                  "sections": ["Financial Performance", "Marketing Metrics", "Customer Experience", "Operational Efficiency"],
+                  "visualizations": ["Charts", "Gauges", "Trend indicators", "Comparative analysis"]
+                },
+                "nextStep": null
+              }
+            ]
+          }
+        ]
+      }
     ],
-
+    
+    /* 
+    RESPONSE FORMAT SPECIFICATIONS
+    Define standardized formats for agent outputs to ensure consistency
+    */
     "responseFormatSpecifications": {
-      // Define standard formats for agent outputs
+      "htmlFormatting": {
+        "universalStandards": {
+          "headingHierarchy": {
+            "h1": "Main document title (only one per document)",
+            "h2": "Major sections",
+            "h3": "Subsections",
+            "h4": "Component headings within subsections",
+            "h5": "Minor headings/callouts",
+            "h6": "Special emphasis or metadata headings"
+          },
+          "listFormatting": {
+            "unorderedLists": "Use for items where order is not significant",
+            "orderedLists": "Use for sequential steps or prioritized items",
+            "definitionLists": "Use for term-definition pairs"
+          },
+          "tableStructure": {
+            "simpleTables": "Use for basic data presentation",
+            "complexTables": "Include thead, tbody, caption for accessibility",
+            "responsiveTables": "Ensure tables work on mobile devices"
+          },
+          "mediaEmbedding": {
+            "charts": "Use appropriate chart type for data visualization",
+            "images": "Include alt text and responsive sizing",
+            "videos": "Embed with controls and fallback content"
+          }
+        },
+        "editorReviewCheckpoints": {
+          "structure": "Proper document structure with semantic HTML5 elements",
+          "headings": "Logical heading hierarchy without skipping levels",
+          "lists": "Appropriate list types with semantic markup",
+          "tables": "Properly formatted tables with headers and accessibility features",
+          "links": "Descriptive link text with proper attributes",
+          "schema": "Appropriate schema.org markup for content type"
+        }
+      },
+      
+      "financialDocuments": {
+        "projectionTables": {
+          "incomeStatement": ["Revenue streams", "COGS", "Gross margin", "Operating expenses", "EBITDA", "Net profit"],
+          "cashFlow": ["Operating activities", "Investing activities", "Financing activities", "Net cash position"],
+          "balanceSheet": ["Assets", "Liabilities", "Equity"]
+        },
+        "budgetFormats": {
+          "departmentalBudget": ["Department", "Category", "Monthly allocation", "Annual total", "Notes"],
+          "projectBudget": ["Phase", "Resource", "Estimated cost", "Actual cost", "Variance"]
+        },
+        "metricsDashboards": {
+          "financialHealth": ["Cash runway", "Burn rate", "Gross margin", "Customer acquisition cost", "LTV"],
+          "growthMetrics": ["MRR growth", "Customer growth", "Expansion revenue", "Churn rate"]
+        }
+      },
+      
+      "marketingDocuments": {
+        "contentPlans": {
+          "socialMediaCalendar": ["Date", "Platform", "Content type", "Topic", "CTA", "Assets needed"],
+          "editorialCalendar": ["Publish date", "Content type", "Topic", "Keywords", "Author", "Status"]
+        },
+        "campaignBriefs": {
+          "structure": ["Campaign overview", "Objectives", "Target audience", "Messaging", "Channels", "Timeline", "Budget", "KPIs"],
+          "formatting": "Clear headings with bulleted objectives and KPIs"
+        },
+        "audiencePersonas": {
+          "elements": ["Demographics", "Psychographics", "Goals", "Pain points", "Information sources", "Decision criteria"],
+          "presentation": "Visual profile with concise bullet points"
+        }
+      },
+      
+      "businessDocuments": {
+        "businessPlans": {
+          "sections": ["Executive summary", "Company description", "Market analysis", "Organization structure", "Product/service line", "Marketing strategy", "Financial projections"],
+          "formatting": "Professional document with clear section breaks and summary tables"
+        },
+        "marketAnalysis": {
+          "elements": ["Market size", "Growth trends", "Customer segments", "Competitive landscape", "Regulatory factors"],
+          "visualizations": ["Market size charts", "Competitive positioning matrix", "Trend graphs"]
+        },
+        "swotAnalysis": {
+          "structure": "2x2 grid with clear headers",
+          "content": "Bulleted items in each quadrant with brief explanations"
+        }
+      },
+      
+      "productDocuments": {
+        "productRequirements": {
+          "sections": ["Overview", "User stories", "Functional requirements", "Non-functional requirements", "Constraints", "Acceptance criteria"],
+          "formatting": "Numbered requirements with priority indicators"
+        },
+        "roadmaps": {
+          "timeline": ["Now", "Next", "Later"],
+"productDocuments": {
+        "productRequirements": {
+          "sections": ["Overview", "User stories", "Functional requirements", "Non-functional requirements", "Constraints", "Acceptance criteria"],
+          "formatting": "Numbered requirements with priority indicators"
+        },
+        "roadmaps": {
+          "timeline": ["Now", "Next", "Later"],
+          "categories": ["Features", "Infrastructure", "UX improvements", "Technical debt"],
+          "visualization": "Gantt chart or timeline view with dependencies"
+        },
+        "featureBriefs": {
+          "structure": ["Problem statement", "Proposed solution", "User benefit", "Implementation approach", "Success metrics"],
+          "formatting": "Concise document with clear problem-solution framing"
+        }
+      }
     },
-
+    
+    /* 
+    DATA TRANSFORMATION RULES
+    Define how data should be transformed when passing between agents
+    */
     "dataTransformationRules": [
-      // Define how data transforms between agents  
+      {
+        "sourceAgent": "business_development",
+        "targetAgent": "finance_budgeting",
+        "dataType": "business_model",
+        "transformation": {
+          "input": ["Revenue streams", "Pricing strategy", "Cost structure", "Growth projections"],
+          "output": ["Financial model parameters", "Budget categories", "Revenue forecasting rules"]
+        }
+      },
+      {
+        "sourceAgent": "bls_data_handler",
+        "targetAgent": "business_development",
+        "dataType": "market_analysis",
+        "transformation": {
+          "input": ["Industry data", "Employment statistics", "Wage information", "Growth trends"],
+          "output": ["Market opportunity size", "Competitive landscape", "Talent availability", "Cost structure implications"]
+        }
+      },
+      {
+        "sourceAgent": "content_strategist",
+        "targetAgent": "copywriter_author",
+        "dataType": "content_brief",
+        "transformation": {
+          "input": ["Content strategy", "Audience personas", "Key messages", "Channel requirements"],
+          "output": ["Content brief", "Tone guidelines", "Word count", "SEO parameters", "CTA specifications"]
+        }
+      },
+      {
+        "sourceAgent": "copywriter_author",
+        "targetAgent": "editor_in_chief",
+        "dataType": "draft_content",
+        "transformation": {
+          "input": ["Raw content", "Content type", "Target audience", "Distribution channel"],
+          "output": ["Formatted content", "HTML structure", "Metadata recommendations", "Citation requirements"]
+        }
+      },
+      {
+        "sourceAgent": "customer_experience_specialist",
+        "targetAgent": "product_development",
+        "dataType": "customer_feedback",
+        "transformation": {
+          "input": ["Customer comments", "Satisfaction scores", "Usage patterns", "Feature requests"],
+          "output": ["Prioritized enhancement requests", "Usability improvement recommendations", "Feature adoption metrics"]
+        }
+      },
+      {
+        "sourceAgent": "automation_expert",
+        "targetAgent": "business_development",
+        "dataType": "automation_analysis",
+        "transformation": {
+          "input": ["Process mapping", "Automation potential", "Integration requirements", "Platform recommendations"],
+          "output": ["Efficiency gain projections", "Resource reallocation opportunities", "Implementation roadmap"]
+        }
+      }
     ],
-
+    
+    /* 
+    AGENT COORDINATION PROTOCOLS
+    Define how agents should work together in specific scenarios
+    */
     "agentCoordinationProtocols": [
-      // Define how agents work together
+      {
+        "scenarioId": "new_business_concept",
+        "description": "Creating and evaluating a new business idea",
+        "workflow": [
+          {
+            "sequence": 1,
+            "agent": "ideation_agent",
+            "action": "Generate initial business concepts based on input parameters",
+            "outputTo": ["business_development", "bls_data_handler"]
+          },
+          {
+            "sequence": 2,
+            "agent": "bls_data_handler",
+            "action": "Research market viability of concepts",
+            "outputTo": ["ideation_agent", "business_development"]
+          },
+          {
+            "sequence": 3,
+            "agent": "business_development",
+            "action": "Evaluate business model potential and market fit",
+            "outputTo": ["ideation_agent", "finance_budgeting"]
+          },
+          {
+            "sequence": 4,
+            "agent": "finance_budgeting",
+            "action": "Create initial financial projections",
+            "outputTo": ["business_development", "ideation_agent"]
+          },
+          {
+            "sequence": 5,
+            "agent": "ideation_agent",
+            "action": "Refine concept based on all input",
+            "outputTo": ["copywriter_author", "marketing_branding"]
+          },
+          {
+            "sequence": 6,
+            "agent": "copywriter_author",
+            "action": "Document refined business concept",
+            "outputTo": ["editor_in_chief"]
+          },
+          {
+            "sequence": 7,
+            "agent": "editor_in_chief",
+            "action": "Format final business concept document in HTML",
+            "outputTo": ["user"]
+          }
+        ]
+      },
+      {
+        "scenarioId": "content_creation_workflow",
+        "description": "Creating optimized content for marketing",
+        "workflow": [
+          {
+            "sequence": 1,
+            "agent": "content_strategist",
+            "action": "Define content strategy and content brief",
+            "outputTo": ["seo_strategist", "copywriter_author"]
+          },
+          {
+            "sequence": 2,
+            "agent": "seo_strategist",
+            "action": "Provide keyword research and SEO guidelines",
+            "outputTo": ["copywriter_author", "content_strategist"]
+          },
+          {
+            "sequence": 3,
+            "agent": "copywriter_author",
+            "action": "Create draft content based on brief and SEO guidelines",
+            "outputTo": ["editor_in_chief", "content_strategist"]
+          },
+          {
+            "sequence": 4,
+            "agent": "editor_in_chief",
+            "action": "Review, edit, and format content in HTML",
+            "outputTo": ["seo_strategist", "content_strategist"]
+          },
+          {
+            "sequence": 5,
+            "agent": "seo_strategist",
+            "action": "Verify SEO implementation and make final recommendations",
+            "outputTo": ["editor_in_chief"]
+          },
+          {
+            "sequence": 6,
+            "agent": "editor_in_chief",
+            "action": "Implement final SEO recommendations and format for publication",
+            "outputTo": ["user"]
+          }
+        ]
+      },
+      {
+        "scenarioId": "automation_implementation",
+        "description": "Creating business process automations",
+        "workflow": [
+          {
+            "sequence": 1,
+            "agent": "business_development",
+            "action": "Identify automation needs and business processes",
+            "outputTo": ["automation_expert"]
+          },
+          {
+            "sequence": 2,
+            "agent": "automation_expert",
+            "action": "Analyze processes and recommend automation platform (Make.com, n8n, or Zapier)",
+            "outputTo": ["business_development", "product_development"]
+          },
+          {
+            "sequence": 3,
+            "agent": "product_development",
+            "action": "Provide technical requirements and constraints",
+            "outputTo": ["automation_expert"]
+          },
+          {
+            "sequence": 4,
+            "agent": "automation_expert",
+            "action": "Design automation workflow with specific platform details",
+            "outputTo": ["business_development", "dashboard_agent"]
+          },
+          {
+            "sequence": 5,
+            "agent": "dashboard_agent",
+            "action": "Create monitoring framework for automation performance",
+            "outputTo": ["automation_expert"]
+          },
+          {
+            "sequence": 6,
+            "agent": "automation_expert",
+            "action": "Finalize automation documentation with implementation steps",
+            "outputTo": ["editor_in_chief"]
+          },
+          {
+            "sequence": 7,
+            "agent": "editor_in_chief",
+            "action": "Format automation documentation in HTML with proper structure",
+            "outputTo": ["user"]
+          }
+        ]
+      },
+      {
+        "scenarioId": "customer_feedback_implementation",
+        "description": "Analyzing and implementing customer feedback",
+        "workflow": [
+          {
+            "sequence": 1,
+            "agent": "customer_experience_specialist",
+            "action": "Collect and analyze customer feedback",
+            "outputTo": ["business_development", "product_development"]
+          },
+          {
+            "sequence": 2,
+            "agent": "business_development",
+            "action": "Evaluate strategic implications of feedback",
+            "outputTo": ["product_development", "marketing_branding"]
+          },
+          {
+            "sequence": 3,
+            "agent": "product_development",
+            "action": "Create enhancement roadmap based on feedback",
+            "outputTo": ["customer_experience_specialist", "automation_expert"]
+          },
+          {
+            "sequence": 4,
+            "agent": "automation_expert",
+            "action": "Identify process improvements and automation opportunities",
+            "outputTo": ["product_development", "business_development"]
+          },
+          {
+            "sequence": 5,
+            "agent": "marketing_branding",
+            "action": "Update messaging and positioning based on customer insights",
+            "outputTo": ["content_strategist", "copywriter_author"]
+          },
+          {
+            "sequence": 6,
+            "agent": "copywriter_author",
+            "action": "Create customer communication about improvements",
+            "outputTo": ["editor_in_chief"]
+          },
+          {
+            "sequence": 7,
+            "agent": "editor_in_chief",
+            "action": "Format all documentation in HTML with proper structure",
+            "outputTo": ["user"]
+          }
+        ]
+      }
     ],
-
+    
+    /* 
+    USER QUERY ROUTING RULES
+    Define how to interpret user queries and route to appropriate agents
+    */
     "userQueryRoutingRules": [
-      // Define how to route user queries to agents
+      {
+        "queryPattern": "(?i).*start.*business.*|(?i).*business idea.*|(?i).*new venture.*",
+        "primaryAgent": "ideation_agent",
+        "supportingAgents": ["business_development", "bls_data_handler"],
+        "workflowId": "phase1_ideation_planning"
+      },
+      {
+        "queryPattern": "(?i).*marketing.*strategy.*|(?i).*brand.*identity.*|(?i).*positioning.*",
+        "primaryAgent": "marketing_branding",
+        "supportingAgents": ["content_strategist", "seo_strategist"],
+        "workflowStage": "market_launch_preparation"
+      },
+      {
+        "queryPattern": "(?i).*financial.*projection.*|(?i).*budget.*|(?i).*revenue.*forecast.*",
+        "primaryAgent": "finance_budgeting",
+        "supportingAgents": ["business_development", "dashboard_agent"],
+        "responseFormat": "financial_projections"
+      },
+      {
+        "queryPattern": "(?i).*automation.*|(?i).*workflow.*|(?i).*(make\\.com|n8n|zapier).*",
+        "primaryAgent": "automation_expert",
+        "supportingAgents": ["business_development", "product_development"],
+        "scenarioId": "automation_implementation"
+      },
+      {
+        "queryPattern": "(?i).*content.*strategy.*|(?i).*blog.*|(?i).*social media.*content.*",
+        "primaryAgent": "content_strategist",
+        "supportingAgents": ["content_planner", "copywriter_author", "seo_strategist"],
+        "scenarioId": "content_creation_workflow"
+      },
+      {
+        "queryPattern": "(?i).*customer.*feedback.*|(?i).*improve.*experience.*|(?i).*user.*satisfaction.*",
+        "primaryAgent": "customer_experience_specialist",
+        "supportingAgents": ["product_development", "business_development"],
+        "scenarioId": "customer_feedback_implementation"
+      },
+      {
+        "queryPattern": "(?i).*market.*research.*|(?i).*industry.*data.*|(?i).*labor.*statistics.*",
+        "primaryAgent": "bls_data_handler",
+        "supportingAgents": ["business_development", "ideation_agent"],
+        "responseFormat": "market_analysis_report"
+      },
+      {
+        "queryPattern": "(?i).*business.*plan.*|(?i).*strategy.*|(?i).*growth.*plan.*",
+        "primaryAgent": "business_development",
+        "supportingAgents": ["finance_budgeting", "marketing_branding", "product_development"],
+        "responseFormat": "business_plan"
+      },
+      {
+        "queryPattern": "(?i).*product.*development.*|(?i).*feature.*roadmap.*|(?i).*mvp.*",
+        "primaryAgent": "product_development",
+        "supportingAgents": ["business_development", "customer_experience_specialist"],
+        "responseFormat": "product_roadmap"
+      },
+      {
+        "queryPattern": "(?i).*seo.*|(?i).*search.*ranking.*|(?i).*keyword.*",
+        "primaryAgent": "seo_strategist",
+        "supportingAgents": ["content_strategist", "copywriter_author"],
+        "responseFormat": "keyword_research"
+      },
+      {
+        "queryPattern": "(?i).*format.*document.*|(?i).*html.*formatting.*|(?i).*edit.*content.*",
+        "primaryAgent": "editor_in_chief",
+        "supportingAgents": ["copywriter_author"],
+        "responseFormat": "html_formatted_document"
+      }
     ],
-
+    
+    /* 
+    HTML FORMATTING STANDARDS
+    Specific HTML formatting requirements for different document types
+    */
     "htmlFormattingStandards": {
-      // Define HTML formatting requirements
+      "businessDocuments": {
+        "headingStructure": {
+          "h1": "Document title",
+          "h2": "Major sections (Executive Summary, Background, Analysis, etc.)",
+          "h3": "Subsections within major sections",
+          "h4": "Component headings within subsections"
+        },
+        "requiredElements": {
+          "header": "Document metadata including title, date, version",
+          "tableOfContents": "For documents longer than 1500 words",
+          "executiveSummary": "Brief overview of key points",
+          "footer": "Contact information, references, appendices links"
+        },
+        "tableFormatting": {
+          "financialTables": "Right-aligned numbers, currency formatting, totals rows",
+          "comparisonTables": "Highlighted differences, color-coding for positive/negative values",
+          "dataTables": "Sortable headers, alternate row coloring, responsive design"
+        }
+      },
+      "marketingContent": {
+        "headingStructure": {
+          "h1": "Primary headline (SEO-optimized)",
+          "h2": "Key messaging sections or benefits",
+          "h3": "Supporting points or features"
+        },
+        "requiredElements": {
+          "callToAction": "Prominent buttons or links with action verbs",
+          "benefitsList": "Bullet points highlighting key advantages",
+          "socialProof": "Testimonials, statistics, or case study snippets"
+        },
+        "mediaElements": {
+          "images": "Responsive sizing, alt text, captions",
+          "videos": "Thumbnails, captions, transcripts",
+          "infographics": "Sectioned content with clear visual hierarchy"
+        }
+      },
+      "technicalDocumentation": {
+        "headingStructure": {
+          "h1": "Document title",
+          "h2": "Major sections or steps",
+          "h3": "Technical components or sub-steps",
+          "h4": "Specific implementation details"
+        },
+        "requiredElements": {
+          "prerequisites": "Required tools, knowledge, or setup",
+          "codeBlocks": "Syntax-highlighted code snippets",
+          "notes": "Important considerations or warnings",
+          "stepByStep": "Numbered lists for sequential processes"
+        },
+        "specialFormatting": {
+          "commands": "Monospace font within <code> tags",
+          "parameters": "Italicized or bold within code blocks",
+          "outputSamples": "Indented or boxed expected results"
+        }
+      },
+      "socialMedia": {
+        "headingStructure": {
+          "h1": "Post title or headline",
+          "h2": "Content sections (if applicable)"
+        },
+        "requiredElements": {
+          "postText": "Main message with appropriate length per platform",
+          "callToAction": "Clear next steps or engagement prompt",
+          "hashtags": "Properly formatted with # symbol"
+        },
+        "platformSpecific": {
+          "twitter": "280 character limit, hashtags, mentions",
+          "linkedin": "Professional tone, industry hashtags, longer format",
+          "instagram": "Visual-first content, multiple hashtags, emoji usage",
+          "facebook": "Conversational tone, community focus, event promotion"
+        }
+      }
     }
   }
 }
+
+
+This backend data store provides a comprehensive framework that defines:
+1.	Agent Interaction Models: Detailed specifications for each of the 16 agents, including their input requirements, output formats, and data exchange patterns with other agents.
+2.	Workflow Definitions: Four main workflows corresponding to the business phases, with detailed stages and steps showing how agents interact in sequence.
+3.	Response Format Specifications: Standardized formats for different types of business documents to ensure consistency across agent outputs.
+4.	Data Transformation Rules: How information should be translated when passing between agents to ensure seamless collaboration.
+5.	Agent Coordination Protocols: Specific scenarios showing how agents collaborate on common business tasks.
+6.	User Query Routing Rules: Pattern matching to determine which agents should handle specific types of user requests.
+7.	HTML Formatting Standards: Detailed specifications for the Editor-in-Chief to ensure all content is properly formatted according to document type.
+This backend specification provides the technical foundation for how your 16 agents will interact with users and each other. It ensures consistent output formats, seamless workflow transitions, and organized information exchange between agents across all four phases of business development.
+
