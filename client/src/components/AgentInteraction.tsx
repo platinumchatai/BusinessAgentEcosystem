@@ -5,6 +5,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { agents, AgentType } from "@/data/agents";
 import type { Message as DatabaseMessage } from "@shared/schema";
+import { formatMessageContent } from "@/lib/formatMessage";
 
 interface Message extends DatabaseMessage {
   agentAvatar?: string;
@@ -209,7 +210,7 @@ const AgentInteraction = () => {
                     ) : (
                       <div 
                         className="text-sm prose prose-sm max-w-none" 
-                        dangerouslySetInnerHTML={{ __html: msg.content }}
+                        dangerouslySetInnerHTML={{ __html: formatMessageContent(msg.content) }}
                       />
                     )}
                   </div>

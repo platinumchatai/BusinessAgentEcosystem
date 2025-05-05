@@ -6,6 +6,7 @@ import { Avatar } from '@/components/ui/avatar';
 import { SendHorizontal, Bot, User, ArrowLeft } from 'lucide-react';
 import BackNavigation from '@/components/BackNavigation';
 import { cn } from '@/lib/utils';
+import { formatMessageContent } from '@/lib/formatMessage';
 
 type Message = {
   id: string;
@@ -212,7 +213,7 @@ const Consultation = () => {
                       : "bg-gray-100 border border-gray-200 text-gray-800 font-medium rounded-bl-none"
                   )}>
                     {message.role === "assistant" ? (
-                      <div dangerouslySetInnerHTML={{ __html: message.content }} className="prose prose-sm max-w-none" />
+                      <div dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }} className="prose prose-sm max-w-none" />
                     ) : (
                       message.content
                     )}

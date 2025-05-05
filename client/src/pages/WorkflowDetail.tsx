@@ -6,6 +6,7 @@ import { phases, agents, AgentType } from "@/data/agents";
 import { Users, Send, User, Bot, ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import BackNavigation from "@/components/BackNavigation";
+import { formatMessageContent } from "@/lib/formatMessage";
 
 const WorkflowDetail = () => {
   const { id } = useParams();
@@ -226,7 +227,11 @@ const WorkflowDetail = () => {
                   ? 'bg-primary text-white rounded-tr-none' 
                   : 'bg-gray-200 text-gray-800 rounded-tl-none'
               }`}>
-                {message.content}
+                {message.role === 'user' ? (
+                  message.content
+                ) : (
+                  <div dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }} />
+                )}
               </div>
               <div className={`mt-1 text-xs text-gray-500 ${message.role === 'user' ? 'text-right' : ''}`}>
                 {message.role === 'user' ? 'You' : message.from || 'Assistant'}
