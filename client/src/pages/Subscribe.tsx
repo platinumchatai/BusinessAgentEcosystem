@@ -199,7 +199,7 @@ const Subscribe = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="text-center max-w-3xl mx-auto mb-12">
           <h1 className="text-3xl font-bold mb-4 text-gray-900">Subscribe to Business Agency AI</h1>
-          <p className="text-gray-800 font-medium text-lg">
+          <p className="text-gray-100 font-medium text-lg bg-gradient-to-r from-[#1e4388] to-[#2a549e] py-4 px-6 rounded-lg">
             Get access to our advanced AI agent ecosystem and transform how you build and grow your business
           </p>
         </div>
