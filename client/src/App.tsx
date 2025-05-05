@@ -7,16 +7,20 @@ import Home from "@/pages/Home";
 import AgentDetail from "@/pages/AgentDetail";
 import WorkflowDetail from "@/pages/WorkflowDetail";
 import Consultation from "@/pages/Consultation";
-import Subscribe from "@/pages/Subscribe";
+import Subscribe from "@/pages/subscribe";
+import AuthPage from "@/pages/auth-page";
 import { useEffect } from 'react';
+import { AuthProvider } from "@/hooks/use-auth";
+import { ProtectedRoute } from "@/lib/protected-route";
 
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/agent/:id" component={AgentDetail} />
-      <Route path="/workflow/:id" component={WorkflowDetail} />
-      <Route path="/consultation" component={Consultation} />
+      <ProtectedRoute path="/" component={Home} />
+      <ProtectedRoute path="/agent/:id" component={AgentDetail} />
+      <ProtectedRoute path="/workflow/:id" component={WorkflowDetail} />
+      <ProtectedRoute path="/consultation" component={Consultation} />
+      <Route path="/auth" component={AuthPage} />
       <Route path="/subscribe" component={Subscribe} />
       <Route component={NotFound} />
     </Switch>
@@ -34,8 +38,10 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Router />
-      <Toaster />
+      <AuthProvider>
+        <Router />
+        <Toaster />
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
