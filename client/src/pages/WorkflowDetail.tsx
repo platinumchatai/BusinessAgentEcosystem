@@ -236,7 +236,7 @@ const WorkflowDetail = () => {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             placeholder="Ask a question about this workflow..."
-            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-black"
+            className="flex-grow px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-gray-800"
           />
           <button 
             type="submit"
