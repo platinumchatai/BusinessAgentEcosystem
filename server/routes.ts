@@ -4,11 +4,15 @@ import { storage } from "./storage";
 import OpenAI from "openai";
 import { z } from "zod";
 import { nanoid } from "nanoid";
+import { setupAuth } from "./auth";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup authentication routes and middleware
+  setupAuth(app);
+  
   // API routes
   
   // Get all messages for the current session

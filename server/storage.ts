@@ -2,6 +2,10 @@ import { agents as agentsSchema, messages as messagesSchema, users, type User, t
 import { agents as agentsData } from "../client/src/data/agents";
 import { db } from "./db";
 import { eq, inArray } from "drizzle-orm";
+import session from "express-session";
+import connectPg from "connect-pg-simple";
+import { pool } from "./db";
+import createMemoryStore from "memorystore";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -9,18 +13,29 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateStripeCustomerId(userId: number, customerId: string): Promise<User>;
+  updateUserStripeInfo(userId: number, info: { customerId: string, subscriptionId: string, serviceLevel?: string }): Promise<User>;
   getAgents(): Promise<typeof agentsData>;
   getAgent(id: number): Promise<typeof agentsData[0] | undefined>;
   getAgentsByIds(ids: number[]): Promise<typeof agentsData>;
   getMessages(): Promise<Message[]>;
   createMessage(message: InsertMessage): Promise<Message>;
+  sessionStore: session.Store;
 }
 
 export class DatabaseStorage implements IStorage {
   private agents: typeof agentsData;
+  sessionStore: session.Store;
 
   constructor() {
     this.agents = agentsData;
+    
+    // Setup PostgreSQL-based session store
+    const PostgresStore = connectPg(session);
+    this.sessionStore = new PostgresStore({
+      pool,
+      createTableIfMissing: true
+    });
   }
 
   async getUser(id: number): Promise<User | undefined> {

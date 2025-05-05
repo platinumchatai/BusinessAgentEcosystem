@@ -6,6 +6,11 @@ export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  email: text("email"),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  serviceLevel: text("service_level"),
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export type User = typeof users.$inferSelect;
