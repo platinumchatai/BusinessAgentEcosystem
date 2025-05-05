@@ -66,9 +66,9 @@ export default function AuthPage() {
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-8 items-center">
         <div className="p-6 bg-white rounded-xl shadow-lg">
           <Tabs defaultValue="login" value={activeTab} onValueChange={(v) => setActiveTab(v as "login" | "register")}>
-            <TabsList className="grid w-full grid-cols-2 mb-6">
-              <TabsTrigger value="login">Log In</TabsTrigger>
-              <TabsTrigger value="register">Create Account</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-6 bg-blue-600">
+              <TabsTrigger value="login" className="text-white data-[state=active]:bg-blue-700">Log In</TabsTrigger>
+              <TabsTrigger value="register" className="text-white data-[state=active]:bg-blue-700">Create Account</TabsTrigger>
             </TabsList>
             
             <TabsContent value="login">
@@ -89,7 +89,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Username</FormLabel>
                             <FormControl>
-                              <Input placeholder="Enter your username" {...field} />
+                              <Input placeholder="Enter your username" className="bg-white text-gray-700" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -103,7 +103,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                              <Input type="password" placeholder="••••••••" {...field} />
+                              <Input type="password" placeholder="••••••••" className="bg-white text-gray-700" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -112,7 +112,7 @@ export default function AuthPage() {
 
                       <Button 
                         type="submit" 
-                        className="w-full" 
+                        className="w-full bg-blue-600 hover:bg-blue-700" 
                         disabled={loginMutation.isPending}
                       >
                         {loginMutation.isPending ? (
@@ -159,7 +159,7 @@ export default function AuthPage() {
                           <FormItem>
                             <FormLabel>Username</FormLabel>
                             <FormControl>
-                              <Input placeholder="Choose a username" {...field} />
+                              <Input placeholder="Choose a username" className="bg-white text-gray-700" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -176,6 +176,7 @@ export default function AuthPage() {
                               <Input 
                                 type="email" 
                                 placeholder="Enter your email" 
+                                className="bg-white text-gray-700"
                                 {...field} 
                               />
                             </FormControl>
@@ -194,6 +195,7 @@ export default function AuthPage() {
                               <Input 
                                 type="password" 
                                 placeholder="Create a password" 
+                                className="bg-white text-gray-700"
                                 {...field} 
                               />
                             </FormControl>
@@ -204,7 +206,7 @@ export default function AuthPage() {
 
                       <Button 
                         type="submit" 
-                        className="w-full" 
+                        className="w-full bg-blue-600 hover:bg-blue-700" 
                         disabled={registerMutation.isPending}
                       >
                         {registerMutation.isPending ? (
