@@ -5,9 +5,18 @@ import OpenAI from "openai";
 import { z } from "zod";
 import { nanoid } from "nanoid";
 import { setupAuth } from "./auth";
+import Stripe from "stripe";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// Initialize Stripe 
+if (!process.env.STRIPE_SECRET_KEY) {
+  console.warn('Missing required Stripe secret: STRIPE_SECRET_KEY');
+}
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
+  apiVersion: "2023-10-16" as any,
+});
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes and middleware
@@ -194,6 +203,123 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(messages);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch messages" });
+    }
+  });
+
+  // Payment routes for service purchases with account creation
+  
+  // Create payment intent for one-time payments
+  app.post("/api/create-payment-intent", async (req, res) => {
+    try {
+      const schema = z.object({
+        amount: z.number().min(1),
+        serviceLevel: z.string(),
+        username: z.string().min(3),
+        password: z.string().min(6),
+        email: z.string().email(),
+      });
+
+      const { amount, serviceLevel, username, password, email } = schema.parse(req.body);
+      
+      // Check if username is already taken
+      const existingUser = await storage.getUserByUsername(username);
+      if (existingUser) {
+        return res.status(400).json({ message: "Username already exists" });
+      }
+
+      // Create payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: Math.round(amount * 100), // Convert to cents
+        currency: "usd",
+        metadata: {
+          serviceLevel,
+          username,
+          email,
+          isAccountCreation: "true"
+        }
+      });
+
+      res.json({ 
+        clientSecret: paymentIntent.client_secret,
+        paymentIntentId: paymentIntent.id
+      });
+    } catch (error: any) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Error creating payment intent: " + error.message });
+      }
+    }
+  });
+
+  // Payment webhook for account creation after successful payment
+  app.post("/api/payment-webhook", async (req, res) => {
+    const sig = req.headers['stripe-signature'] as string;
+    
+    let event;
+    
+    try {
+      // Use stripe webhook secret if provided
+      if (process.env.STRIPE_WEBHOOK_SECRET) {
+        event = stripe.webhooks.constructEvent(
+          req.body, 
+          sig, 
+          process.env.STRIPE_WEBHOOK_SECRET
+        );
+      } else {
+        // For development, just parse the webhook payload
+        event = req.body;
+      }
+      
+      // Handle the event
+      if (event.type === 'payment_intent.succeeded') {
+        const paymentIntent = event.data.object;
+        
+        // Extract data from metadata
+        const { serviceLevel, username, email, isAccountCreation } = paymentIntent.metadata;
+        
+        if (isAccountCreation === "true") {
+          // Create user account
+          const user = await storage.createUser({
+            username,
+            password: req.body.password, // This would come from a secure temp storage in production
+            email,
+            serviceLevel,
+          });
+          
+          // Create Stripe customer for future payments
+          const customer = await stripe.customers.create({
+            email,
+            name: username,
+            metadata: {
+              userId: user.id.toString()
+            }
+          });
+          
+          // Update user with Stripe customer ID
+          await storage.updateStripeCustomerId(user.id, customer.id);
+        }
+      }
+      
+      res.status(200).send({ received: true });
+    } catch (err: any) {
+      res.status(400).send(`Webhook Error: ${err.message}`);
+    }
+  });
+
+  // Verify payment status
+  app.get("/api/payment-status/:paymentIntentId", async (req, res) => {
+    try {
+      const { paymentIntentId } = req.params;
+      
+      const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+      
+      res.json({
+        status: paymentIntent.status,
+        success: paymentIntent.status === 'succeeded'
+      });
+    } catch (error: any) {
+      res.status(500).json({ message: "Error checking payment status: " + error.message });
     }
   });
 

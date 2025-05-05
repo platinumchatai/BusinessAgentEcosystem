@@ -52,6 +52,31 @@ export class DatabaseStorage implements IStorage {
     const [user] = await db.insert(users).values(insertUser).returning();
     return user;
   }
+  
+  async updateStripeCustomerId(userId: number, customerId: string): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({ stripeCustomerId: customerId })
+      .where(eq(users.id, userId))
+      .returning();
+    return updatedUser;
+  }
+
+  async updateUserStripeInfo(
+    userId: number,
+    info: { customerId: string, subscriptionId: string, serviceLevel?: string }
+  ): Promise<User> {
+    const [updatedUser] = await db
+      .update(users)
+      .set({
+        stripeCustomerId: info.customerId,
+        stripeSubscriptionId: info.subscriptionId,
+        serviceLevel: info.serviceLevel || null
+      })
+      .where(eq(users.id, userId))
+      .returning();
+    return updatedUser;
+  }
 
   // For agents, we're still using the static data from the agentsData array
   // since these are predefined and not dynamically created
