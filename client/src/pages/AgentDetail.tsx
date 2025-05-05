@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { formatMessageContent } from "@/lib/formatMessage";
 
 const AgentDetail = () => {
   const { id } = useParams();
@@ -238,7 +239,10 @@ const AgentDetail = () => {
                         <span className="material-icons text-white text-sm">smart_toy</span>
                       </div>
                       <div className="bg-gray-100 rounded-lg p-3 max-w-[80%]">
-                        <p className="text-sm text-gray-800 font-medium">{agentResponse}</p>
+                        <div 
+                          className="text-sm text-gray-800"
+                          dangerouslySetInnerHTML={{ __html: formatMessageContent(agentResponse) }}
+                        />
                       </div>
                     </div>
                   </>
