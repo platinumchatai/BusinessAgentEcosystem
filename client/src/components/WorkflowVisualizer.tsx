@@ -199,10 +199,13 @@ const WorkflowVisualizer = () => {
                 </div>
                 <h4 className="font-heading font-semibold text-lg mb-2 text-gray-800">{step.title}</h4>
                 <p className="text-sm text-gray-600 font-medium">{step.description}</p>
-                <div className={`mt-3 flex items-center ${colors.text} text-sm font-semibold`}>
+                <Link 
+                  to={`/agent/${agents.find(a => a.name === step.agent)?.id || 1}`}
+                  className={`mt-3 flex items-center ${colors.text} text-sm font-semibold hover:underline cursor-pointer`}
+                >
                   <span className="material-icons text-sm mr-1">person</span>
                   <span>{step.agent}</span>
-                </div>
+                </Link>
               </motion.div>
             ))}
             
@@ -219,7 +222,12 @@ const WorkflowVisualizer = () => {
               <h4 className="font-heading font-semibold text-blue-800">Workflow Coordinator</h4>
             </div>
             <p className="text-sm mt-2 text-blue-700 font-medium">
-              The {activeWorkflow.coordinator} oversees this entire workflow, ensuring all specialized agents work together coherently.
+              The <Link 
+                to={`/agent/${agents.find(a => a.name === activeWorkflow.coordinator)?.id || 1}`}
+                className="text-blue-800 font-semibold hover:underline"
+              >
+                {activeWorkflow.coordinator}
+              </Link> oversees this entire workflow, ensuring all specialized agents work together coherently.
             </p>
           </div>
         </div>

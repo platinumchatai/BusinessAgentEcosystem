@@ -162,7 +162,12 @@ const WorkflowDetail = () => {
             <h5 className="font-medium text-sm">Workflow Coordinator</h5>
           </div>
           <p className="text-sm text-gray-600 mt-2">
-            The {workflow.coordinator} oversees this entire workflow, ensuring all specialized agents work together coherently.
+            The <Link 
+              to={`/agent/${agents.find(a => a.name === workflow.coordinator)?.id || 1}`}
+              className="text-blue-600 font-semibold hover:underline"
+            >
+              {workflow.coordinator}
+            </Link> oversees this entire workflow, ensuring all specialized agents work together coherently.
           </p>
         </div>
       </div>
@@ -178,7 +183,12 @@ const WorkflowDetail = () => {
               className="bg-gray-50 rounded-md p-4 border border-gray-100"
             >
               <div className="flex justify-between items-start mb-2">
-                <h5 className="font-medium text-base">{agent.name}</h5>
+                <Link
+                  to={`/agent/${agent.id}`}
+                  className="font-medium text-base hover:text-blue-600 hover:underline"
+                >
+                  {agent.name}
+                </Link>
                 <span className={`text-xs px-2 py-0.5 rounded-full ${
                   agent.category === 'Marketing' ? 'bg-amber-100 text-amber-700' :
                   agent.category === 'Finance' ? 'bg-green-100 text-green-700' :
@@ -253,7 +263,12 @@ const WorkflowDetail = () => {
         </form>
         
         <div className="mt-4 text-xs text-gray-500">
-          <p>This chat connects you with our AI agent ecosystem. The {workflow.coordinator} will coordinate responses from all relevant agents in this workflow.</p>
+          <p>This chat connects you with our AI agent ecosystem. The <Link 
+            to={`/agent/${agents.find(a => a.name === workflow.coordinator)?.id || 1}`}
+            className="text-blue-600 font-semibold hover:underline"
+          >
+            {workflow.coordinator}
+          </Link> will coordinate responses from all relevant agents in this workflow.</p>
         </div>
       </div>
       
