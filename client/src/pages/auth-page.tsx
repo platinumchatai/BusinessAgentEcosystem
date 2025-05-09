@@ -72,7 +72,7 @@ export default function AuthPage() {
             </TabsList>
             
             <TabsContent value="login">
-              <Card>
+              <Card className="bg-white">
                 <CardHeader>
                   <CardTitle>Welcome Back</CardTitle>
                   <CardDescription>
@@ -142,7 +142,7 @@ export default function AuthPage() {
             </TabsContent>
             
             <TabsContent value="register">
-              <Card>
+              <Card className="bg-white">
                 <CardHeader>
                   <CardTitle>Create an Account</CardTitle>
                   <CardDescription>
