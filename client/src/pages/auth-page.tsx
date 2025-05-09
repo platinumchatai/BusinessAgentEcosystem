@@ -62,7 +62,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 to-indigo-700 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#1e4388] p-4">
       <div className="w-full max-w-6xl grid md:grid-cols-2 gap-8 items-center">
         <div className="p-6 bg-white rounded-xl shadow-lg">
           <Tabs defaultValue="login" value={activeTab} onValueChange={(v) => setActiveTab(v as "login" | "register")}>
@@ -238,9 +238,9 @@ export default function AuthPage() {
         </div>
         
         <div className="text-white p-6 hidden md:block">
-          <h1 className="text-4xl font-bold mb-4">Business Intelligence Platform</h1>
+          <h1 className="text-4xl font-bold mb-4">Your Business Growth<br/><span className="flex items-baseline">Powered by <span className="text-[#41e2bd] ml-2">Platinum Chat AI</span></span></h1>
           <p className="text-xl mb-6">
-            Access our AI-powered business agents to help optimize your workflow and grow your business.
+            Access 16 specialized AI agents that work together to help your business thrive from ideation to scaling beyond $10M.
           </p>
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
