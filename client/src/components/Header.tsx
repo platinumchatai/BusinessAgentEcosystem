@@ -61,7 +61,7 @@ const Header = () => {
             <Link href="/#workflows" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/#workflows') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
               Workflows
             </Link>
-            <Link href="/#agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/#agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
+            <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
               Agents
             </Link>
             <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>

@@ -9,6 +9,7 @@ import WorkflowDetail from "@/pages/WorkflowDetail";
 import Consultation from "@/pages/Consultation";
 import Subscribe from "@/pages/subscribe";
 import AuthPage from "@/pages/auth-page";
+import Agents from "@/pages/Agents";
 import { useEffect } from 'react';
 import { AuthProvider } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/lib/protected-route";
@@ -17,6 +18,7 @@ function Router() {
   return (
     <Switch>
       <ProtectedRoute path="/" component={Home} />
+      <ProtectedRoute path="/agents" component={Agents} />
       <ProtectedRoute path="/agent/:id" component={AgentDetail} />
       <ProtectedRoute path="/workflow/:id" component={WorkflowDetail} />
       <ProtectedRoute path="/consultation" component={Consultation} />
