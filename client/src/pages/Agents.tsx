@@ -35,27 +35,37 @@ const AgentCard = ({ agent }: { agent: AgentType }) => {
     }
   };
 
-  // Get category color
+  // Get category color - following a logical color scheme
   const getCategoryColor = (category: string) => {
     switch (category) {
+      // Business/Strategy categories - blue
       case "Strategy":
         return "bg-blue-100 text-blue-700";
-      case "Marketing":
-        return "bg-amber-100 text-amber-700";
-      case "Finance":
-        return "bg-blue-100 text-blue-700"; // Changed from green to blue
-      case "Product":
-        return "bg-purple-100 text-purple-700";
-      case "Content":
-        return "bg-indigo-100 text-indigo-700"; // Changed from emerald to indigo
-      case "Customer":
-        return "bg-cyan-100 text-cyan-700";
-      case "Data":
-        return "bg-amber-100 text-amber-700"; // Changed to amber
-      case "Automation":
-        return "bg-indigo-100 text-indigo-700";
       case "Coordinator":
         return "bg-blue-100 text-blue-700";
+      
+      // Marketing/Communication - orange/amber
+      case "Marketing":
+        return "bg-amber-100 text-amber-700";
+      case "Content":
+        return "bg-amber-100 text-amber-700";
+        
+      // Financial categories - green
+      case "Finance":
+        return "bg-emerald-100 text-emerald-700";
+        
+      // Product/Customer - purple
+      case "Product":
+        return "bg-purple-100 text-purple-700";
+      case "Customer":
+        return "bg-purple-100 text-purple-700";
+      
+      // Technical categories - indigo/blue
+      case "Data":
+        return "bg-indigo-100 text-indigo-700";
+      case "Automation":
+        return "bg-indigo-100 text-indigo-700";
+        
       default:
         return "bg-gray-100 text-gray-700";
     }
@@ -179,7 +189,7 @@ const AgentsPage = () => {
                         "py-3 px-4 rounded-full text-sm font-medium transition-all duration-200",
                         activePhase === "all" 
                           ? "bg-[#1e4388] text-white shadow-md" 
-                          : "text-gray-600 hover:bg-gray-100"
+                          : "text-primary hover:bg-blue-50"
                       )}
                       onClick={() => setActivePhase("all")}
                     >
@@ -195,7 +205,7 @@ const AgentsPage = () => {
                               phase.id === 2 ? "bg-blue-700 text-white shadow-md" :
                               phase.id === 3 ? "bg-amber-500 text-white shadow-md" :
                               "bg-purple-600 text-white shadow-md"
-                            : "text-gray-600 hover:bg-gray-100"
+                            : "text-primary hover:bg-blue-50"
                         )}
                         onClick={() => setActivePhase(phase.id)}
                       >
@@ -211,7 +221,10 @@ const AgentsPage = () => {
                 <div className="flex flex-wrap gap-2">
                   <Button 
                     variant={categoryFilter === "all" ? "default" : "outline"}
-                    className="rounded-full"
+                    className={cn(
+                      "rounded-full",
+                      categoryFilter === "all" ? "bg-[#1e4388] hover:bg-[#1e4388]/90" : "text-primary hover:text-primary/80"
+                    )}
                     onClick={() => setCategoryFilter("all")}
                   >
                     All Categories
@@ -222,18 +235,30 @@ const AgentsPage = () => {
                       variant={categoryFilter === category ? "default" : "outline"}
                       className={cn(
                         "rounded-full",
-                        categoryFilter === category && (
-                          category === "Strategy" ? "bg-blue-600 hover:bg-blue-700" :
-                          category === "Marketing" ? "bg-amber-500 hover:bg-amber-600" :
-                          category === "Finance" ? "bg-blue-600 hover:bg-blue-700" : // Changed from green to blue
-                          category === "Product" ? "bg-purple-600 hover:bg-purple-700" :
-                          category === "Content" ? "bg-indigo-600 hover:bg-indigo-700" : // Changed from emerald to indigo
-                          category === "Customer" ? "bg-cyan-600 hover:bg-cyan-700" :
-                          category === "Data" ? "bg-amber-500 hover:bg-amber-600" : // Changed to amber
-                          category === "Automation" ? "bg-indigo-600 hover:bg-indigo-700" :
-                          category === "Coordinator" ? "bg-blue-600 hover:bg-blue-700" :
-                          "bg-gray-600 hover:bg-gray-700"
-                        )
+                        categoryFilter === category ? (
+                          // Business/Strategy categories - blue
+                          (category === "Strategy" || category === "Coordinator") ? 
+                            "bg-blue-600 hover:bg-blue-700" :
+                          
+                          // Marketing/Communication - orange/amber
+                          (category === "Marketing" || category === "Content") ? 
+                            "bg-amber-500 hover:bg-amber-600" :
+                          
+                          // Financial categories - green (only use green for Finance)
+                          category === "Finance" ? 
+                            "bg-emerald-600 hover:bg-emerald-700" :
+                          
+                          // Product/Customer - purple
+                          (category === "Product" || category === "Customer") ? 
+                            "bg-purple-600 hover:bg-purple-700" :
+                          
+                          // Technical categories - indigo
+                          (category === "Data" || category === "Automation") ? 
+                            "bg-indigo-600 hover:bg-indigo-700" :
+                          
+                          // Default
+                          "bg-primary hover:bg-primary/90"
+                        ) : "text-primary hover:text-primary/80"
                       )}
                       onClick={() => setCategoryFilter(category)}
                     >
@@ -244,11 +269,33 @@ const AgentsPage = () => {
               </div>
               
               <div className="mt-8 bg-white rounded-xl p-6 shadow-sm">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredAgents.map((agent) => (
-                    <AgentCard key={agent.id} agent={agent} />
-                  ))}
-                </div>
+                {/* Display Coordinators first in a separate section */}
+                {filteredAgents.some(agent => agent.coordinator) && (
+                  <div className="mb-8">
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Coordinator Agents</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredAgents
+                        .filter(agent => agent.coordinator)
+                        .map((agent) => (
+                          <AgentCard key={agent.id} agent={agent} />
+                        ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Display non-coordinator agents */}
+                {filteredAgents.some(agent => !agent.coordinator) && (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-4 border-b pb-2">Specialized Agents</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredAgents
+                        .filter(agent => !agent.coordinator)
+                        .map((agent) => (
+                          <AgentCard key={agent.id} agent={agent} />
+                        ))}
+                    </div>
+                  </div>
+                )}
                 
                 {filteredAgents.length === 0 && (
                   <div className="text-center py-12">
