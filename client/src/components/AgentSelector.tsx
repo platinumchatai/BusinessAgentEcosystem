@@ -196,7 +196,7 @@ const AgentSelector = () => {
         </div>
         
         {/* "See Other Agents" Button - Improved */}
-        <div className="flex justify-center mt-8">
+        <div className="flex justify-center mt-8 gap-4">
           <button 
             onClick={() => setShowAllAgents(!showAllAgents)}
             className="flex items-center gap-1.5 bg-white text-gray-700 border border-gray-300 px-5 py-2 text-sm rounded-full hover:bg-gray-50 shadow-sm transition-colors font-medium"
@@ -213,6 +213,13 @@ const AgentSelector = () => {
               </>
             )}
           </button>
+          <Link
+            href="/agents"
+            className="flex items-center gap-1.5 bg-primary text-white px-5 py-2 text-sm rounded-full hover:bg-primary/90 shadow-sm transition-colors font-medium"
+          >
+            <span className="material-icons text-sm">grid_view</span>
+            Explore All Agents
+          </Link>
         </div>
         
         {/* Other Agents Section - Improved */}

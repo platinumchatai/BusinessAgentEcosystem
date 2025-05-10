@@ -125,7 +125,7 @@ export class OrchestrationInterfaceEngineer extends BaseAgent {
       };
       
       return response;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating Orchestration Interface Engineer response:", error);
       
       // Return a fallback response
@@ -137,7 +137,7 @@ export class OrchestrationInterfaceEngineer extends BaseAgent {
         format: "text",
         metadata: {
           error: true,
-          errorMessage: error.message
+          errorMessage: error.message || "Unknown error"
         }
       };
     }

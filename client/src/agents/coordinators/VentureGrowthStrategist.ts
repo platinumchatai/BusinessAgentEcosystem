@@ -131,7 +131,7 @@ export class VentureGrowthStrategist extends BaseAgent {
       };
       
       return response;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating Venture Growth Strategist response:", error);
       
       // Return a fallback response
@@ -143,7 +143,7 @@ export class VentureGrowthStrategist extends BaseAgent {
         format: "text",
         metadata: {
           error: true,
-          errorMessage: error.message
+          errorMessage: error.message || "Unknown error"
         }
       };
     }

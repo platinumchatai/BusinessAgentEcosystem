@@ -127,7 +127,7 @@ export class FinancialGrowthStrategist extends BaseAgent {
       };
       
       return response;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error generating Financial Growth Strategist response:", error);
       
       // Return a fallback response
@@ -139,7 +139,7 @@ export class FinancialGrowthStrategist extends BaseAgent {
         format: "text",
         metadata: {
           error: true,
-          errorMessage: error.message
+          errorMessage: error.message || "Unknown error"
         }
       };
     }
