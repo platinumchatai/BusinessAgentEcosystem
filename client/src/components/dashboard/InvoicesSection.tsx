@@ -32,7 +32,7 @@ export default function InvoicesSection({ userId }: InvoicesSectionProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   
   // Fetch user invoices
-  const { data: invoices, isLoading: isLoadingInvoices } = useQuery({
+  const { data: invoices = [], isLoading: isLoadingInvoices } = useQuery<Invoice[]>({
     queryKey: ["/api/invoices"],
     enabled: !!userId,
   });
@@ -101,7 +101,7 @@ export default function InvoicesSection({ userId }: InvoicesSectionProps) {
                 {invoices.map((invoice: Invoice) => (
                   <TableRow key={invoice.id}>
                     <TableCell>
-                      {new Date(invoice.invoiceDate).toLocaleDateString()}
+                      {invoice.invoiceDate ? new Date(invoice.invoiceDate).toLocaleDateString() : 'Unknown date'}
                     </TableCell>
                     <TableCell>{invoice.description}</TableCell>
                     <TableCell>{formatAmount(invoice.amount)}</TableCell>
@@ -118,7 +118,7 @@ export default function InvoicesSection({ userId }: InvoicesSectionProps) {
                         <Button
                           variant="ghost"
                           size="sm"
-                          onClick={() => window.open(invoice.url, '_blank')}
+                          onClick={() => invoice.url ? window.open(invoice.url, '_blank') : null}
                           className="ml-2"
                         >
                           <Download className="h-4 w-4 mr-2" />
@@ -149,7 +149,7 @@ export default function InvoicesSection({ userId }: InvoicesSectionProps) {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <h4 className="text-sm font-medium text-slate-500">Date</h4>
-                  <p>{new Date(selectedInvoice.invoiceDate).toLocaleDateString()}</p>
+                  <p>{selectedInvoice.invoiceDate ? new Date(selectedInvoice.invoiceDate).toLocaleDateString() : 'Unknown date'}</p>
                 </div>
                 <div>
                   <h4 className="text-sm font-medium text-slate-500">Status</h4>
@@ -194,7 +194,7 @@ export default function InvoicesSection({ userId }: InvoicesSectionProps) {
             {selectedInvoice?.url && (
               <Button
                 variant="default"
-                onClick={() => window.open(selectedInvoice.url, '_blank')}
+                onClick={() => selectedInvoice.url ? window.open(selectedInvoice.url, '_blank') : undefined}
               >
                 <ExternalLink className="h-4 w-4 mr-2" />
                 View PDF

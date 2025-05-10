@@ -71,6 +71,7 @@ export const messages = pgTable("messages", {
   conversationId: integer("conversation_id").notNull().references(() => conversations.id),
   content: text("content").notNull(),
   sender: text("sender").notNull(), // 'user' or 'agent'
+  agentIds: integer("agent_ids").array(), // For backward compatibility with existing messages
   timestamp: timestamp("timestamp").defaultNow(),
 });
 

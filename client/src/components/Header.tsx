@@ -64,6 +64,9 @@ const Header = () => {
             <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
               Agents
             </Link>
+            <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
+              Dashboard
+            </Link>
             <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
               Subscribe
             </Link>
@@ -100,6 +103,9 @@ const Header = () => {
               </Link>
               <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
                 Agents
+              </Link>
+              <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
+                Dashboard
               </Link>
               <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
                 Subscribe

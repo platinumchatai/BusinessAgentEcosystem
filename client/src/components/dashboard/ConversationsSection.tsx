@@ -45,20 +45,19 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [conversationToDelete, setConversationToDelete] = useState<number | null>(null);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
   
   // Fetch user conversations
-  const { data: conversations, isLoading: isLoadingConversations } = useQuery({
+  const { data: conversations = [], isLoading: isLoadingConversations } = useQuery<Conversation[]>({
     queryKey: ["/api/conversations"],
     enabled: !!userId,
   });
   
   // Fetch conversation details when selected
-  const { isLoading: isLoadingConversationDetails } = useQuery({
+  const { isLoading: isLoadingConversationDetails } = useQuery<ConversationResponse>({
     queryKey: ["/api/conversations", selectedConversation?.id],
     enabled: !!selectedConversation,
-    onSuccess: (data: ConversationResponse) => {
-      setMessages(data.messages);
+    onSuccess: (data) => {
+      setMessages(data.messages as Message[]);
     },
   });
   
@@ -134,12 +133,12 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
     
     // Format the conversation data for download
     const title = selectedConversation.title;
-    const date = new Date(selectedConversation.createdAt).toLocaleDateString();
+    const date = selectedConversation.createdAt ? new Date(selectedConversation.createdAt).toLocaleDateString() : 'Unknown date';
     
     let conversationText = `# ${title}\nDate: ${date}\n\n`;
     
     messages.forEach((message) => {
-      const timestamp = new Date(message.timestamp).toLocaleString();
+      const timestamp = message.timestamp ? new Date(message.timestamp).toLocaleString() : 'Unknown time';
       const sender = message.sender === 'user' ? 'You' : 'Agent';
       
       conversationText += `## ${sender} - ${timestamp}\n${message.content}\n\n`;
@@ -165,12 +164,12 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
     
     // Format the conversation data for copying
     const title = selectedConversation.title;
-    const date = new Date(selectedConversation.createdAt).toLocaleDateString();
+    const date = selectedConversation.createdAt ? new Date(selectedConversation.createdAt).toLocaleDateString() : 'Unknown date';
     
     let conversationText = `${title} - ${date}\n\n`;
     
     messages.forEach((message) => {
-      const timestamp = new Date(message.timestamp).toLocaleString();
+      const timestamp = message.timestamp ? new Date(message.timestamp).toLocaleString() : 'Unknown time';
       const sender = message.sender === 'user' ? 'You' : 'Agent';
       
       conversationText += `${sender} - ${timestamp}\n${message.content}\n\n`;

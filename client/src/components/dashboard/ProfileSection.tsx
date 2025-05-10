@@ -17,7 +17,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
   const [email, setEmail] = useState(profile?.email || "");
 
   // Get a proper display format for the service level
-  const formatServiceLevel = (level: string | undefined) => {
+  const formatServiceLevel = (level: string | undefined | null) => {
     if (!level) return "Free";
     
     // Convert from snake_case or camelCase to Title Case with spaces
@@ -28,7 +28,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
   };
 
   // Get a visual representation (badge) for the service level
-  const getServiceLevelBadge = (level: string | undefined) => {
+  const getServiceLevelBadge = (level: string | undefined | null) => {
     const displayLevel = formatServiceLevel(level);
     
     if (!level || level.toLowerCase().includes('free')) {
