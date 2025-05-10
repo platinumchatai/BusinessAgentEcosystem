@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Mail, Menu, X } from "lucide-react";
+import { Mail, Menu, X, UserCircle } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  const { user } = useAuth();
 
   const isActivePath = (path: string) => {
     return location === path;
@@ -64,9 +66,15 @@ const Header = () => {
             <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
               Agents
             </Link>
-            <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-              Dashboard
-            </Link>
+            {user ? (
+              <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
+                Dashboard
+              </Link>
+            ) : (
+              <Link href="/auth" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/auth') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
+                Sign In
+              </Link>
+            )}
             <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
               Subscribe
             </Link>
@@ -76,9 +84,16 @@ const Header = () => {
             <a href="mailto:contact@platinumai.com" className="w-9 h-9 rounded-full bg-[#41a4ff] flex items-center justify-center text-white hover:bg-[#3190e8] transition-colors">
               <Mail className="w-4 h-4" />
             </a>
-            <Link href="/subscribe" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors">
-              Get Started
-            </Link>
+            {user ? (
+              <Link href="/dashboard" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors flex items-center">
+                <UserCircle className="w-4 h-4 mr-2" />
+                {user.username || 'Account'}
+              </Link>
+            ) : (
+              <Link href="/subscribe" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors">
+                Get Started
+              </Link>
+            )}
           </div>
 
           <button
@@ -104,9 +119,15 @@ const Header = () => {
               <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
                 Agents
               </Link>
-              <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                Dashboard
-              </Link>
+              {user ? (
+                <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
+                  Dashboard
+                </Link>
+              ) : (
+                <Link href="/auth" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/auth') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
+                  Sign In
+                </Link>
+              )}
               <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
                 Subscribe
               </Link>

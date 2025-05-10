@@ -84,9 +84,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let conversation = req.body.conversationId 
         ? await storage.getConversation(req.body.conversationId)
         : await storage.createConversation({
-            userId: req.user?.id || 1, // Using default userId 1 if not authenticated
+            userId: req.user?.id ? req.user.id : 1, // Using default userId 1 if not authenticated
             title: content.substring(0, 50) + (content.length > 50 ? '...' : ''),
-            status: 'active'
+            isArchived: false
           });
           
       const conversationId = conversation?.id;
