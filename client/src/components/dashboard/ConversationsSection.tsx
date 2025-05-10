@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -53,11 +53,9 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
   });
   
   // Fetch conversation details when selected
-  const { isLoading: isLoadingConversationDetails } = useQuery<any, Error, ConversationResponse>({
+  const { isLoading: isLoadingConversationDetails } = useQuery({
     queryKey: ["/api/conversations", selectedConversation?.id],
     enabled: !!selectedConversation,
-    select: (data) => data as ConversationResponse,
-    // Moving the onSuccess logic to refetch:
     refetchOnMount: true
   });
   

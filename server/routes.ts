@@ -79,12 +79,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
         response = `Thank you for your message about "${content}". Our agents (${agentNames}) will analyze your query and provide tailored business advice shortly.`;
       }
       
+      // Create or get a conversation first
+      // Ensure we have a conversation to attach the messages to
+      let conversation = req.body.conversationId 
+        ? await storage.getConversation(req.body.conversationId)
+        : await storage.createConversation({
+            userId: req.user?.id || 1, // Using default userId 1 if not authenticated
+            title: content.substring(0, 50) + (content.length > 50 ? '...' : ''),
+            status: 'active'
+          });
+          
+      const conversationId = conversation?.id;
+      
+      if (!conversationId) {
+        return res.status(400).json({
+          message: "Failed to create or retrieve conversation",
+          success: false
+        });
+      }
+      
       // Save user message and agent response
       const userMessage = await storage.createMessage({
         content,
         agentIds,
         sender: "user",
         id: nanoid(),
+        conversationId
       });
       
       const agentMessage = await storage.createMessage({
@@ -92,6 +112,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         agentIds,
         sender: "agent",
         id: nanoid(),
+        conversationId
       });
       
       res.status(201).json({ 

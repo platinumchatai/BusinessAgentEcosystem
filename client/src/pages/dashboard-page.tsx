@@ -6,12 +6,13 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Redirect } from "wouter";
+import { User } from "@shared/schema";
 
 // Import dashboard components
-import ProfileSection from "@/components/dashboard/ProfileSection";
-import ConversationsSection from "@/components/dashboard/ConversationsSection";
-import InvoicesSection from "@/components/dashboard/InvoicesSection";
-import WorkflowsSection from "@/components/dashboard/WorkflowsSection";
+import ProfileSection from "../components/dashboard/ProfileSection";
+import ConversationsSection from "../components/dashboard/ConversationsSection";
+import InvoicesSection from "../components/dashboard/InvoicesSection";
+import WorkflowsSection from "../components/dashboard/WorkflowsSection";
 
 export default function DashboardPage() {
   const { user, isLoading } = useAuth();
@@ -19,7 +20,7 @@ export default function DashboardPage() {
   const { toast } = useToast();
 
   // Fetch user profile data
-  const { data: profile, isLoading: isLoadingProfile } = useQuery({
+  const { data: profile, isLoading: isLoadingProfile } = useQuery<Partial<User>>({
     queryKey: ["/api/profile"],
     enabled: !!user,
   });
