@@ -2,188 +2,230 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Loader2, Workflow, ClipboardList, BarChart, ChevronRight } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
-import { workflows as workflowsData } from "@/data/workflows";
-import { useToast } from "@/hooks/use-toast";
+import { Loader2, PlayCircle, CheckCircle, XCircle, Clock } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 
 interface WorkflowsSectionProps {
   userId: number | undefined;
 }
 
-// This would eventually come from API
-// but for now we'll use static data
-interface UserWorkflow {
+interface Workflow {
   id: number;
-  workflowId: number;
-  userId: number;
-  progress: number; // 0-100
-  status: 'not_started' | 'in_progress' | 'completed';
-  phase: number;
-  lastUpdated: string;
+  title: string;
+  description: string;
+  status: 'completed' | 'in_progress' | 'failed' | 'scheduled';
+  progress: number;
+  createdAt: string | Date;
+  completedAt?: string | Date | null;
+  agentIds: number[];
 }
 
 export default function WorkflowsSection({ userId }: WorkflowsSectionProps) {
-  const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedWorkflow, setSelectedWorkflow] = useState<Workflow | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   
-  // This would be fetched from an API in a real app
-  // For now, we'll create some mock data based on our static workflows
-  const userWorkflows: UserWorkflow[] = workflowsData.map((workflow, index) => ({
-    id: index + 1,
-    workflowId: workflow.id,
-    userId: userId || 1,
-    progress: Math.random() * 100,
-    status: Math.random() > 0.7 ? 'completed' : (Math.random() > 0.3 ? 'in_progress' : 'not_started'),
-    phase: workflow.phaseId,
-    lastUpdated: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-  }));
+  // Fetch user workflows
+  const { data: workflows = [], isLoading: isLoadingWorkflows } = useQuery<Workflow[]>({
+    queryKey: ["/api/workflows"],
+    enabled: !!userId,
+  });
   
-  // Get workflow details by ID
-  const getWorkflowById = (id: number) => {
-    return workflowsData.find(w => w.id === id);
-  };
-  
-  // Format the workflow status
+  // Get a badge for the workflow status
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
         return <Badge className="bg-green-500">Completed</Badge>;
       case 'in_progress':
         return <Badge className="bg-blue-500">In Progress</Badge>;
-      case 'not_started':
-        return <Badge variant="outline">Not Started</Badge>;
+      case 'failed':
+        return <Badge variant="destructive">Failed</Badge>;
+      case 'scheduled':
+        return <Badge variant="outline" className="text-amber-500 border-amber-500">Scheduled</Badge>;
       default:
         return <Badge variant="outline">{status}</Badge>;
     }
   };
   
-  const handleContinueWorkflow = (userWorkflow: UserWorkflow) => {
-    const workflow = getWorkflowById(userWorkflow.workflowId);
-    
-    if (workflow) {
-      toast({
-        title: "Continuing Workflow",
-        description: `Navigating to ${workflow.name}...`,
-      });
-      
-      // This would typically navigate to the workflow page
-      // window.location.href = `/workflows/${workflow.id}`;
+  // Get an icon for the workflow status
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'completed':
+        return <CheckCircle className="h-5 w-5 text-green-500" />;
+      case 'in_progress':
+        return <PlayCircle className="h-5 w-5 text-blue-500" />;
+      case 'failed':
+        return <XCircle className="h-5 w-5 text-red-500" />;
+      case 'scheduled':
+        return <Clock className="h-5 w-5 text-amber-500" />;
+      default:
+        return null;
     }
+  };
+  
+  const handleViewWorkflow = (workflow: Workflow) => {
+    setSelectedWorkflow(workflow);
+    setDialogOpen(true);
   };
   
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Your Workflows</CardTitle>
+          <CardTitle className="text-2xl">Workflow History</CardTitle>
           <CardDescription>
-            Track and continue your business workflow progress
+            Track the status and progress of your business optimization workflows
           </CardDescription>
         </CardHeader>
         <CardContent>
-          {isLoading ? (
-            <div className="flex justify-center py-10">
+          {isLoadingWorkflows ? (
+            <div className="flex justify-center py-8">
               <Loader2 className="h-8 w-8 animate-spin text-primary" />
             </div>
-          ) : userWorkflows.length === 0 ? (
-            <div className="text-center py-10">
-              <ClipboardList className="h-12 w-12 text-slate-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium">No workflows yet</h3>
-              <p className="text-slate-500 mt-2">
-                Start working with our agents to create workflow templates.
+          ) : workflows.length === 0 ? (
+            <div className="text-center py-8 text-slate-500">
+              <p>No workflow history found.</p>
+              <p className="text-sm mt-2">
+                Start a new workflow to optimize your business processes.
               </p>
             </div>
           ) : (
-            <div className="space-y-4">
-              {userWorkflows.map((userWorkflow) => {
-                const workflow = getWorkflowById(userWorkflow.workflowId);
-                if (!workflow) return null;
-                
-                return (
-                  <div 
-                    key={userWorkflow.id}
-                    className="border rounded-lg p-4 hover:bg-slate-50 transition-colors"
-                  >
-                    <div className="flex justify-between items-start mb-3">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Workflow</TableHead>
+                  <TableHead>Progress</TableHead>
+                  <TableHead>Date</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {workflows.map((workflow: Workflow) => (
+                  <TableRow key={workflow.id}>
+                    <TableCell>
+                      {getStatusIcon(workflow.status)}
+                    </TableCell>
+                    <TableCell>
                       <div>
-                        <div className="flex items-center">
-                          <h3 className="font-medium">{workflow.name}</h3>
-                          <span className="text-xs bg-blue-100 text-blue-800 rounded-full px-2 py-0.5 ml-2">
-                            Phase {workflow.phaseId}
-                          </span>
-                        </div>
-                        <p className="text-sm text-slate-500 mt-1">
+                        <p className="font-medium">{workflow.title}</p>
+                        <p className="text-sm text-slate-500 truncate max-w-[250px]">
                           {workflow.description}
                         </p>
                       </div>
-                      <div>
-                        {getStatusBadge(userWorkflow.status)}
+                    </TableCell>
+                    <TableCell>
+                      <div className="w-[100px]">
+                        <Progress value={workflow.progress} className="h-2" />
+                        <span className="text-xs text-slate-500 mt-1 inline-block">
+                          {workflow.progress}%
+                        </span>
                       </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Progress</span>
-                        <span className="font-medium">{Math.round(userWorkflow.progress)}%</span>
-                      </div>
-                      <Progress value={userWorkflow.progress} className="h-2" />
-                    </div>
-                    
-                    <div className="flex justify-between items-center mt-4">
-                      <div className="text-xs text-slate-500">
-                        Last updated: {new Date(userWorkflow.lastUpdated).toLocaleDateString()}
-                      </div>
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleContinueWorkflow(userWorkflow)}
-                        disabled={userWorkflow.status === 'completed'}
+                    </TableCell>
+                    <TableCell>
+                      {workflow.createdAt ? new Date(workflow.createdAt).toLocaleDateString() : 'Unknown date'}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleViewWorkflow(workflow)}
                       >
-                        {userWorkflow.status === 'not_started' ? 'Start' : 
-                         userWorkflow.status === 'in_progress' ? 'Continue' : 'View'}
-                        <ChevronRight className="h-4 w-4 ml-1" />
+                        View Details
                       </Button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
         </CardContent>
       </Card>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Workflow Analytics</CardTitle>
-          <CardDescription>
-            Summary of your workflow progress and achievements
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-slate-50 rounded-lg p-4 text-center">
-              <BarChart className="h-8 w-8 mx-auto text-blue-500 mb-2" />
-              <div className="text-2xl font-bold">{userWorkflows.length}</div>
-              <div className="text-sm text-slate-500">Total Workflows</div>
-            </div>
-            
-            <div className="bg-slate-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold">
-                {userWorkflows.filter(w => w.status === 'completed').length}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>{selectedWorkflow?.title}</DialogTitle>
+            <DialogDescription>
+              Detailed information about this workflow
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedWorkflow && (
+            <div className="space-y-4 py-4">
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-slate-500">Status</h4>
+                <div className="flex items-center">
+                  {getStatusIcon(selectedWorkflow.status)}
+                  <span className="ml-2">{getStatusBadge(selectedWorkflow.status)}</span>
+                </div>
               </div>
-              <div className="text-sm text-slate-500">Completed</div>
-            </div>
-            
-            <div className="bg-slate-50 rounded-lg p-4 text-center">
-              <div className="text-2xl font-bold">
-                {userWorkflows.filter(w => w.status === 'in_progress').length}
+              
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-slate-500">Progress</h4>
+                <div>
+                  <Progress value={selectedWorkflow.progress} className="h-2" />
+                  <span className="text-sm mt-1 inline-block">
+                    {selectedWorkflow.progress}% Complete
+                  </span>
+                </div>
               </div>
-              <div className="text-sm text-slate-500">In Progress</div>
+              
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-slate-500">Description</h4>
+                <p className="text-sm">{selectedWorkflow.description}</p>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm font-medium text-slate-500">Started</h4>
+                  <p className="text-sm">
+                    {selectedWorkflow.createdAt 
+                      ? new Date(selectedWorkflow.createdAt).toLocaleString() 
+                      : 'Unknown'
+                    }
+                  </p>
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-slate-500">Completed</h4>
+                  <p className="text-sm">
+                    {selectedWorkflow.completedAt 
+                      ? new Date(selectedWorkflow.completedAt).toLocaleString() 
+                      : 'Not completed'
+                    }
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          )}
+          
+          <DialogFooter>
+            <Button 
+              variant="outline" 
+              onClick={() => setDialogOpen(false)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

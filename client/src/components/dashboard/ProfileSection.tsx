@@ -97,11 +97,11 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
             <div className="flex items-center">
               <Input
                 id="service-level"
-                value={formatServiceLevel(profile?.serviceLevel)}
+                value={formatServiceLevel(profile?.serviceLevel ?? null)}
                 disabled
                 className="bg-slate-50"
               />
-              {getServiceLevelBadge(profile?.serviceLevel)}
+              {getServiceLevelBadge(profile?.serviceLevel ?? null)}
             </div>
           </div>
           
@@ -109,7 +109,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
             <Label htmlFor="created-at">Member Since</Label>
             <Input
               id="created-at"
-              value={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : ""}
+              value={profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : "Not available"}
               disabled
               className="bg-slate-50"
             />

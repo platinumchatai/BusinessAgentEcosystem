@@ -53,13 +53,21 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
   });
   
   // Fetch conversation details when selected
-  const { isLoading: isLoadingConversationDetails } = useQuery<ConversationResponse>({
+  const { isLoading: isLoadingConversationDetails } = useQuery<any, Error, ConversationResponse>({
     queryKey: ["/api/conversations", selectedConversation?.id],
     enabled: !!selectedConversation,
-    onSuccess: (data) => {
-      setMessages(data.messages as Message[]);
-    },
+    select: (data) => data as ConversationResponse,
+    // Moving the onSuccess logic to refetch:
+    refetchOnMount: true
   });
+  
+  // Use a separate useEffect to handle the data setting
+  useEffect(() => {
+    const queryData = queryClient.getQueryData(["/api/conversations", selectedConversation?.id]) as ConversationResponse | undefined;
+    if (queryData) {
+      setMessages(queryData.messages as Message[]);
+    }
+  }, [selectedConversation, isLoadingConversationDetails]);
   
   // Delete conversation mutation
   const deleteConversationMutation = useMutation({
@@ -227,7 +235,7 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
                     <div>
                       <h3 className="font-medium">{conversation.title}</h3>
                       <p className="text-sm text-slate-500">
-                        {new Date(conversation.createdAt).toLocaleDateString()}
+                        {conversation.createdAt ? new Date(conversation.createdAt).toLocaleDateString() : 'Unknown date'}
                       </p>
                     </div>
                   </div>
@@ -331,7 +339,7 @@ export default function ConversationsSection({ userId }: ConversationsSectionPro
                         dangerouslySetInnerHTML={{ __html: msg.content }}
                       />
                       <div className="text-xs mt-2 opacity-70">
-                        {new Date(msg.timestamp).toLocaleTimeString()}
+                        {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : 'Unknown time'}
                       </div>
                     </div>
                   </div>
