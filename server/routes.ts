@@ -206,6 +206,343 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Customer Dashboard API routes
+  
+  // Get user profile
+  app.get("/api/profile", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      // Return user data without sensitive information
+      const { password, ...userProfile } = req.user as any;
+      res.json(userProfile);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch profile" });
+    }
+  });
+  
+  // Get user conversations
+  app.get("/api/conversations", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const userId = req.user!.id;
+      const conversations = await storage.getConversationsByUserId(userId);
+      res.json(conversations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch conversations" });
+    }
+  });
+  
+  // Get conversation details with messages
+  app.get("/api/conversations/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const conversationId = parseInt(req.params.id);
+      const conversation = await storage.getConversation(conversationId);
+      
+      // Check if conversation exists and belongs to user
+      if (!conversation || conversation.userId !== req.user!.id) {
+        return res.status(404).json({ message: "Conversation not found" });
+      }
+      
+      // Get messages and agents involved in this conversation
+      const messages = await storage.getMessagesByConversationId(conversationId);
+      const agents = await storage.getAgentsByConversationId(conversationId);
+      
+      res.json({
+        conversation,
+        messages,
+        agents
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch conversation details" });
+    }
+  });
+  
+  // Create new conversation
+  app.post("/api/conversations", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const schema = z.object({
+        title: z.string().min(1),
+        initialMessage: z.string().optional(),
+        agentIds: z.array(z.number()).min(1),
+      });
+      
+      const { title, initialMessage, agentIds } = schema.parse(req.body);
+      const userId = req.user!.id;
+      
+      // Create conversation
+      const conversation = await storage.createConversation({
+        userId,
+        title,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        isArchived: false,
+      });
+      
+      // Add agents to conversation
+      for (const agentId of agentIds) {
+        await storage.addAgentToConversation(conversation.id, agentId);
+      }
+      
+      // If initial message provided, create it and generate a response
+      if (initialMessage) {
+        // Create user message
+        const userMessage = await storage.createMessage({
+          id: nanoid(),
+          conversationId: conversation.id,
+          content: initialMessage,
+          sender: "user",
+          timestamp: new Date(),
+        });
+        
+        // Get agent details
+        const agents = await storage.getAgentsByIds(agentIds);
+        const agentNames = agents.map(agent => agent.name).join(", ");
+        
+        // Generate agent response using OpenAI
+        let response;
+        try {
+          const completion = await openai.chat.completions.create({
+            model: "gpt-4o",
+            messages: [
+              {
+                role: "system",
+                content: `You are a business agency AI representing the following agents: ${agentNames}. 
+                Respond as these agents would, providing valuable business advice in your areas of expertise.
+                
+                FORMAT YOUR RESPONSES:
+                - Always use clear organization with headers, subheaders, and bulleted lists for readability
+                - For any plans, strategies, or formal business documents, format them using HTML
+                - Use <h1>, <h2>, <h3> tags for headers/subheaders
+                - Use <ul> and <li> for bullet points
+                - Use <p> for paragraphs
+                - Include line breaks between sections
+                
+                Respond in a professional, helpful manner. Keep responses concise but valuable.`
+              },
+              { role: "user", content: initialMessage }
+            ],
+          });
+          
+          response = completion.choices[0].message.content || "";
+        } catch (error) {
+          response = `Thank you for your message about "${initialMessage}". Our agents (${agentNames}) will analyze your query and provide tailored business advice shortly.`;
+        }
+        
+        // Create agent response
+        const agentMessage = await storage.createMessage({
+          id: nanoid(),
+          conversationId: conversation.id,
+          content: response,
+          sender: "agent",
+          timestamp: new Date(),
+        });
+      }
+      
+      res.status(201).json({
+        conversation,
+        success: true
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to create conversation" });
+      }
+    }
+  });
+  
+  // Send message to a conversation
+  app.post("/api/conversations/:id/messages", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const schema = z.object({
+        content: z.string().min(1),
+      });
+      
+      const { content } = schema.parse(req.body);
+      const conversationId = parseInt(req.params.id);
+      
+      // Check if conversation exists and belongs to user
+      const conversation = await storage.getConversation(conversationId);
+      if (!conversation || conversation.userId !== req.user!.id) {
+        return res.status(404).json({ message: "Conversation not found" });
+      }
+      
+      // Update conversation timestamp
+      await storage.updateConversation(conversationId, {
+        updatedAt: new Date()
+      });
+      
+      // Create user message
+      const userMessage = await storage.createMessage({
+        id: nanoid(),
+        conversationId,
+        content,
+        sender: "user",
+        timestamp: new Date(),
+      });
+      
+      // Get agents in this conversation
+      const agents = await storage.getAgentsByConversationId(conversationId);
+      const agentNames = agents.map(agent => agent.name).join(", ");
+      
+      // Generate agent response using OpenAI
+      let response;
+      try {
+        const completion = await openai.chat.completions.create({
+          model: "gpt-4o",
+          messages: [
+            {
+              role: "system",
+              content: `You are a business agency AI representing the following agents: ${agentNames}. 
+              Respond as these agents would, providing valuable business advice in your areas of expertise.
+              
+              FORMAT YOUR RESPONSES:
+              - Always use clear organization with headers, subheaders, and bulleted lists for readability
+              - For any plans, strategies, or formal business documents, format them using HTML
+              - Use <h1>, <h2>, <h3> tags for headers/subheaders
+              - Use <ul> and <li> for bullet points
+              - Use <p> for paragraphs
+              - Include line breaks between sections
+              
+              Respond in a professional, helpful manner. Keep responses concise but valuable.`
+            },
+            { role: "user", content }
+          ],
+        });
+        
+        response = completion.choices[0].message.content || "";
+      } catch (error) {
+        response = `Thank you for your message. Our agents (${agentNames}) will analyze your query and provide tailored business advice shortly.`;
+      }
+      
+      // Create agent response
+      const agentMessage = await storage.createMessage({
+        id: nanoid(),
+        conversationId,
+        content: response,
+        sender: "agent",
+        timestamp: new Date(),
+      });
+      
+      res.status(201).json({
+        userMessage,
+        agentMessage,
+        success: true
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to send message" });
+      }
+    }
+  });
+  
+  // Archive conversation
+  app.patch("/api/conversations/:id/archive", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const conversationId = parseInt(req.params.id);
+      
+      // Check if conversation exists and belongs to user
+      const conversation = await storage.getConversation(conversationId);
+      if (!conversation || conversation.userId !== req.user!.id) {
+        return res.status(404).json({ message: "Conversation not found" });
+      }
+      
+      // Archive conversation
+      const archivedConversation = await storage.archiveConversation(conversationId);
+      
+      res.json({
+        conversation: archivedConversation,
+        success: true
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to archive conversation" });
+    }
+  });
+  
+  // Delete conversation
+  app.delete("/api/conversations/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const conversationId = parseInt(req.params.id);
+      
+      // Check if conversation exists and belongs to user
+      const conversation = await storage.getConversation(conversationId);
+      if (!conversation || conversation.userId !== req.user!.id) {
+        return res.status(404).json({ message: "Conversation not found" });
+      }
+      
+      // Delete conversation and all related data
+      await storage.deleteConversation(conversationId);
+      
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete conversation" });
+    }
+  });
+  
+  // Get user invoices
+  app.get("/api/invoices", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const userId = req.user!.id;
+      const invoices = await storage.getInvoicesByUserId(userId);
+      res.json(invoices);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch invoices" });
+    }
+  });
+  
+  // Get specific invoice
+  app.get("/api/invoices/:id", async (req, res) => {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ message: "Not authenticated" });
+    }
+    
+    try {
+      const invoiceId = parseInt(req.params.id);
+      const invoice = await storage.getInvoice(invoiceId);
+      
+      // Check if invoice exists and belongs to user
+      if (!invoice || invoice.userId !== req.user!.id) {
+        return res.status(404).json({ message: "Invoice not found" });
+      }
+      
+      res.json(invoice);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch invoice" });
+    }
+  });
+
   // Payment routes for service purchases with account creation
   
   // Create payment intent for one-time payments
