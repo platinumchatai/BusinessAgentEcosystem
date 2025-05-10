@@ -26,7 +26,7 @@ const AgentCard = ({ agent }: { agent: AgentType }) => {
       case 1:
         return "border-blue-500 shadow-blue-100";
       case 2:
-        return "border-green-500 shadow-green-100";
+        return "border-green-500 shadow-green-100"; // Keep green only for Phase 2
       case 3:
         return "border-amber-500 shadow-amber-100";
       case 4:
@@ -44,15 +44,19 @@ const AgentCard = ({ agent }: { agent: AgentType }) => {
       case "Marketing":
         return "bg-amber-100 text-amber-700";
       case "Finance":
-        return "bg-green-100 text-green-700";
+        return "bg-blue-100 text-blue-700"; // Changed from green to blue
       case "Product":
         return "bg-purple-100 text-purple-700";
       case "Content":
-        return "bg-emerald-100 text-emerald-700";
-      case "Customer Experience":
+        return "bg-indigo-100 text-indigo-700"; // Changed from emerald to indigo
+      case "Customer":
         return "bg-cyan-100 text-cyan-700";
-      case "Operations":
+      case "Data":
+        return "bg-amber-100 text-amber-700"; // Changed to amber
+      case "Automation":
         return "bg-indigo-100 text-indigo-700";
+      case "Coordinator":
+        return "bg-blue-100 text-blue-700";
       default:
         return "bg-gray-100 text-gray-700";
     }
@@ -65,7 +69,7 @@ const AgentCard = ({ agent }: { agent: AgentType }) => {
     >
       <Link href={`/agent/${agent.id}`}>
         <Card className={cn(
-          "h-full cursor-pointer hover:shadow-md transition-all",
+          "h-full cursor-pointer hover:shadow-md transition-all bg-white rounded-xl",
           agent.coordinator ? `border-l-4 ${getPhaseColor(agent.phase)}` : ""
         )}>
           <CardHeader className="p-4 pb-0">
@@ -214,11 +218,14 @@ const AgentsPage = () => {
                         categoryFilter === category && (
                           category === "Strategy" ? "bg-blue-600 hover:bg-blue-700" :
                           category === "Marketing" ? "bg-amber-500 hover:bg-amber-600" :
-                          category === "Finance" ? "bg-green-600 hover:bg-green-700" :
+                          category === "Finance" ? "bg-blue-600 hover:bg-blue-700" : // Changed from green to blue
                           category === "Product" ? "bg-purple-600 hover:bg-purple-700" :
-                          category === "Content" ? "bg-emerald-600 hover:bg-emerald-700" :
-                          category === "Customer Experience" ? "bg-cyan-600 hover:bg-cyan-700" :
-                          "bg-indigo-600 hover:bg-indigo-700"
+                          category === "Content" ? "bg-indigo-600 hover:bg-indigo-700" : // Changed from emerald to indigo
+                          category === "Customer" ? "bg-cyan-600 hover:bg-cyan-700" :
+                          category === "Data" ? "bg-amber-500 hover:bg-amber-600" : // Changed to amber
+                          category === "Automation" ? "bg-indigo-600 hover:bg-indigo-700" :
+                          category === "Coordinator" ? "bg-blue-600 hover:bg-blue-700" :
+                          "bg-gray-600 hover:bg-gray-700"
                         )
                       )}
                       onClick={() => setCategoryFilter(category)}
