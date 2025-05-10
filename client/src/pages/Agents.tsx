@@ -25,7 +25,7 @@ const AgentCard = ({ agent }: { agent: AgentType }) => {
       case 1:
         return "border-blue-500 shadow-blue-100";
       case 2:
-        return "border-green-500 shadow-green-100"; // Keep green only for Phase 2
+        return "border-blue-600 shadow-blue-100"; // Changed from green to blue
       case 3:
         return "border-amber-500 shadow-amber-100";
       case 4:
