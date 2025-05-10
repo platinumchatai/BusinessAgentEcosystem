@@ -59,11 +59,11 @@ export default function DashboardPage() {
               <TabsTrigger value="profile" className="py-3">
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="conversations" className="py-3">
-                Conversations
-              </TabsTrigger>
               <TabsTrigger value="invoices" className="py-3">
                 Billing & Invoices
+              </TabsTrigger>
+              <TabsTrigger value="conversations" className="py-3">
+                Conversations
               </TabsTrigger>
               <TabsTrigger value="workflows" className="py-3">
                 Workflows

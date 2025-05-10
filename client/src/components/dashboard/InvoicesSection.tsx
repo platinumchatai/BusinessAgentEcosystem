@@ -49,7 +49,7 @@ export default function InvoicesSection({ userId }: InvoicesSectionProps) {
   const getStatusBadge = (status: string) => {
     switch (status.toLowerCase()) {
       case 'paid':
-        return <Badge className="bg-green-500">Paid</Badge>;
+        return <Badge className="bg-blue-500">Paid</Badge>;
       case 'pending':
         return <Badge className="bg-amber-500">Pending</Badge>;
       case 'failed':

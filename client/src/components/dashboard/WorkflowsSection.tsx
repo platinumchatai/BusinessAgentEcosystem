@@ -52,9 +52,9 @@ export default function WorkflowsSection({ userId }: WorkflowsSectionProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'completed':
-        return <Badge className="bg-green-500">Completed</Badge>;
+        return <Badge className="bg-blue-500">Completed</Badge>;
       case 'in_progress':
-        return <Badge className="bg-blue-500">In Progress</Badge>;
+        return <Badge className="bg-blue-600">In Progress</Badge>;
       case 'failed':
         return <Badge variant="destructive">Failed</Badge>;
       case 'scheduled':
@@ -68,9 +68,9 @@ export default function WorkflowsSection({ userId }: WorkflowsSectionProps) {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'completed':
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className="h-5 w-5 text-blue-500" />;
       case 'in_progress':
-        return <PlayCircle className="h-5 w-5 text-blue-500" />;
+        return <PlayCircle className="h-5 w-5 text-blue-600" />;
       case 'failed':
         return <XCircle className="h-5 w-5 text-red-500" />;
       case 'scheduled':
