@@ -17,7 +17,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const AgentCard = ({ agent }: { agent: AgentType }) => {
   // Get phase color
@@ -170,33 +169,41 @@ const AgentsPage = () => {
         {/* Agents Content */}
         <section className="py-12 bg-gray-50">
           <div className="container mx-auto px-4">
-            <Tabs defaultValue="all" className="w-full">
+            <div className="w-full">
               <div className="mb-8">
                 <h2 className="text-2xl font-semibold text-gray-800 mb-4">Browse by Business Phase</h2>
-                <TabsList className="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                  <TabsTrigger 
-                    value="all" 
-                    className="data-[state=active]:bg-gray-800 data-[state=active]:text-white"
-                    onClick={() => setActivePhase("all")}
-                  >
-                    All Phases
-                  </TabsTrigger>
-                  {phases.map((phase) => (
-                    <TabsTrigger 
-                      key={phase.id} 
-                      value={phase.id.toString()}
+                <div className="relative p-1 bg-white rounded-full shadow-sm border border-gray-100">
+                  <div className="grid grid-cols-1 sm:grid-cols-5 gap-0">
+                    <button 
                       className={cn(
-                        phase.id === 1 ? "data-[state=active]:bg-blue-600 data-[state=active]:text-white" :
-                        phase.id === 2 ? "data-[state=active]:bg-green-600 data-[state=active]:text-white" :
-                        phase.id === 3 ? "data-[state=active]:bg-amber-500 data-[state=active]:text-white" :
-                        "data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+                        "py-3 px-4 rounded-full text-sm font-medium transition-all duration-200",
+                        activePhase === "all" 
+                          ? "bg-[#1e4388] text-white shadow-md" 
+                          : "text-gray-600 hover:bg-gray-100"
                       )}
-                      onClick={() => setActivePhase(phase.id)}
+                      onClick={() => setActivePhase("all")}
                     >
-                      {phase.name}
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+                      All Phases
+                    </button>
+                    {phases.map((phase) => (
+                      <button
+                        key={phase.id}
+                        className={cn(
+                          "py-3 px-4 rounded-full text-sm font-medium transition-all duration-200",
+                          activePhase === phase.id 
+                            ? phase.id === 1 ? "bg-blue-600 text-white shadow-md" :
+                              phase.id === 2 ? "bg-blue-700 text-white shadow-md" :
+                              phase.id === 3 ? "bg-amber-500 text-white shadow-md" :
+                              "bg-purple-600 text-white shadow-md"
+                            : "text-gray-600 hover:bg-gray-100"
+                        )}
+                        onClick={() => setActivePhase(phase.id)}
+                      >
+                        {phase.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
               
               <div className="mb-8">
@@ -236,7 +243,7 @@ const AgentsPage = () => {
                 </div>
               </div>
               
-              <TabsContent value="all" className="mt-0">
+              <div className="mt-8 bg-white rounded-xl p-6 shadow-sm">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {filteredAgents.map((agent) => (
                     <AgentCard key={agent.id} agent={agent} />
@@ -249,27 +256,8 @@ const AgentsPage = () => {
                     <p className="text-gray-600">Try adjusting your search or filters</p>
                   </div>
                 )}
-              </TabsContent>
-              
-              {phases.map((phase) => (
-                <TabsContent key={phase.id} value={phase.id.toString()} className="mt-0">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {filteredAgents
-                      .filter(agent => agent.phase === phase.id)
-                      .map((agent) => (
-                        <AgentCard key={agent.id} agent={agent} />
-                      ))}
-                  </div>
-                  
-                  {filteredAgents.filter(agent => agent.phase === phase.id).length === 0 && (
-                    <div className="text-center py-12">
-                      <h3 className="text-xl font-medium text-gray-800 mb-2">No agents found in this phase</h3>
-                      <p className="text-gray-600">Try adjusting your search or category filters</p>
-                    </div>
-                  )}
-                </TabsContent>
-              ))}
-            </Tabs>
+              </div>
+            </div>
           </div>
         </section>
         
