@@ -55,17 +55,17 @@ export default function DashboardPage() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="w-full mb-8 bg-gray-50 border border-gray-200 p-0 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4">
-              <TabsTrigger value="profile" className="h-12 py-3 m-0 data-[state=active]:shadow-none rounded-none">
+            <TabsList className="w-full mb-8 bg-gray-50 border border-gray-200 p-1 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4">
+              <TabsTrigger value="profile" className="py-3 flex items-center justify-center">
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="invoices" className="h-12 py-3 m-0 data-[state=active]:shadow-none rounded-none">
+              <TabsTrigger value="invoices" className="py-3 flex items-center justify-center">
                 Billing & Invoices
               </TabsTrigger>
-              <TabsTrigger value="conversations" className="h-12 py-3 m-0 data-[state=active]:shadow-none rounded-none">
+              <TabsTrigger value="conversations" className="py-3 flex items-center justify-center">
                 Conversations
               </TabsTrigger>
-              <TabsTrigger value="workflows" className="h-12 py-3 m-0 data-[state=active]:shadow-none rounded-none">
+              <TabsTrigger value="workflows" className="py-3 flex items-center justify-center">
                 Workflows
               </TabsTrigger>
             </TabsList>
