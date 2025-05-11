@@ -68,13 +68,13 @@ const Hero = () => {
             >
               {/* Agent Analytics card */}
               <div className="bg-blue-900/40 backdrop-blur-sm p-5 rounded-xl border border-white/10">
-                <div className="text-sm text-white/70 mb-2">Agent Performance</div>
-                <div className="text-5xl font-bold mb-2">97%</div>
-                <div className="text-xs text-white/50 mb-3">satisfaction rate</div>
+                <div className="text-sm text-white/70 mb-2">AI Business Impact</div>
+                <div className="text-5xl font-bold mb-2">91%</div>
+                <div className="text-xs text-white/50 mb-3">of SMBs report increased revenue with AI</div>
                 
                 {/* Simplified chart bars */}
                 <div className="flex items-end h-20 gap-1 mb-2">
-                  {[0.5, 0.7, 0.4, 0.8, 0.6, 0.9, 0.7, 0.5, 0.3, 0.6, 0.8, 0.7].map((height, i) => (
+                  {[0.2, 0.4, 0.5, 0.6, 0.8, 0.4, 0.3, 0.6, 0.3, 0.7, 0.8, 0.6].map((height, i) => (
                     <div 
                       key={i} 
                       className="flex-1 bg-primary/50 rounded-sm" 
