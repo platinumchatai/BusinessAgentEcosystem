@@ -305,7 +305,7 @@ const Subscribe = () => {
                   cn(
                     "flex items-center py-3 px-6 text-sm font-medium outline-none rounded-full transition-all",
                     selected
-                      ? "text-white bg-accent shadow-sm"
+                      ? "text-white bg-[#1e4388] shadow-sm"
                       : "text-gray-700 hover:bg-gray-100"
                   )
                 }
@@ -318,7 +318,7 @@ const Subscribe = () => {
                   cn(
                     "flex items-center py-3 px-6 text-sm font-medium outline-none rounded-full transition-all",
                     selected
-                      ? "text-white bg-accent shadow-sm"
+                      ? "text-white bg-[#1e4388] shadow-sm"
                       : "text-gray-700 hover:bg-gray-100"
                   )
                 }
@@ -425,7 +425,7 @@ const Subscribe = () => {
                     <Button
                       type="button"
                       onClick={handleNextStep}
-                      className="bg-accent hover:bg-accent/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
+                      className="bg-[#1e4388] hover:bg-[#1e4388]/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
                     >
                       Continue to Payment
                     </Button>
@@ -606,7 +606,7 @@ const Subscribe = () => {
                     <Button
                       type="button"
                       onClick={handleNextStep}
-                      className="bg-accent hover:bg-accent/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
+                      className="bg-[#1e4388] hover:bg-[#1e4388]/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
                     >
                       Review Order
                     </Button>
