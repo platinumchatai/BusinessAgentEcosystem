@@ -1,13 +1,21 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Mail, Menu, X, UserCircle } from "lucide-react";
+import { 
+  Home,
+  MessageSquare,
+  Users,
+  LayoutDashboard,
+  User,
+  DollarSign
+} from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Header = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const { user } = useAuth();
+  const isMobile = useIsMobile();
 
   const isActivePath = (path: string) => {
     return location === path;
@@ -24,121 +32,79 @@ const Header = () => {
     };
   }, []);
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    setMobileMenuOpen(false);
-    const href = e.currentTarget.getAttribute('href');
-    if (href?.startsWith('/#')) {
-      e.preventDefault();
-      const targetId = href.substring(2);
-      const element = document.getElementById(targetId);
-      if (element) {
-        const headerOffset = 80;
-        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - headerOffset;
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }
-  };
-
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 w-full bg-gradient-to-r from-[#1e4388] to-[#2a549e] text-white shadow-sm ${scrolled ? 'py-2' : 'py-3'}`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 w-full bg-white shadow-md ${scrolled ? 'py-1' : 'py-2'}`}>
       <div className="max-w-6xl mx-auto px-4">
-        <div className="flex items-center justify-between">
-          <Link href="/">
-            <div className="font-heading text-lg md:text-xl text-white cursor-pointer flex items-center font-normal">
-              Platinum Chat AI Business Builders
-            </div>
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-6">
-            <Link href="/" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-              Home
-            </Link>
-            <Link href="/consultation" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/consultation') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-              Consultation
-            </Link>
-            <Link href="/#workflows" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/#workflows') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-              Workflows
-            </Link>
-            <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-              Agents
-            </Link>
-            {user ? (
-              <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-                Dashboard
-              </Link>
-            ) : (
-              <Link href="/auth" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/auth') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-                Sign In
-              </Link>
-            )}
-            <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`}>
-              Subscribe
-            </Link>
+        <div className="flex justify-between items-center">
+          {/* Navigation Bar similar to screenshot */}
+          <nav className="flex justify-between items-center w-full">
+            <NavItem 
+              href="/" 
+              icon={<Home size={20} />} 
+              label="Home" 
+              isActive={isActivePath('/')} 
+            />
+            <NavItem 
+              href="/consultation" 
+              icon={<MessageSquare size={20} />} 
+              label={isMobile ? "Consult" : "Start a Consultation"} 
+              isActive={isActivePath('/consultation')} 
+            />
+            <NavItem 
+              href="/agents" 
+              icon={<Users size={20} />} 
+              label={isMobile ? "Agents" : "Explore Agents"} 
+              isActive={isActivePath('/agents')} 
+            />
+            <NavItem 
+              href="/dashboard" 
+              icon={<LayoutDashboard size={20} />} 
+              label="Dashboard" 
+              isActive={isActivePath('/dashboard')} 
+            />
+            <NavItem 
+              href="/profile" 
+              icon={<User size={20} />} 
+              label="Profile" 
+              isActive={isActivePath('/profile')} 
+            />
+            <NavItem 
+              href="/pricing" 
+              icon={<DollarSign size={20} />} 
+              label="Pricing" 
+              isActive={isActivePath('/pricing')} 
+            />
           </nav>
-
-          <div className="hidden md:flex items-center gap-4">
-            <a href="mailto:contact@platinumai.com" className="w-9 h-9 rounded-full bg-[#41a4ff] flex items-center justify-center text-white hover:bg-[#3190e8] transition-colors">
-              <Mail className="w-4 h-4" />
-            </a>
-            {user ? (
-              <Link href="/dashboard" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors flex items-center">
-                <UserCircle className="w-4 h-4 mr-2" />
-                {user.username || 'Account'}
-              </Link>
-            ) : (
-              <Link href="/subscribe" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors">
-                Get Started
-              </Link>
-            )}
-          </div>
-
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-white hover:bg-[#3a64ae] rounded-full"
-          >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
         </div>
-
-        {mobileMenuOpen && (
-          <div className="md:hidden py-4">
-            <nav className="flex flex-col gap-4">
-              <Link href="/" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                Home
-              </Link>
-              <Link href="/consultation" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/consultation') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                Consultation
-              </Link>
-              <Link href="/#workflows" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/#workflows') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                Workflows
-              </Link>
-              <Link href="/agents" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/agents') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                Agents
-              </Link>
-              {user ? (
-                <Link href="/dashboard" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/dashboard') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                  Dashboard
-                </Link>
-              ) : (
-                <Link href="/auth" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/auth') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                  Sign In
-                </Link>
-              )}
-              <Link href="/subscribe" className={`transition-colors text-white hover:text-gray-200 ${isActivePath('/subscribe') ? 'font-medium bg-[#41a4ff] px-2 py-1 rounded' : ''}`} onClick={handleNavClick}>
-                Subscribe
-              </Link>
-              <Link href="/subscribe" className="bg-[#41a4ff] text-white px-4 py-2 rounded-full hover:bg-[#3190e8] transition-colors w-full text-center" onClick={handleNavClick}>
-                Get Started
-              </Link>
-            </nav>
-          </div>
-        )}
       </div>
     </header>
+  );
+};
+
+interface NavItemProps {
+  href: string;
+  icon: React.ReactNode;
+  label: string;
+  isActive: boolean;
+}
+
+const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
+  const isMobile = useIsMobile();
+  
+  return (
+    <Link href={href}>
+      <div className={`flex flex-col items-center justify-center py-2 px-2 md:px-4 relative ${
+        isActive ? 'text-indigo-600' : 'text-gray-500 hover:text-gray-700'
+      }`}>
+        <div className={`p-1 ${isActive ? 'bg-indigo-100 rounded-full' : ''}`}>
+          {icon}
+        </div>
+        <span className="text-xs mt-1">{label}</span>
+        {isActive && (
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-600"></div>
+        )}
+      </div>
+    </Link>
   );
 };
 
