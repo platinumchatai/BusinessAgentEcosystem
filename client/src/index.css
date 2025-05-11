@@ -6,9 +6,9 @@
   :root {
     --secondary: 235 53% 28%; /* Deep blue secondary color */
     --secondary-foreground: 0 0% 100%;
-    --accent: 169 64% 50%; /* Mint green accent color */
+    --accent: 220 65% 33%; /* Blue accent color */
     --accent-foreground: 0 0% 100%;
-    --accent-light: 169 76% 82%; /* Light mint green */
+    --accent-light: 220 65% 85%; /* Light blue */
   }
 
   * {
@@ -50,15 +50,15 @@
   }
   
   .accent-text {
-    color: hsl(169, 64%, 50%);
+    color: hsl(220, 65%, 33%);
   }
   
   .accent-bg {
-    background-color: hsl(169, 64%, 50%);
+    background-color: hsl(220, 65%, 33%);
   }
   
   .accent-bg-light {
-    background-color: hsl(169, 76%, 82%);
+    background-color: hsl(220, 65%, 85%);
   }
   
   .navbar {
@@ -121,7 +121,7 @@
   }
   
   .workflow-tab.active {
-    @apply bg-accent text-white shadow-md;
+    @apply bg-[#1e4388] text-white shadow-md;
   }
   
   .workflow-tab.inactive {
