@@ -48,8 +48,14 @@ const Header = () => {
     // Clear the simulated user and navigate to home page
     localStorage.removeItem('simulatedUser');
     setSimulatedUser(null);
-    // Redirect to the home page
-    window.location.href = '/';
+    
+    // Clear any auth-related cookies or storage
+    document.cookie.split(";").forEach(function(c) {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    
+    // Force a full page reload to clear any cached state
+    window.location.href = '/?logged_out=true';
   };
 
   const handleLogin = () => {

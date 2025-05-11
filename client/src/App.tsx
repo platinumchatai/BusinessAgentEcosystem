@@ -18,8 +18,8 @@ import { ProtectedRoute } from "@/lib/protected-route";
 function Router() {
   return (
     <Switch>
-      <ProtectedRoute path="/" component={Home} />
-      <ProtectedRoute path="/agents" component={Agents} />
+      <Route path="/" component={Home} />
+      <Route path="/agents" component={Agents} />
       <ProtectedRoute path="/agent/:id" component={AgentDetail} />
       <ProtectedRoute path="/workflow/:id" component={WorkflowDetail} />
       <ProtectedRoute path="/consultation" component={Consultation} />
