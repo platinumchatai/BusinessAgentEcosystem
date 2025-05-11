@@ -16,9 +16,9 @@ const AgentCard = ({ agent, phase }: AgentCardProps) => {
     { bg: 'bg-amber-500', hover: 'hover:bg-amber-600', textColor: 'text-amber-500' },
     { bg: 'bg-secondary', hover: 'hover:bg-secondary-dark', textColor: 'text-secondary' },
   ];
-  
+
   const color = phaseColors[phase - 1];
-  
+
   return (
     <motion.div 
       className={`agent-card bg-white rounded-xl shadow-sm overflow-hidden 
@@ -63,10 +63,10 @@ const AgentSelector = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('All Agents');
   const [showAllAgents, setShowAllAgents] = useState(false);
-  
+
   // Category filters for top-level agents
   const categoryFilters = ['All Agents', 'Marketing', 'Finance', 'Product', 'Strategy'];
-  
+
   // Category color mapping
   const categoryColors = {
     'Marketing': { bg: 'bg-amber-100', text: 'text-amber-700' },
@@ -75,7 +75,7 @@ const AgentSelector = () => {
     'Strategy': { bg: 'bg-blue-100', text: 'text-blue-700' },
     'All Agents': { bg: 'bg-gray-100', text: 'text-gray-700' }
   } as const;
-  
+
   // Helper function to get category color styles
   const getCategoryColors = (category: string) => {
     switch (category) {
@@ -91,11 +91,11 @@ const AgentSelector = () => {
         return categoryColors['All Agents'];
     }
   };
-  
+
   // Exactly 4 featured agents - prioritize coordinators, but fill with others if needed
   const coordinatorAgents = agents.filter(agent => agent.coordinator)
     .sort((a, b) => a.phase - b.phase); // Sort by phase
-  
+
   // Take 4 agents, either all coordinators or coordinators + other important agents
   const featuredAgents = coordinatorAgents.length >= 4 
     ? coordinatorAgents.slice(0, 4) 
@@ -106,17 +106,17 @@ const AgentSelector = () => {
           : a.phase - b.phase)
         .slice(0, 4 - coordinatorAgents.length)
       ];
-  
+
   // Filtered agents for each phase
   const filteredAgents = agents.filter(agent => 
     agent.phase === activePhase && 
     (searchTerm === '' || agent.name.toLowerCase().includes(searchTerm.toLowerCase())) &&
     (filter === 'All Agents' || agent.category === filter)
   );
-  
+
   // Get the current phase data
   const currentPhase = phases.find(phase => phase.id === activePhase) || phases[0];
-  
+
   // Background colors for phases
   const phaseBackgrounds = ['bg-phase1', 'bg-phase2', 'bg-phase3', 'bg-phase4'];
   const phaseIndicators = ['phase1-indicator', 'phase2-indicator', 'phase3-indicator', 'phase4-indicator'];
@@ -126,7 +126,7 @@ const AgentSelector = () => {
     { bg: 'bg-amber-500', hover: 'hover:bg-amber-600' },
     { bg: 'bg-secondary', hover: 'hover:bg-secondary-dark' },
   ];
-  
+
   return (
     <section id="agents-section" className="mb-16">
       <div className="text-center mb-12 max-w-3xl mx-auto">
@@ -162,7 +162,7 @@ const AgentSelector = () => {
       {/* Featured Agents - Improved */}
       <div className="mb-12 max-w-4xl mx-auto">
         <h3 className="font-heading text-xl font-medium mb-6 text-center">Featured Agents</h3>
-        
+
         {/* 2x2 Grid for Featured Agents */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {featuredAgents.map(agent => (
@@ -194,25 +194,9 @@ const AgentSelector = () => {
             </div>
           ))}
         </div>
-        
+
         {/* "See Other Agents" Button - Improved */}
-        <div className="flex justify-center mt-8 gap-4">
-          <button 
-            onClick={() => setShowAllAgents(!showAllAgents)}
-            className="flex items-center gap-1.5 bg-white text-gray-700 border border-gray-300 px-5 py-2 text-sm rounded-full hover:bg-gray-50 shadow-sm transition-colors font-medium"
-          >
-            {showAllAgents ? (
-              <>
-                <span className="material-icons text-sm">expand_less</span>
-                Hide Other Agents
-              </>
-            ) : (
-              <>
-                <span className="material-icons text-sm">expand_more</span>
-                See Other Agents
-              </>
-            )}
-          </button>
+        <div className="flex justify-center mt-8">
           <Link
             href="/agents"
             className="flex items-center gap-1.5 bg-primary text-white px-5 py-2 text-sm rounded-full hover:bg-primary/90 shadow-sm transition-colors font-medium"
@@ -221,7 +205,7 @@ const AgentSelector = () => {
             Explore All Agents
           </Link>
         </div>
-        
+
         {/* Other Agents Section - Improved */}
         {showAllAgents && (
           <div className="mt-8">
@@ -263,20 +247,6 @@ const AgentSelector = () => {
             </div>
           </div>
         )}
-      </div>
-
-      {/* Consultation Button - Improved */}
-      <div className="mt-12 mb-16 text-center">
-        <Link 
-          href="/consultation" 
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white bg-accent hover:bg-accent/90 transition-all shadow-md font-semibold"
-        >
-          <span className="material-icons text-sm">chat</span>
-          Start Agency Consultation
-        </Link>
-        <p className="text-sm text-gray-600 mt-3 max-w-md mx-auto">
-          Chat with our agency assistant to learn about our services and subscription options
-        </p>
       </div>
     </section>
   );
