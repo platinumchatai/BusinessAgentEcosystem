@@ -22,13 +22,13 @@ const AgentCard = ({ agent }: { agent: AgentType }) => {
   const getPhaseColor = (phase: number) => {
     switch (phase) {
       case 1:
-        return "border-blue-500 shadow-blue-100";
+        return "border-blue-500";
       case 2:
-        return "border-blue-600 shadow-blue-100"; // Changed from green to blue
+        return "border-blue-600";
       case 3:
-        return "border-amber-500 shadow-amber-100";
+        return "border-amber-500";
       case 4:
-        return "border-purple-500 shadow-purple-100";
+        return "border-purple-500";
       default:
         return "border-gray-300";
     }
