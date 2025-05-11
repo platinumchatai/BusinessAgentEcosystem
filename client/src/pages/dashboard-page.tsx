@@ -55,7 +55,7 @@ export default function DashboardPage() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="w-full mb-8 bg-white p-1 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4">
+            <TabsList className="w-full mb-8 bg-gray-50 border border-gray-200 p-1 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4">
               <TabsTrigger value="profile" className="py-3">
                 Profile
               </TabsTrigger>
