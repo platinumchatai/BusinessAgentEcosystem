@@ -27,21 +27,36 @@ const Header = () => {
   const isMobile = useIsMobile();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   
+  // For demo purposes - simulate being logged in
+  const [simulatedUser, setSimulatedUser] = useState<{ username: string } | null>(
+    localStorage.getItem('simulatedUser') 
+      ? JSON.parse(localStorage.getItem('simulatedUser') || '{}') 
+      : null
+  );
+  
+  // Use the real user if available, otherwise use the simulated user
+  const effectiveUser = user || simulatedUser;
+  
   // Check if user is authenticated
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!effectiveUser;
 
   const isActivePath = (path: string) => {
     return location === path;
   };
 
   const handleLogout = () => {
-    // Redirect to logout API endpoint
-    window.location.href = '/api/logout';
+    // Clear the simulated user and refresh the page
+    localStorage.removeItem('simulatedUser');
+    setSimulatedUser(null);
+    // This would normally redirect to: window.location.href = '/api/logout';
   };
 
   const handleLogin = () => {
-    // Redirect to login API endpoint
-    window.location.href = '/api/login';
+    // Create a simulated user
+    const mockUser = { username: "Janice" };
+    localStorage.setItem('simulatedUser', JSON.stringify(mockUser));
+    setSimulatedUser(mockUser);
+    // This would normally redirect to: window.location.href = '/api/login';
   };
 
   useEffect(() => {
@@ -100,7 +115,7 @@ const Header = () => {
                       <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30">
                         <User size={18} />
                       </div>
-                      <span className="text-xs mt-1">{user?.username}</span>
+                      <span className="text-xs mt-1">{effectiveUser?.username}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
