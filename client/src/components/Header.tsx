@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { 
   Home,
-  MessageSquare,
   Users,
   LayoutDashboard,
   User,
@@ -36,19 +35,13 @@ const Header = () => {
     <header className="sticky top-0 z-50 w-full bg-[#1a3780] shadow-md">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center">
-          {/* Navigation Bar exactly matching the screenshot */}
+          {/* Navigation Bar exactly matching the screenshot with updated order */}
           <nav className="flex justify-between items-center w-full">
             <NavItem 
               href="/" 
               icon={<Home size={22} />} 
               label="Home" 
               isActive={isActivePath('/')} 
-            />
-            <NavItem 
-              href="/consultation" 
-              icon={<MessageSquare size={22} />} 
-              label={isMobile ? "Consult" : "Start a Consultation"} 
-              isActive={isActivePath('/consultation')} 
             />
             <NavItem 
               href="/agents" 
@@ -63,17 +56,21 @@ const Header = () => {
               isActive={isActivePath('/dashboard')} 
             />
             <NavItem 
-              href="/profile" 
-              icon={<User size={22} />} 
-              label="Profile" 
-              isActive={isActivePath('/profile')} 
-            />
-            <NavItem 
               href="/subscribe" 
               icon={<DollarSign size={22} />} 
               label="Subscribe" 
               isActive={isActivePath('/subscribe')} 
             />
+            
+            {/* User profile icon (if logged in) */}
+            {user && (
+              <div className="flex flex-col items-center justify-center py-3 px-2 md:px-4 text-white">
+                <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center">
+                  <User size={18} />
+                </div>
+                <span className="text-xs mt-1">{user.username}</span>
+              </div>
+            )}
           </nav>
         </div>
       </div>
