@@ -33,7 +33,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 w-full bg-white/80 backdrop-blur-md shadow-md ${scrolled ? 'py-1' : 'py-2'}`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 w-full bg-blue-600/85 backdrop-blur-md shadow-md ${scrolled ? 'py-1' : 'py-2'}`}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Navigation Bar similar to screenshot */}
@@ -94,14 +94,14 @@ const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
   return (
     <Link href={href}>
       <div className={`flex flex-col items-center justify-center py-2 px-2 md:px-4 relative ${
-        isActive ? 'text-indigo-600' : 'text-gray-500 hover:text-gray-700'
+        isActive ? 'text-white' : 'text-white/80 hover:text-white'
       }`}>
-        <div className={`p-1 ${isActive ? 'bg-indigo-100 rounded-full' : ''}`}>
+        <div className={`p-1 ${isActive ? 'bg-white/20 rounded-full' : ''}`}>
           {icon}
         </div>
         <span className="text-xs mt-1">{label}</span>
         {isActive && (
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-600"></div>
+          <div className="absolute bottom-0 left-0 w-full h-1 bg-white"></div>
         )}
       </div>
     </Link>

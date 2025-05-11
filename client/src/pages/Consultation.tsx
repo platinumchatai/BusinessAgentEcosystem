@@ -279,7 +279,7 @@ const Consultation = () => {
                 <h4 className="text-sm font-medium text-gray-700">Subscription Plans</h4>
                 <p className="text-sm text-gray-500 mt-1">Choose a plan that fits your business needs</p>
                 <Link href="/subscribe">
-                  <Button variant="outline" className="w-full mt-2 border-blue-600 text-blue-600 hover:bg-blue-50">
+                  <Button variant="outline" className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50">
                     View Plans
                   </Button>
                 </Link>
@@ -290,7 +290,7 @@ const Consultation = () => {
                 <p className="text-sm text-gray-500 mt-1">Browse all available AI business agents</p>
                 <Button 
                   variant="outline" 
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50"
                   onClick={() => {
                     // Navigate to home page
                     window.location.href = "/";
@@ -308,7 +308,7 @@ const Consultation = () => {
                 <p className="text-sm text-gray-500 mt-1">See how our agents work together</p>
                 <Button 
                   variant="outline" 
-                  className="w-full mt-2"
+                  className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50"
                   onClick={() => {
                     // Navigate to home page
                     window.location.href = "/";
