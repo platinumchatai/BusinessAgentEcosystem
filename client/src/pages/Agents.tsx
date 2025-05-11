@@ -4,8 +4,7 @@ import { Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { agents, AgentType, phases } from "@/data/agents";
 import { cn } from "@/lib/utils";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import MainLayout from "@/layouts/MainLayout";
 import {
   Card,
   CardContent,
@@ -150,9 +149,7 @@ const AgentsPage = () => {
   const categories = Array.from(new Set(agents.map(agent => agent.category)));
   
   return (
-    <div className="min-h-screen flex flex-col">
-      <Header />
-      
+    <MainLayout>
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="bg-gradient-to-r from-[#1e4388] to-[#2a549e] text-white py-16">
@@ -326,9 +323,7 @@ const AgentsPage = () => {
           </div>
         </section>
       </main>
-      
-      <Footer />
-    </div>
+    </MainLayout>
   );
 };
 

@@ -33,7 +33,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 w-full bg-white shadow-md ${scrolled ? 'py-1' : 'py-2'}`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 w-full bg-white/80 backdrop-blur-md shadow-md ${scrolled ? 'py-1' : 'py-2'}`}>
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center">
           {/* Navigation Bar similar to screenshot */}

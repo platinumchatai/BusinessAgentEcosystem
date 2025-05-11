@@ -3,6 +3,7 @@ import Hero from '@/components/Hero';
 import AgentSelector from '@/components/AgentSelector';
 import WorkflowVisualizer from '@/components/WorkflowVisualizer';
 import ScrollToTop from '@/components/ScrollToTop';
+import MainLayout from '@/layouts/MainLayout';
 
 const Home = () => {
   // Ensure page starts at the top on first render
@@ -42,16 +43,18 @@ const Home = () => {
   }, []);
   
   return (
-    <div id="top">
-      <Hero />
-      <div className="container mx-auto px-4 py-12 bg-white rounded-t-[40px] -mt-6 relative z-10">
-        <AgentSelector />
-        <WorkflowVisualizer />
+    <MainLayout>
+      <div id="top">
+        <Hero />
+        <div className="container mx-auto px-4 py-12 bg-white rounded-t-[40px] -mt-6 relative z-10">
+          <AgentSelector />
+          <WorkflowVisualizer />
+        </div>
+        
+        {/* Floating scroll to top button */}
+        <ScrollToTop />
       </div>
-      
-      {/* Floating scroll to top button */}
-      <ScrollToTop />
-    </div>
+    </MainLayout>
   );
 };
 
