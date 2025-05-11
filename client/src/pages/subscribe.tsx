@@ -218,7 +218,7 @@ const Subscribe = () => {
               onClick={() => setSelectedPlan(index)}
             >
               {plan.recommended && (
-                <div className="bg-accent text-white text-center py-2 text-sm font-medium">
+                <div className="bg-[#1e4388] text-white text-center py-2 text-sm font-medium">
                   Recommended Plan
                 </div>
               )}
@@ -236,7 +236,7 @@ const Subscribe = () => {
                   className={cn(
                     "w-full mt-6 py-3 rounded-full font-medium shadow-sm",
                     selectedPlan === index 
-                      ? "bg-accent hover:bg-accent/90 text-white" 
+                      ? "bg-[#1e4388] hover:bg-[#1e4388]/90 text-white" 
                       : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
                   )}
                   onClick={() => setSelectedPlan(index)}
@@ -711,7 +711,7 @@ const Subscribe = () => {
                         <Button
                           type="button"
                           onClick={handleSubmit}
-                          className="bg-accent hover:bg-accent/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
+                          className="bg-[#1e4388] hover:bg-[#1e4388]/90 rounded-full px-6 py-2.5 font-medium shadow-sm text-white"
                         >
                           Complete Subscription
                         </Button>
