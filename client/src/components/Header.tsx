@@ -23,47 +23,25 @@ import { Button } from "@/components/ui/button";
 const Header = () => {
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
-  const { user } = useAuth();
+  const { user, simulateLogin, simulateLogout } = useAuth();
   const isMobile = useIsMobile();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   
-  // For demo purposes - simulate being logged in
-  const [simulatedUser, setSimulatedUser] = useState<{ username: string } | null>(
-    localStorage.getItem('simulatedUser') 
-      ? JSON.parse(localStorage.getItem('simulatedUser') || '{}') 
-      : null
-  );
-  
-  // Use the real user if available, otherwise use the simulated user
-  const effectiveUser = user || simulatedUser;
-  
   // Check if user is authenticated
-  const isAuthenticated = !!effectiveUser;
+  const isAuthenticated = !!user;
 
   const isActivePath = (path: string) => {
     return location === path;
   };
 
   const handleLogout = () => {
-    // Clear the simulated user and navigate to home page
-    localStorage.removeItem('simulatedUser');
-    setSimulatedUser(null);
-    
-    // Clear any auth-related cookies or storage
-    document.cookie.split(";").forEach(function(c) {
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-    
-    // Force a full page reload to clear any cached state
-    window.location.href = '/?logged_out=true';
+    // Use the auth context's simulateLogout method
+    simulateLogout();
   };
 
   const handleLogin = () => {
-    // Create a simulated user
-    const mockUser = { username: "Janice" };
-    localStorage.setItem('simulatedUser', JSON.stringify(mockUser));
-    setSimulatedUser(mockUser);
-    // This would normally redirect to: window.location.href = '/api/login';
+    // Use the auth context's simulateLogin method
+    simulateLogin("Janice");
   };
 
   useEffect(() => {
@@ -118,11 +96,11 @@ const Header = () => {
               <div className="flex flex-col items-center justify-center py-3 px-2 md:px-4 text-white">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="p-0 h-auto flex flex-col items-center hover:bg-transparent">
+                    <Button variant="ghost" className="p-0 h-auto flex flex-col items-center hover:bg-transparent focus:outline-none focus:ring-0">
                       <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30">
                         <User size={18} />
                       </div>
-                      <span className="text-xs mt-1">{effectiveUser?.username}</span>
+                      <span className="text-xs mt-1">{user?.username}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">

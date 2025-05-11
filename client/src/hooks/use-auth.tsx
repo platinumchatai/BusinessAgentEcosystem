@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState, useEffect } from "react";
 import {
   useQuery,
   useMutation,
@@ -8,13 +8,22 @@ import { User, type InsertUser } from "@shared/schema";
 import { apiRequest, queryClient } from "../lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 
+// Define a simulated user type
+type SimulatedUser = {
+  id: number;
+  username: string;
+  isSimulated: true;
+};
+
 type AuthContextType = {
-  user: User | null;
+  user: User | SimulatedUser | null;
   isLoading: boolean;
   error: Error | null;
   loginMutation: UseMutationResult<User, Error, LoginData>;
   logoutMutation: UseMutationResult<void, Error, void>;
   registerMutation: UseMutationResult<User, Error, InsertUser>;
+  simulateLogin: (username: string) => void;
+  simulateLogout: () => void;
 };
 
 type LoginData = Pick<InsertUser, "username" | "password">;
@@ -22,8 +31,27 @@ type LoginData = Pick<InsertUser, "username" | "password">;
 export const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
+  const [simulatedUser, setSimulatedUser] = useState<SimulatedUser | null>(null);
+  
+  // Load simulated user from localStorage on mount
+  useEffect(() => {
+    const storedUser = localStorage.getItem('simulatedUser');
+    if (storedUser) {
+      try {
+        const userData = JSON.parse(storedUser);
+        setSimulatedUser({
+          id: 999, // Use a high ID that won't conflict
+          username: userData.username,
+          isSimulated: true
+        });
+      } catch (e) {
+        console.error("Error parsing simulated user from localStorage");
+      }
+    }
+  }, []);
+  
   const {
-    data: user,
+    data: realUser,
     error,
     isLoading,
   } = useQuery<User | null, Error>({
@@ -40,6 +68,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     },
   });
+  
+  // Use either the real user or the simulated one
+  const user = realUser || simulatedUser;
 
   const loginMutation = useMutation({
     mutationFn: async (credentials: LoginData) => {
@@ -103,6 +134,43 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     },
   });
 
+  // Simulate login function
+  const simulateLogin = (username: string) => {
+    // Create a simulated user and save to localStorage
+    const mockUser: SimulatedUser = {
+      id: 999,
+      username,
+      isSimulated: true
+    };
+    
+    localStorage.setItem('simulatedUser', JSON.stringify(mockUser));
+    setSimulatedUser(mockUser);
+    
+    toast({
+      title: "Simulated Login",
+      description: `Welcome, ${username}!`,
+    });
+  };
+  
+  // Simulate logout function
+  const simulateLogout = () => {
+    localStorage.removeItem('simulatedUser');
+    setSimulatedUser(null);
+    
+    // Clear any cookies just to be safe
+    document.cookie.split(";").forEach(c => {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out",
+    });
+    
+    // Navigate to home page
+    window.location.href = '/';
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -112,6 +180,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         loginMutation,
         logoutMutation,
         registerMutation,
+        simulateLogin,
+        simulateLogout
       }}
     >
       {children}
