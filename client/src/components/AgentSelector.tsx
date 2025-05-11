@@ -44,13 +44,10 @@ const AgentCard = ({ agent, phase }: AgentCardProps) => {
             </span>
           </div>
           <p className="text-gray-600 text-sm mb-4">{agent.description}</p>
-          <div className="flex justify-between items-center">
+          <div className="flex justify-start items-center">
             <span className="text-xs font-medium text-gray-500">
               {`Phase ${phase}${agent.coordinator ? ' Primary' : ''}`}
             </span>
-            <button className={`w-8 h-8 rounded-full flex items-center justify-center ${color.bg} text-white ${color.hover}`}>
-              <span className="material-icons text-sm">arrow_forward</span>
-            </button>
           </div>
         </div>
       </Link>
