@@ -249,7 +249,7 @@ const Subscribe = () => {
                   <ul className="space-y-2">
                     {plan.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
-                        <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
+                        <Check className="h-5 w-5 text-blue-500 mr-2 flex-shrink-0" />
                         <span className="text-sm text-gray-700 font-medium">{feature}</span>
                       </li>
                     ))}
@@ -292,7 +292,7 @@ const Subscribe = () => {
                   cn(
                     "flex items-center py-3 px-6 text-sm font-medium outline-none rounded-full transition-all",
                     selected
-                      ? "text-white bg-accent shadow-sm"
+                      ? "text-white bg-[#1e4388] shadow-sm"
                       : "text-gray-700 hover:bg-gray-100"
                   )
                 }
@@ -617,8 +617,8 @@ const Subscribe = () => {
               {/* Confirmation Panel */}
               <Tab.Panel>
                 <div className="p-6">
-                  <div className="p-4 bg-green-50 rounded-md border border-green-100 mb-6">
-                    <h3 className="text-green-700 font-medium flex items-center">
+                  <div className="p-4 bg-white rounded-md border border-gray-200 mb-6">
+                    <h3 className="text-gray-700 font-medium flex items-center">
                       <Check className="h-5 w-5 mr-2" />
                       Almost done! Please review your subscription details
                     </h3>
