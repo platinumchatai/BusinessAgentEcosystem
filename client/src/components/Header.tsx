@@ -33,44 +33,44 @@ const Header = () => {
   }, []);
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 w-full hero-gradient backdrop-blur-md shadow-md ${scrolled ? 'py-1' : 'py-2'}`}>
-      <div className="max-w-6xl mx-auto px-4">
+    <header className="sticky top-0 z-50 w-full bg-[#1a3780] shadow-md">
+      <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center">
-          {/* Navigation Bar similar to screenshot */}
+          {/* Navigation Bar exactly matching the screenshot */}
           <nav className="flex justify-between items-center w-full">
             <NavItem 
               href="/" 
-              icon={<Home size={20} />} 
+              icon={<Home size={22} />} 
               label="Home" 
               isActive={isActivePath('/')} 
             />
             <NavItem 
               href="/consultation" 
-              icon={<MessageSquare size={20} />} 
+              icon={<MessageSquare size={22} />} 
               label={isMobile ? "Consult" : "Start a Consultation"} 
               isActive={isActivePath('/consultation')} 
             />
             <NavItem 
               href="/agents" 
-              icon={<Users size={20} />} 
+              icon={<Users size={22} />} 
               label={isMobile ? "Agents" : "Explore Agents"} 
               isActive={isActivePath('/agents')} 
             />
             <NavItem 
               href="/dashboard" 
-              icon={<LayoutDashboard size={20} />} 
+              icon={<LayoutDashboard size={22} />} 
               label="Dashboard" 
               isActive={isActivePath('/dashboard')} 
             />
             <NavItem 
               href="/profile" 
-              icon={<User size={20} />} 
+              icon={<User size={22} />} 
               label="Profile" 
               isActive={isActivePath('/profile')} 
             />
             <NavItem 
               href="/pricing" 
-              icon={<DollarSign size={20} />} 
+              icon={<DollarSign size={22} />} 
               label="Pricing" 
               isActive={isActivePath('/pricing')} 
             />
@@ -93,15 +93,15 @@ const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
   
   return (
     <Link href={href}>
-      <div className={`flex flex-col items-center justify-center py-2 px-2 md:px-4 relative ${
+      <div className={`flex flex-col items-center justify-center py-3 px-2 md:px-4 relative ${
         isActive ? 'text-white' : 'text-white/80 hover:text-white'
       }`}>
-        <div className={`p-1 ${isActive ? 'bg-white/20 rounded-full' : ''}`}>
+        <div>
           {icon}
         </div>
         <span className="text-xs mt-1">{label}</span>
         {isActive && (
-          <div className="absolute bottom-0 left-0 w-full h-1 bg-white"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-white"></div>
         )}
       </div>
     </Link>
