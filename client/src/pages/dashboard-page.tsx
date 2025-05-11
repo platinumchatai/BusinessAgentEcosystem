@@ -55,17 +55,17 @@ export default function DashboardPage() {
             onValueChange={setActiveTab}
             className="w-full"
           >
-            <TabsList className="w-full h-12 mb-8 bg-gray-50 border border-gray-200 p-1 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4 gap-0">
-              <TabsTrigger value="profile" className="w-full data-[state=active]:bg-[#1e4388] data-[state=active]:text-white">
+            <TabsList className="w-full h-12 mb-8 bg-gray-50 border border-gray-200 p-0 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4 gap-0">
+              <TabsTrigger value="profile" className="w-full h-full data-[state=active]:w-full data-[state=active]:h-full mx-0 px-4 data-[state=active]:bg-[#1e4388] data-[state=active]:text-white rounded-sm">
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="invoices" className="w-full data-[state=active]:bg-[#1e4388] data-[state=active]:text-white">
+              <TabsTrigger value="invoices" className="w-full h-full data-[state=active]:w-full data-[state=active]:h-full mx-0 px-4 data-[state=active]:bg-[#1e4388] data-[state=active]:text-white rounded-sm">
                 Billing & Invoices
               </TabsTrigger>
-              <TabsTrigger value="conversations" className="w-full data-[state=active]:bg-[#1e4388] data-[state=active]:text-white">
+              <TabsTrigger value="conversations" className="w-full h-full data-[state=active]:w-full data-[state=active]:h-full mx-0 px-4 data-[state=active]:bg-[#1e4388] data-[state=active]:text-white rounded-sm">
                 Conversations
               </TabsTrigger>
-              <TabsTrigger value="workflows" className="w-full data-[state=active]:bg-[#1e4388] data-[state=active]:text-white">
+              <TabsTrigger value="workflows" className="w-full h-full data-[state=active]:w-full data-[state=active]:h-full mx-0 px-4 data-[state=active]:bg-[#1e4388] data-[state=active]:text-white rounded-sm">
                 Workflows
               </TabsTrigger>
             </TabsList>
