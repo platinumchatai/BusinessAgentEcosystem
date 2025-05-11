@@ -69,10 +69,10 @@ const Header = () => {
               isActive={isActivePath('/profile')} 
             />
             <NavItem 
-              href="/pricing" 
+              href="/subscribe" 
               icon={<DollarSign size={22} />} 
-              label="Pricing" 
-              isActive={isActivePath('/pricing')} 
+              label="Subscribe" 
+              isActive={isActivePath('/subscribe')} 
             />
           </nav>
         </div>
