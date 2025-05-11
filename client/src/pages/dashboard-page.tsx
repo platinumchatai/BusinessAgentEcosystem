@@ -31,7 +31,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
+    <div className="min-h-screen bg-white">
       {/* Dashboard Header */}
       <div className="w-full bg-gradient-to-r from-[#1e4388] to-[#2a549e] py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
