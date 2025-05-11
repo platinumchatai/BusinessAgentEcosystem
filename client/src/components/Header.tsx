@@ -34,14 +34,22 @@ const Header = () => {
     return location === path;
   };
 
-  const handleLogout = () => {
-    // Use the auth context's simulateLogout method
-    simulateLogout();
+  const handleLogout = async () => {
+    try {
+      // Use the real logout function
+      await fetch('/api/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const handleLogin = () => {
-    // Use the auth context's simulateLogin method
-    simulateLogin("Janice");
+    // Navigate to the auth page instead of simulating login
+    window.location.href = "/auth";
   };
 
   useEffect(() => {

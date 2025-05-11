@@ -11,22 +11,9 @@ export function ProtectedRoute({
   component: () => React.JSX.Element;
 }) {
   const { user, isLoading } = useAuth();
-  const [simulatedUser, setSimulatedUser] = useState<{ username: string } | null>(null);
   
-  // Check for simulated user in localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem('simulatedUser');
-    if (storedUser) {
-      try {
-        setSimulatedUser(JSON.parse(storedUser));
-      } catch (e) {
-        console.error("Error parsing simulated user from localStorage");
-      }
-    }
-  }, []);
-  
-  // Consider user authenticated if either real user exists or simulated user exists
-  const effectiveUser = user || simulatedUser;
+  // Use only the real authenticated user
+  const effectiveUser = user;
 
   return (
     <Route path={path}>
