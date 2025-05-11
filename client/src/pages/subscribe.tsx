@@ -196,13 +196,15 @@ const Subscribe = () => {
   
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-12">
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <h1 className="text-3xl font-bold mb-4 text-gray-900">Subscribe to Business Agency AI</h1>
-          <p className="text-gray-100 font-medium text-lg bg-gradient-to-r from-[#1e4388] to-[#2a549e] py-4 px-6 rounded-lg">
-            Get access to our advanced AI agent ecosystem and transform how you build and grow your business
+      <div className="w-full bg-gradient-to-r from-[#1e4388] to-[#2a549e] py-16 px-4 mb-12">
+        <div className="max-w-7xl mx-auto text-center">
+          <h1 className="text-4xl font-bold text-white mb-4">AI Agent Ecosystem</h1>
+          <p className="text-slate-200 text-lg max-w-3xl mx-auto">
+            Explore our specialized AI agents designed to support every stage of your business journey
           </p>
         </div>
+      </div>
+      <div className="container mx-auto px-4">
         
         {/* Plan Selection */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
