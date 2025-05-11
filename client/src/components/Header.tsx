@@ -45,10 +45,11 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    // Clear the simulated user and refresh the page
+    // Clear the simulated user and navigate to home page
     localStorage.removeItem('simulatedUser');
     setSimulatedUser(null);
-    // This would normally redirect to: window.location.href = '/api/logout';
+    // Redirect to the home page
+    window.location.href = '/';
   };
 
   const handleLogin = () => {
