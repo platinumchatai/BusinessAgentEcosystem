@@ -19,22 +19,22 @@ const Footer = () => {
             </h4>
             <ul className="space-y-2 text-sm text-white/80">
               <li>
-                <a href="/#agents" className="hover:text-white">
+                <a href="/agents?category=Strategy" className="hover:text-white">
                   Strategy Agents
                 </a>
               </li>
               <li>
-                <a href="/#agents" className="hover:text-white">
+                <a href="/agents?category=Marketing" className="hover:text-white">
                   Marketing Agents
                 </a>
               </li>
               <li>
-                <a href="/#agents" className="hover:text-white">
+                <a href="/agents?category=Finance" className="hover:text-white">
                   Finance Agents
                 </a>
               </li>
               <li>
-                <a href="/#agents" className="hover:text-white">
+                <a href="/agents?category=Product" className="hover:text-white">
                   Product Agents
                 </a>
               </li>
