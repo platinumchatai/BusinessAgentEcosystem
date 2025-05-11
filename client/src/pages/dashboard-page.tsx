@@ -56,16 +56,16 @@ export default function DashboardPage() {
             className="w-full"
           >
             <TabsList className="w-full mb-8 bg-gray-50 border border-gray-200 p-1 shadow-sm rounded-md grid grid-cols-2 md:grid-cols-4">
-              <TabsTrigger value="profile" className="py-3">
+              <TabsTrigger value="profile" className="py-3 data-[state=active]:shadow-none">
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="invoices" className="py-3">
+              <TabsTrigger value="invoices" className="py-3 data-[state=active]:shadow-none">
                 Billing & Invoices
               </TabsTrigger>
-              <TabsTrigger value="conversations" className="py-3">
+              <TabsTrigger value="conversations" className="py-3 data-[state=active]:shadow-none">
                 Conversations
               </TabsTrigger>
-              <TabsTrigger value="workflows" className="py-3">
+              <TabsTrigger value="workflows" className="py-3 data-[state=active]:shadow-none">
                 Workflows
               </TabsTrigger>
             </TabsList>
