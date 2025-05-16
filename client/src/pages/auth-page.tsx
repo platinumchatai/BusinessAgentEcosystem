@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -55,9 +55,15 @@ export default function AuthPage() {
     registerMutation.mutate(data);
   };
 
-  // Redirect if already logged in
+  // Use useEffect for navigation instead of doing it during render
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+  
+  // If user is logged in, return null early without rendering the form
   if (user) {
-    navigate("/");
     return null;
   }
 
