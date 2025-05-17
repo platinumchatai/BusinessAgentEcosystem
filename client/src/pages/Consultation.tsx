@@ -162,18 +162,41 @@ const Consultation = () => {
         // Extract personalized content
         const personalizedContent = getPersonalizedContent(results);
         
-        // Only display the personalized hook, story, offer - customers should never see the insights analysis
+        // Create a professional, sales-oriented response with package recommendations
         // Format with rich, well-structured HTML for better presentation
         responseContent = `
           <div>
             <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
               <div class="p-4">
-                ${personalizedContent.replace(/\n\n/g, '</p><p class="mt-3">')}
+                <p>${personalizedContent.replace(/\n\n/g, '</p><p class="mt-3">')}</p>
+              </div>
+            </div>
+            
+            <div class="mt-5">
+              <h4 class="text-lg font-semibold mb-2">Recommended AI Agents for Your Business</h4>
+              <div class="flex flex-wrap gap-2 mb-4">
+                ${results.recommendedAgents.map(agent => 
+                  `<span class="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">${agent}</span>`
+                ).join('')}
+              </div>
+              
+              <div class="mt-4 p-4 border border-green-100 bg-green-50 rounded-md">
+                <div class="flex items-start">
+                  <div class="flex-shrink-0 mt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <h5 class="text-md font-medium text-green-800">Recommended Package</h5>
+                    <p class="text-sm text-green-700 mt-1">${results.recommendedPackage}</p>
+                  </div>
+                </div>
               </div>
             </div>
             
             <div class="mt-4">
-              <p class="font-medium">Would you like me to provide more specific strategies for your business?</p>
+              <p class="font-medium">Would you like to know more about how these specific agents can help ${results.businessName || "your business"}?</p>
             </div>
           </div>
         `;
