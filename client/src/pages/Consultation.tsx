@@ -7,6 +7,7 @@ import { SendHorizontal, Bot, User, ArrowLeft, Sparkles } from 'lucide-react';
 import BackNavigation from '@/components/BackNavigation';
 import { cn } from '@/lib/utils';
 import { formatMessageContent } from '@/lib/formatMessage';
+import { analyzeConsultation, getPersonalizedContent, getRecommendedAgents } from '@/lib/consultationAnalyzer';
 
 type Message = {
   id: string;
