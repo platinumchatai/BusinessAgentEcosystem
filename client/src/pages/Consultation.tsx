@@ -180,13 +180,8 @@ const Consultation = () => {
     // Standard response based on keywords
     let responseContent = generateResponse(userMessage);
     
-    // Combine all previous user messages to provide context for analysis
-    const allUserMessages = messages
-      .filter(msg => msg.role === 'user')
-      .map(msg => msg.content)
-      .join(' ');
-    
-    const textToAnalyze = allUserMessages + ' ' + userMessage;
+    // Don't combine messages - just use the current message to avoid confusion
+    const textToAnalyze = userMessage;
     
     // Always try to analyze and enhance the response for anything except very short messages
     if (userMessage.length > 20) {
@@ -292,29 +287,8 @@ const Consultation = () => {
       
       setMessages(prev => [...prev, assistantMessage]);
       
-      // Ask follow-up questions if we need more business details
-      // This happens if the user's message is short and it's early in the conversation
-      if (messages.length <= 2 && userMessage.content.length < 100) {
-        setTimeout(() => {
-          const followUpMessage: Message = {
-            id: (Date.now() + 2).toString(),
-            role: 'assistant',
-            content: `
-              <div>
-                <p>To provide you with more tailored recommendations, could you share a bit more about your business?</p>
-                <ul class="list-disc pl-5 mt-2 space-y-1">
-                  <li>What specific challenges is your business facing right now?</li>
-                  <li>What are your main goals for the next 6-12 months?</li>
-                  <li>Which areas of your business need the most improvement?</li>
-                </ul>
-                <p class="mt-2">The more details you provide, the better I can customize our AI solutions to your specific situation.</p>
-              </div>
-            `,
-            timestamp: new Date(),
-          };
-          setMessages(prev => [...prev, followUpMessage]);
-        }, 3000); // Wait 3 seconds before sending the follow-up
-      }
+      // Don't ask follow-up questions automatically anymore
+      // Instead wait for the analysis to complete
     } catch (error) {
       console.error('Error generating response:', error);
       // Fallback to standard response if enhanced response fails

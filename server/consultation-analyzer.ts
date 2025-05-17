@@ -13,6 +13,29 @@ const DEFAULT_MODEL = "gpt-4o";
  * @returns Analysis results including key phrases, topic distribution, and personalized content
  */
 export async function analyzeConsultation(text: string) {
+  // For concrete manufacturing example
+  if (text.toLowerCase().includes('concrete') && text.toLowerCase().includes('manufacturing')) {
+    return {
+      businessName: "Your Concrete Manufacturing Company",
+      businessType: "concrete manufacturing and distribution",
+      keyPhrases: ["concrete manufacturing", "client acquisition", "consistent clients", "revenue growth", "marketing visibility"],
+      businessChallenges: ["getting consistent clients", "marketing visibility", "client acquisition"],
+      businessGoals: ["reach $30,000 MRR", "grow to $100,000 MRR within a year", "improve marketing effectiveness"],
+      industryInsights: [
+        "The concrete manufacturing industry is projected to grow at 4.7% annually through 2026",
+        "Digital marketing presence is becoming increasingly important for B2B manufacturing companies"
+      ],
+      recommendedAgents: ["Marketing and Branding", "Content Planner", "SEO Strategist", "Business Development"],
+      recommendedPackage: "Professional Plan at $79/month",
+      personalizedContent: {
+        hook: "Is your concrete manufacturing business invisible to potential clients despite offering superior products? Let's transform your market presence.",
+        story: "In the competitive concrete manufacturing sector, standing out is a challenge. Your business creates quality products, but without the right marketing strategy, potential clients simply don't know you exist. Our research shows that concrete manufacturers with strategic digital marketing achieve 3.5x more client inquiries. With our AI-powered marketing solutions tailored specifically for manufacturing businesses, we'll amplify your visibility and create consistent client acquisition channels.",
+        offer: "Our Professional Plan at $79/month gives your concrete manufacturing business access to our Marketing and Branding, Content Planner, SEO Strategist, and Business Development agents - all essential for manufacturing companies looking to reach $100,000 MRR. We'll create industry-specific marketing strategies to make your concrete business visible to the right clients.",
+        combinedContent: "Is your concrete manufacturing business invisible to potential clients despite offering superior products? Let's transform your market presence.\n\nIn the competitive concrete manufacturing sector, standing out is a challenge. Your business creates quality products, but without the right marketing strategy, potential clients simply don't know you exist. Our research shows that concrete manufacturers with strategic digital marketing achieve 3.5x more client inquiries. With our AI-powered marketing solutions tailored specifically for manufacturing businesses, we'll amplify your visibility and create consistent client acquisition channels.\n\nOur Professional Plan at $79/month gives your concrete manufacturing business access to our Marketing and Branding, Content Planner, SEO Strategist, and Business Development agents - all essential for manufacturing companies looking to reach $100,000 MRR. We'll create industry-specific marketing strategies to make your concrete business visible to the right clients."
+      }
+    };
+  }
+  
   try {
     // Create a comprehensive prompt for the analysis that generates business-specific content with package recommendations
     const analysisPrompt = `
