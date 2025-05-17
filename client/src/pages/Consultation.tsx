@@ -176,8 +176,18 @@ const Consultation = () => {
         // Extract personalized content
         const personalizedContent = getPersonalizedContent(results);
         
-        // Create a professional, sales-oriented response with package recommendations
+        // Create a professional, sales-oriented response focusing on package tiers and specific business benefits
         // Format with rich, well-structured HTML for better presentation
+        const businessName = results.businessName || "your business";
+        const businessType = results.businessType || "business";
+        const packageTier = results.recommendedPackage?.split(' at ')[0] || "Professional Plan";
+        const packagePrice = results.recommendedPackage?.split(' at ')[1] || "$79/month";
+        
+        // Get business goals or provide defaults
+        const businessGoals = results.businessGoals && results.businessGoals.length > 0 
+          ? results.businessGoals.join(' and ') 
+          : "achieve your business objectives";
+          
         responseContent = `
           <div>
             <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
@@ -186,31 +196,35 @@ const Consultation = () => {
               </div>
             </div>
             
-            <div class="mt-5">
-              <h4 class="text-lg font-semibold mb-2">Recommended AI Agents for Your Business</h4>
-              <div class="flex flex-wrap gap-2 mb-4">
-                ${results.recommendedAgents.map(agent => 
-                  `<span class="px-3 py-1.5 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">${agent}</span>`
-                ).join('')}
-              </div>
+            <div class="mt-5 p-4 border border-blue-100 bg-blue-50 rounded-md">
+              <h4 class="text-lg font-semibold mb-3">Your Personalized Recommendation</h4>
               
-              <div class="mt-4 p-4 border border-green-100 bg-green-50 rounded-md">
-                <div class="flex items-start">
-                  <div class="flex-shrink-0 mt-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-                      <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                    </svg>
-                  </div>
-                  <div class="ml-3">
-                    <h5 class="text-md font-medium text-green-800">Recommended Package</h5>
-                    <p class="text-sm text-green-700 mt-1">${results.recommendedPackage || "Professional Plan at $79/month"}</p>
-                  </div>
-                </div>
+              <p class="mb-3">Based on <strong>${businessName}</strong>'s specific needs as a ${businessType}, you would be best suited for our <strong>${packageTier} (${packagePrice})</strong>.</p>
+              
+              <p class="mb-2"><strong>This package includes these specialized AI agents:</strong></p>
+              <ul class="list-disc pl-6 mb-4 space-y-1">
+                ${results.recommendedAgents.map(agent => 
+                  `<li><strong>${agent}</strong> - Helping you develop your ${businessType} and ${results.businessChallenges?.[0] ? `overcome challenges like ${results.businessChallenges[0]}` : 'overcome industry challenges'}</li>`
+                ).join('')}
+              </ul>
+              
+              <p class="mb-2">Together, these agents will help ${businessName}:</p>
+              <ul class="list-disc pl-6 mb-3 space-y-1">
+                <li>Develop targeted strategies for ${businessType} growth</li>
+                <li>${businessGoals}</li>
+                <li>Stay ahead of competitors in the ${businessType} market</li>
+              </ul>
+              
+              <p class="mt-3 text-sm font-medium">We also offer these alternative tiers:</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <span class="px-3 py-1 ${packageTier.includes('Basic') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Basic Plan ($29/month)</span>
+                <span class="px-3 py-1 ${packageTier.includes('Professional') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Professional Plan ($79/month)</span>
+                <span class="px-3 py-1 ${packageTier.includes('Enterprise') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Enterprise Plan ($199/month)</span>
               </div>
             </div>
             
             <div class="mt-4">
-              <p class="font-medium">Would you like to know more about how these specific agents can help ${results.businessName || "your business"}?</p>
+              <p class="font-medium">Would you like me to explain how our ${packageTier} will specifically help ${businessName} achieve ${results.businessGoals?.[0] || 'your business goals'}?</p>
             </div>
           </div>
         `;
