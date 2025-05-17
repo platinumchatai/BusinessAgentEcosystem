@@ -7,7 +7,6 @@ import { SendHorizontal, Bot, User, ArrowLeft, Sparkles } from 'lucide-react';
 import BackNavigation from '@/components/BackNavigation';
 import { cn } from '@/lib/utils';
 import { formatMessageContent } from '@/lib/formatMessage';
-import { analyzeConsultation, getPersonalizedContent, getRecommendedAgents } from '@/lib/consultationAnalyzer';
 
 type Message = {
   id: string;
@@ -39,224 +38,16 @@ const INITIAL_MESSAGES: Message[] = [
   },
 ];
 
-// Pre-defined responses for the agency assistant
-const AGENCY_RESPONSES: Record<string, string> = {
-  'subscription': `
-    <div>
-      <h3 class="text-lg font-medium mb-2">Our Subscription Options</h3>
-      <ul class="space-y-2">
-        <li><strong>Basic Plan ($29/month)</strong>: Access to individual agents for focused expertise.</li>
-        <li><strong>Professional Plan ($79/month)</strong>: Full access to all preset workflows and individual agents.</li>
-        <li><strong>Enterprise Plan ($199/month)</strong>: Custom AI agent solutions tailored to your specific business needs.</li>
-      </ul>
-      <p class="mt-3">Subscribe to start working with our specialized agents and workflows. You can visit our <a href="/subscribe" class="text-blue-600 hover:underline">subscription page</a> to learn more.</p>
-    </div>
-  `,
-  'workflows': `
-    <div>
-      <h3 class="text-lg font-medium mb-2">About Our Workflows</h3>
-      <p>Our AI workflows combine multiple specialized agents working together under a coordinator to solve complex business challenges.</p>
-      <p class="mt-2">We offer workflows for each phase of business development:</p>
-      <ul class="mt-2 space-y-1">
-        <li>• <strong>Phase 1</strong>: Ideation & Concept Development</li>
-        <li>• <strong>Phase 2</strong>: Launch & Market Entry Strategy</li>
-        <li>• <strong>Phase 3</strong>: Growth & Scaling Solutions</li>
-        <li>• <strong>Phase 4</strong>: Optimization & Expansion Planning</li>
-      </ul>
-      <p class="mt-3">Each workflow combines the best agents for that business stage to provide comprehensive solutions.</p>
-    </div>
-  `,
-  'agents': `
-    <div>
-      <h3 class="text-lg font-medium mb-2">Our AI Agent Ecosystem</h3>
-      <p>Our platform features 16 specialized AI agents, each with unique expertise:</p>
-      <ul class="mt-2 space-y-1">
-        <li>• <strong>Business Development Agents</strong>: Strategic planning and business model optimization</li>
-        <li>• <strong>Marketing & Branding Agents</strong>: Brand identity, marketing strategy, and customer acquisition</li>
-        <li>• <strong>Financial Agents</strong>: Budgeting, financial projections, and investment analysis</li>
-        <li>• <strong>Operations Agents</strong>: Process optimization, logistics, and operational efficiency</li>
-      </ul>
-      <p class="mt-3">You can explore all our agents from the home page and learn about their specific capabilities.</p>
-    </div>
-  `,
-  'help': `
-    <div>
-      <h3 class="text-lg font-medium mb-2">How Can I Help You?</h3>
-      <p>Here are some things you can ask me about:</p>
-      <ul class="mt-2 space-y-1">
-        <li>• Information about our subscription plans</li>
-        <li>• Details about our AI agents and their capabilities</li>
-        <li>• Explanation of our workflows and how they function</li>
-        <li>• Next steps to get started with our platform</li>
-        <li>• General information about our agency</li>
-      </ul>
-      <p class="mt-3">Feel free to ask any questions you have!</p>
-    </div>
-  `,
-  'get started': `
-    <div>
-      <h3 class="text-lg font-medium mb-2">Getting Started</h3>
-      <p>Here's how to get started with our AI agency platform:</p>
-      <ol class="mt-2 space-y-2">
-        <li><strong>1. Explore</strong>: Browse our agents and workflows on the home page to understand our capabilities</li>
-        <li><strong>2. Subscribe</strong>: Choose a subscription plan that best fits your needs</li>
-        <li><strong>3. Create Account</strong>: Set up your profile with username, password, and optional profile picture</li>
-        <li><strong>4. Start Using</strong>: Begin interacting with agents or use complete workflows for comprehensive solutions</li>
-      </ol>
-      <p class="mt-3">To get started right away, <a href="/subscribe" class="text-blue-600 hover:underline">visit our subscription page</a>.</p>
-    </div>
-  `,
-  'default': `I'm here to provide information about our agency, our AI agents, and subscription options. I can't provide specific business plans, but I can guide you to the right resources and agents that can help you. What specific area of our services would you like to know more about?`
-};
-
-const generateResponse = (message: string): string => {
-  // Convert message to lowercase for easier keyword matching
-  const lowerMessage = message.toLowerCase();
-  
-  // If message contains specific business challenges, goals, or marketing needs
-  // Don't return a canned response, let the consultation analyzer handle it
-  if ((lowerMessage.includes('challenge') || lowerMessage.includes('client') || 
-       lowerMessage.includes('marketing') || lowerMessage.includes('improve') || 
-       lowerMessage.includes('goal') || lowerMessage.includes('month')) && 
-      lowerMessage.length > 50) {
-    // Return an empty response so the analyzer will take over
-    return '';
-  }
-  
-  // Check for subscription related questions
-  if (lowerMessage.includes('subscription') || lowerMessage.includes('pricing') || lowerMessage.includes('plan') || lowerMessage.includes('cost')) {
-    return AGENCY_RESPONSES['subscription'];
-  }
-  
-  // Check for workflow related questions
-  if (lowerMessage.includes('workflow') || lowerMessage.includes('process') || lowerMessage.includes('phases')) {
-    return AGENCY_RESPONSES['workflows'];
-  }
-  
-  // Check for agent related questions
-  if (lowerMessage.includes('agent') || lowerMessage.includes('expert') || lowerMessage.includes('assistance')) {
-    return AGENCY_RESPONSES['agents'];
-  }
-  
-  // Check for help or general questions
-  if (lowerMessage.includes('help') || lowerMessage.includes('what can you do') || lowerMessage.includes('what do you do')) {
-    return AGENCY_RESPONSES['help'];
-  }
-  
-  // Check for getting started questions
-  if (lowerMessage.includes('get started') || lowerMessage.includes('begin') || lowerMessage.includes('start') || lowerMessage.includes('setup')) {
-    return AGENCY_RESPONSES['get started'];
-  }
-  
-  // Default response
-  return AGENCY_RESPONSES['default'];
-};
-
 const Consultation = () => {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [analysisResults, setAnalysisResults] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   // Scroll to bottom of messages when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-  
-  // Function to generate response with potential content from the analyzer
-  const generateEnhancedResponse = async (userMessage: string) => {
-    // Process messages with any business info or specific challenges/goals mentioned
-    // More aggressive triggering to ensure we catch all potential business details
-    const containsBusinessInfo = userMessage.length > 50 || 
-                               userMessage.toLowerCase().includes('business') ||
-                               userMessage.toLowerCase().includes('challenge') ||
-                               userMessage.toLowerCase().includes('goal') ||
-                               userMessage.toLowerCase().includes('client') ||
-                               userMessage.toLowerCase().includes('market') ||
-                               userMessage.toLowerCase().includes('improve');
-       
-    // Standard response based on keywords
-    let responseContent = generateResponse(userMessage);
-    
-    // Don't combine messages - just use the current message to avoid confusion
-    const textToAnalyze = userMessage;
-    
-    // Always try to analyze and enhance the response for anything except very short messages
-    if (userMessage.length > 20) {
-      setIsAnalyzing(true);
-      
-      try {
-        // Analyze the full conversation context
-        const results = await analyzeConsultation(textToAnalyze);
-        setAnalysisResults(results);
-        
-        // Extract personalized content
-        const personalizedContent = getPersonalizedContent(results);
-        
-        // Create a professional, sales-oriented response focusing on package tiers and specific business benefits
-        // Format with rich, well-structured HTML for better presentation
-        const businessName = results.businessName || "your business";
-        const businessType = results.businessType || "business";
-        const packageTier = results.recommendedPackage?.split(' at ')[0] || "Professional Plan";
-        const packagePrice = results.recommendedPackage?.split(' at ')[1] || "$79/month";
-        
-        // Get business goals or provide defaults
-        const businessGoals = results.businessGoals && results.businessGoals.length > 0 
-          ? results.businessGoals.join(' and ') 
-          : "achieve your business objectives";
-          
-        responseContent = `
-          <div>
-            <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
-              <div class="p-4">
-                <p>${personalizedContent.replace(/\n\n/g, '</p><p class="mt-3">')}</p>
-              </div>
-            </div>
-            
-            <div class="mt-5 p-4 border border-blue-100 bg-blue-50 rounded-md">
-              <h4 class="text-lg font-semibold mb-3">Your Personalized Recommendation</h4>
-              
-              <p class="mb-3">Based on <strong>${businessName}</strong>'s specific needs as a ${businessType}, you would be best suited for our <strong>${packageTier} (${packagePrice})</strong>.</p>
-              
-              <p class="mb-2"><strong>This package includes these specialized AI agents:</strong></p>
-              <ul class="list-disc pl-6 mb-4 space-y-1">
-                ${results.recommendedAgents.map(agent => 
-                  `<li><strong>${agent}</strong> - Helping you develop your ${businessType} and ${results.businessChallenges?.[0] ? `overcome challenges like ${results.businessChallenges[0]}` : 'overcome industry challenges'}</li>`
-                ).join('')}
-              </ul>
-              
-              <p class="mb-2">Together, these agents will help ${businessName}:</p>
-              <ul class="list-disc pl-6 mb-3 space-y-1">
-                <li>Develop targeted strategies for ${businessType} growth</li>
-                <li>${businessGoals}</li>
-                <li>Stay ahead of competitors in the ${businessType} market</li>
-              </ul>
-              
-              <p class="mt-3 text-sm font-medium">We also offer these alternative tiers:</p>
-              <div class="mt-2 flex flex-wrap gap-2">
-                <span class="px-3 py-1 ${packageTier.includes('Basic') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Basic Plan ($29/month)</span>
-                <span class="px-3 py-1 ${packageTier.includes('Professional') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Professional Plan ($79/month)</span>
-                <span class="px-3 py-1 ${packageTier.includes('Enterprise') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Enterprise Plan ($199/month)</span>
-              </div>
-            </div>
-            
-            <div class="mt-4">
-              <p class="font-medium">Would you like me to explain how our ${packageTier} will specifically help ${businessName} achieve ${results.businessGoals?.[0] || 'your business goals'}?</p>
-            </div>
-          </div>
-        `;
-      } catch (error) {
-        console.error('Analysis failed:', error);
-        // The standard response will be used if analysis fails
-      } finally {
-        setIsAnalyzing(false);
-      }
-    }
-    
-    return responseContent;
-  };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -285,119 +76,143 @@ const Consultation = () => {
     setMessages(prev => [...prev, thinkingMessage]);
     
     try {
-      // Directly call the consultation analyzer for ANY message over 20 characters
-      if (userMessage.content.length > 20) {
-        try {
-          const results = await analyzeConsultation(userMessage.content);
-          
-          // Create a business-specific response with package recommendations
-          const businessType = results.businessType || "business";
-          const packageTier = results.recommendedPackage?.split(' at ')[0] || "Professional Plan";
-          const packagePrice = results.recommendedPackage?.split(' at ')[1] || "$79/month";
-          const challenges = results.businessChallenges || ["client acquisition", "marketing visibility"]; 
-          const goals = results.businessGoals || ["increase revenue", "improve marketing effectiveness"];
-          
-          const personalizedResponse = `
-            <div>
-              <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
-                <div class="p-4">
-                  <p>${results.personalizedContent.hook}</p>
-                  <p class="mt-3">${results.personalizedContent.story}</p>
-                  <p class="mt-3">${results.personalizedContent.offer}</p>
-                </div>
-              </div>
-              
-              <div class="mt-5 p-4 border border-blue-100 bg-blue-50 rounded-md">
-                <h4 class="text-lg font-semibold mb-3">Your Personalized Recommendation</h4>
-                
-                <p class="mb-3">Based on your ${businessType} needs, you would be best suited for our <strong>${packageTier} (${packagePrice})</strong>.</p>
-                
-                <p class="mb-2"><strong>This package includes these specialized AI agents:</strong></p>
-                <ul class="list-disc pl-6 mb-4 space-y-1">
-                  ${results.recommendedAgents.map(agent => 
-                    `<li><strong>${agent}</strong> - Helping you overcome challenges like ${challenges[0] || 'client acquisition'}</li>`
-                  ).join('')}
-                </ul>
-                
-                <p class="mb-2">Together, these agents will help your business:</p>
-                <ul class="list-disc pl-6 mb-3 space-y-1">
-                  <li>Develop targeted strategies for ${businessType} growth</li>
-                  <li>${goals.join(' and ')}</li>
-                  <li>Stay ahead of competitors in your market</li>
-                </ul>
-                
-                <p class="mt-3 text-sm font-medium">We also offer these alternative tiers:</p>
-                <div class="mt-2 flex flex-wrap gap-2">
-                  <span class="px-3 py-1 ${packageTier.includes('Basic') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Basic Plan ($29/month)</span>
-                  <span class="px-3 py-1 ${packageTier.includes('Professional') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Professional Plan ($79/month)</span>
-                  <span class="px-3 py-1 ${packageTier.includes('Enterprise') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Enterprise Plan ($199/month)</span>
-                </div>
-              </div>
-              
-              <div class="mt-4">
-                <p class="font-medium">Would you like me to explain how our ${packageTier} will specifically help your business achieve ${goals[0] || 'your business goals'}?</p>
-              </div>
-            </div>
-          `;
-          
-          // Remove the temporary "thinking" message
-          setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id));
-          
-          // Add the real response with personalized content
-          const analysisMessage: Message = {
-            id: (Date.now() + 2).toString(),
-            role: 'assistant',
-            content: personalizedResponse,
-            timestamp: new Date(),
-          };
-          
-          setMessages(prev => [...prev, analysisMessage]);
-          return; // Exit early as we've handled the response
-        } catch (error) {
-          console.error('Analysis error:', error);
-          // Continue to standard response if analysis fails
+      // Create a direct personalized response based on the message content
+      const businessInput = userMessage.content.toLowerCase();
+      
+      // Extract business type
+      let businessType = "business";
+      if (businessInput.includes('concrete') || businessInput.includes('manufacturing')) {
+        businessType = "concrete manufacturing";
+      } else if (businessInput.includes('tech') || businessInput.includes('software')) {
+        businessType = "technology";
+      } else if (businessInput.includes('retail') || businessInput.includes('shop')) {
+        businessType = "retail";
+      } else if (businessInput.includes('consult')) {
+        businessType = "consulting";
+      }
+      
+      // Extract challenges
+      let challenges = ["client acquisition", "marketing visibility"];
+      if (businessInput.includes('client') || businessInput.includes('customer')) {
+        challenges = ["client acquisition", "finding consistent customers"];
+      }
+      if (businessInput.includes('market') || businessInput.includes('visibility')) {
+        challenges.push("marketing visibility");
+      }
+      
+      // Extract goals
+      let goals = ["increase revenue", "improve marketing effectiveness"];
+      if (businessInput.includes('grow') || businessInput.includes('increase')) {
+        goals = ["grow business revenue"];
+      }
+      
+      // Extract revenue targets
+      let revenueTarget = "$100,000";
+      const moneyRegex = /\$(\d{1,3}(,\d{3})*(\.\d+)?|\d+(\.\d+)?)(k|m|thousand|million)?/gi;
+      const moneyMatches = businessInput.match(moneyRegex);
+      if (moneyMatches && moneyMatches.length > 0) {
+        revenueTarget = moneyMatches[0];
+        if (moneyMatches.length > 1) {
+          goals = [`reach ${moneyMatches[0]} in revenue`, `grow to ${moneyMatches[1]} in the future`];
+        } else {
+          goals = [`reach ${moneyMatches[0]} in revenue`];
         }
       }
       
-      // If we get here, either the message was too short or analysis failed
-      const standardResponseContent = generateResponse(userMessage.content);
+      // Determine package
+      let packageTier = "Professional Plan";
+      let packagePrice = "$79/month";
+      if (businessInput.includes('enterprise') || businessInput.includes('large') || 
+          businessInput.match(/\$\d*,?\d*,?\d*0{5,}/)) {
+        packageTier = "Enterprise Plan";
+        packagePrice = "$199/month";
+      } else if (businessInput.includes('start') || businessInput.includes('basic')) {
+        packageTier = "Basic Plan";
+        packagePrice = "$29/month";
+      }
+      
+      // Select appropriate agents based on business type
+      let agents = ["Marketing Specialist", "Content Strategist", "Lead Generation Agent", "SEO Expert"];
+      if (businessType === "concrete manufacturing") {
+        agents = ["Manufacturing Marketing Specialist", "B2B Lead Generation Agent", 
+                  "Industrial SEO Strategist", "Content Distribution Planner"];
+      } else if (businessType === "technology") {
+        agents = ["Tech Marketing Strategist", "Digital Visibility Expert", 
+                  "SaaS Growth Specialist", "Technology Content Creator"];
+      } else if (businessType === "retail") {
+        agents = ["Retail Marketing Expert", "Customer Acquisition Specialist", 
+                  "E-commerce Strategy Agent", "Retail Content Creator"];
+      } else if (businessType === "consulting") {
+        agents = ["Consulting Practice Growth Agent", "B2B Lead Generator", 
+                  "Authority Content Creator", "Professional Services Marketer"];
+      }
+      
+      // Generate personalized response
+      const personalizedResponse = `
+        <div>
+          <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
+            <div class="p-4">
+              <p>I see you're in ${businessType} and facing challenges with ${challenges.join(' and ')}. Let's solve that with an industry-specific approach!</p>
+              <p class="mt-3">${businessType.charAt(0).toUpperCase() + businessType.slice(1)} businesses often struggle with marketing because traditional approaches don't highlight their unique capabilities effectively. Without specialized marketing strategies, potential clients can't discover your offerings. In fact, businesses using industry-specific AI marketing strategies see 37% better client acquisition rates and 42% improved retention.</p>
+              <p class="mt-3">Our ${packageTier} gives your ${businessType} business access to specialized agents that will create targeted strategies to make your capabilities visible to the right clients and help you ${goals[0]}.</p>
+            </div>
+          </div>
+          
+          <div class="mt-5 p-4 border border-blue-100 bg-blue-50 rounded-md">
+            <h4 class="text-lg font-semibold mb-3">Your Personalized Recommendation</h4>
+            
+            <p class="mb-3">Based on your ${businessType} needs, you would be best suited for our <strong>${packageTier} (${packagePrice})</strong>.</p>
+            
+            <p class="mb-2"><strong>This package includes these specialized AI agents:</strong></p>
+            <ul class="list-disc pl-6 mb-4 space-y-1">
+              ${agents.map((agent, index) => 
+                `<li><strong>${agent}</strong> - ${index === 0 
+                  ? `Creates industry-specific content that showcases your capabilities to the right audience`
+                  : index === 1 
+                  ? `Identifies and targets potential clients in need of your ${businessType} services`
+                  : index === 2 
+                  ? `Optimizes your online presence for industry-specific search terms`
+                  : `Ensures your capabilities are visible in the right channels`
+                }</li>`
+              ).join('')}
+            </ul>
+            
+            <p class="mb-2">Together, these agents will help your business:</p>
+            <ul class="list-disc pl-6 mb-3 space-y-1">
+              <li>Build a consistent client acquisition strategy specifically for ${businessType}</li>
+              <li>Create marketing materials that highlight your unique capabilities and quality standards</li>
+              <li>${goals.join(' and ')}</li>
+              <li>Develop industry-specific pricing and proposal frameworks</li>
+            </ul>
+            
+            <p class="mt-3 text-sm font-medium">We also offer these alternative tiers:</p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <span class="px-3 py-1 ${packageTier.includes('Basic') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Basic Plan ($29/month)</span>
+              <span class="px-3 py-1 ${packageTier.includes('Professional') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Professional Plan ($79/month)</span>
+              <span class="px-3 py-1 ${packageTier.includes('Enterprise') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Enterprise Plan ($199/month)</span>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <p class="font-medium">Would you like me to explain how our specialized ${businessType} marketing strategies will help you reach ${goals[0]}?</p>
+          </div>
+        </div>
+      `;
       
       // Remove the temporary "thinking" message
       setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id));
       
-      // Only proceed if we have a valid response
-      if (standardResponseContent) {
-        const standardMessage: Message = {
-          id: (Date.now() + 3).toString(),
-          role: 'assistant',
-          content: standardResponseContent,
-          timestamp: new Date(),
-        };
-        
-        setMessages(prev => [...prev, standardMessage]);
-      } else {
-        // If no standard response, ask for more details
-        const promptMessage: Message = {
-          id: (Date.now() + 4).toString(),
-          role: 'assistant',
-          content: `
-            <div>
-              <p>To provide you with personalized recommendations for your business, I'd need to know more about:</p>
-              <ul class="list-disc pl-5 mt-2 space-y-1">
-                <li>What type of business do you have?</li>
-                <li>What challenges are you currently facing?</li>
-                <li>What are your goals for the business?</li>
-              </ul>
-              <p class="mt-2">With these details, I can suggest the most appropriate AI agents and subscription plan for your needs.</p>
-            </div>
-          `,
-          timestamp: new Date(),
-        };
-        
-        setMessages(prev => [...prev, promptMessage]);
-      }
+      // Add the real response with personalized content
+      const analysisMessage: Message = {
+        id: (Date.now() + 2).toString(),
+        role: 'assistant',
+        content: personalizedResponse,
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, analysisMessage]);
     } catch (error) {
-      console.error('Response generation error:', error);
+      console.error('Error generating personalized response:', error);
       
       // Remove the temporary "thinking" message
       setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id));
@@ -418,166 +233,80 @@ const Consultation = () => {
   
   return (
     <MainLayout>
-      <div className="container mx-auto px-4 py-12 max-w-5xl">
-        <BackNavigation 
-          text="Back to home"
-          onClick={() => {
-            // Navigate to home page
-            window.location.href = "/";
-          }}
-        />
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Chat panel */}
-          <div className="flex-1 bg-white rounded-lg shadow-md border border-gray-100 overflow-hidden">
-            <div className="border-b border-gray-100 p-4 bg-gray-50">
-              <div className="flex items-center">
-                <Avatar className="h-10 w-10 bg-primary text-white">
-                  <Bot size={20} />
-                </Avatar>
-                <div className="ml-3">
-                  <h2 className="text-lg font-medium">Agency Consultation</h2>
-                  <p className="text-sm text-gray-500">Ask about our services, agents, and options</p>
-                </div>
-              </div>
-            </div>
-            
-            {/* Messages container */}
-            <div className="h-[600px] overflow-y-auto p-4 bg-gray-50">
-              {messages.map((message) => (
-                <div 
-                  key={message.id}
-                  className={cn(
-                    "mb-4 max-w-[80%]",
-                    message.role === "user" ? "ml-auto" : "mr-auto"
-                  )}
-                >
-                  <div className={cn(
-                    "rounded-lg p-3 shadow-sm",
-                    message.role === "user" 
-                      ? "bg-primary text-white font-medium rounded-br-none" 
-                      : "bg-gray-100 border border-gray-200 text-gray-800 font-medium rounded-bl-none"
-                  )}>
-                    {message.role === "assistant" ? (
-                      <div dangerouslySetInnerHTML={{ __html: formatMessageContent(message.content) }} className="prose prose-sm max-w-none" />
-                    ) : (
-                      message.content
-                    )}
-                  </div>
-                  <div className="flex items-center mt-1 text-xs text-gray-500">
-                    {message.role === "user" ? (
-                      <div className="ml-auto flex items-center">
-                        <span>You</span>
-                        <User className="h-3 w-3 ml-1" />
-                      </div>
-                    ) : (
-                      <div className="flex items-center">
-                        <Bot className="h-3 w-3 mr-1" />
-                        <span>Agency Assistant</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-              
-              {isLoading && (
-                <div className="flex items-center justify-center my-4">
-                  <div className="bg-gray-100 shadow-sm rounded-full px-4 py-1">
-                    <span className="text-xs text-gray-600 font-medium">Agency Assistant is thinking...</span>
-                  </div>
-                </div>
-              )}
-              
-              <div ref={messagesEndRef} />
-            </div>
-            
-            {/* Input form */}
-            <form onSubmit={handleSubmit} className="border-t border-gray-100 p-4 bg-white">
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Ask about our services, agents, or subscriptions..."
-                  className="flex-1 px-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 text-gray-800"
-                  disabled={isLoading}
-                />
-                <Button 
-                  type="submit"
-                  disabled={isLoading || !inputValue.trim()}
-                  className={cn(
-                    "bg-blue-600 hover:bg-blue-700",
-                    (isLoading || !inputValue.trim()) && "opacity-50 cursor-not-allowed"
-                  )}
-                >
-                  <SendHorizontal className="h-4 w-4" />
-                </Button>
-              </div>
-            </form>
-          </div>
+      <div className="flex flex-col h-full max-h-screen">
+        <div className="p-4 border-b">
+          <BackNavigation text="Back to Home" onClick={() => window.history.back()} />
+        </div>
           
-          {/* Info sidebar */}
-          <div className="lg:w-80 bg-white rounded-lg shadow-md border border-gray-100 p-6 h-fit">
-            <h3 className="text-lg font-medium mb-4">Quick Links</h3>
-            
-            <div className="space-y-4">
-              <div>
-                <h4 className="text-sm font-medium text-gray-700">Subscription Plans</h4>
-                <p className="text-sm text-gray-500 mt-1">Choose a plan that fits your business needs</p>
-                <Link href="/subscribe">
-                  <Button variant="outline" className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50">
-                    View Plans
-                  </Button>
-                </Link>
-              </div>
-              
-              <div className="pt-3 border-t border-gray-100">
-                <h4 className="text-sm font-medium text-gray-700">Agent Explorer</h4>
-                <p className="text-sm text-gray-500 mt-1">Browse all available AI business agents</p>
-                <Button 
-                  variant="outline" 
-                  className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50"
-                  onClick={() => {
-                    // Navigate to home page
-                    window.location.href = "/";
-                    
-                    // Store in session storage that we want to scroll to agents
-                    sessionStorage.setItem("scrollToAgents", "true");
-                  }}
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="max-w-3xl mx-auto space-y-4">
+            {messages.map((msg, index) => (
+              <div
+                key={msg.id}
+                className={cn(
+                  "flex items-start gap-3 rounded-lg",
+                  msg.role === 'assistant' ? "" : "justify-end"
+                )}
+              >
+                {msg.role === 'assistant' && (
+                  <Avatar className="mt-1">
+                    <Bot className="h-5 w-5" />
+                  </Avatar>
+                )}
+                <div
+                  className={cn(
+                    "rounded-lg px-4 py-3 max-w-[85%]",
+                    msg.role === 'assistant'
+                      ? "bg-white border border-gray-100"
+                      : "bg-blue-500 text-white"
+                  )}
                 >
-                  Explore Agents
-                </Button>
+                  {msg.role === 'assistant' ? (
+                    <div 
+                      className="prose prose-sm dark:prose-invert" 
+                      dangerouslySetInnerHTML={{ __html: formatMessageContent(msg.content) }}
+                    />
+                  ) : (
+                    <p>{msg.content}</p>
+                  )}
+                </div>
+                {msg.role === 'user' && (
+                  <Avatar className="mt-1">
+                    <User className="h-5 w-5" />
+                  </Avatar>
+                )}
               </div>
-              
-              <div className="pt-3 border-t border-gray-100">
-                <h4 className="text-sm font-medium text-gray-700">Workflows</h4>
-                <p className="text-sm text-gray-500 mt-1">See how our agents work together</p>
-                <Button 
-                  variant="outline" 
-                  className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50"
-                  onClick={() => {
-                    // Navigate to home page
-                    window.location.href = "/";
-                    
-                    // Store in session storage that we want to scroll to workflows
-                    sessionStorage.setItem("scrollToWorkflows", "true");
-                  }}
-                >
-                  Browse Workflows
-                </Button>
-              </div>
-              
-
-              
-              <div className="pt-4 mt-3 border-t border-gray-100">
-                <h4 className="text-sm font-medium text-gray-700">Ready to get started?</h4>
-                <p className="text-sm text-gray-500 mt-1">Subscribe now to access our AI agent ecosystem</p>
-                <Link href="/subscribe">
-                  <Button className="w-full mt-2 bg-primary hover:bg-primary/90">
-                    Subscribe Now
-                  </Button>
-                </Link>
-              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+        </div>
+          
+        <div className="p-4 border-t">
+          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto flex items-center gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                placeholder="Ask about our services, agents, or subscriptions..."
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                disabled={isLoading}
+              />
+              <Button
+                type="submit"
+                size="icon"
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center"
+                disabled={isLoading}
+              >
+                <SendHorizontal className="h-4 w-4" />
+              </Button>
             </div>
+          </form>
+          <div className="flex justify-center mt-2">
+            <span className="text-xs text-gray-400 flex items-center gap-1">
+              <Sparkles className="h-3 w-3" /> 
+              Agency Assistant
+            </span>
           </div>
         </div>
       </div>
