@@ -143,20 +143,15 @@ const Consultation = () => {
   
   // Function to generate response with potential content from the analyzer
   const generateEnhancedResponse = async (userMessage: string) => {
-    // First check if this is a consultation that would benefit from analysis
-    const isDetailedConsultation = userMessage.length > 100 && 
-      (userMessage.includes('business') || 
-       userMessage.includes('help') || 
-       userMessage.includes('need') || 
-       userMessage.includes('challenge') ||
-       userMessage.includes('problem') ||
-       userMessage.includes('goal'));
+    // Process all messages for analysis that might contain business details
+    // Trigger for almost all longer messages to ensure we catch business consultations
+    const isDetailedMessage = userMessage.length > 80;
        
     // Standard response based on keywords
     let responseContent = generateResponse(userMessage);
     
-    // For detailed consultations, try to analyze and enhance the response
-    if (isDetailedConsultation) {
+    // For detailed messages, try to analyze and enhance the response
+    if (isDetailedMessage) {
       setIsAnalyzing(true);
       
       try {
@@ -168,14 +163,17 @@ const Consultation = () => {
         const personalizedContent = getPersonalizedContent(results);
         
         // Only display the personalized hook, story, offer - customers should never see the insights analysis
+        // Format with rich, well-structured HTML for better presentation
         responseContent = `
           <div>
-            <div class="p-4 bg-white border border-gray-200 rounded-md shadow-sm">
-              ${personalizedContent}
+            <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
+              <div class="p-4">
+                ${personalizedContent.replace(/\n\n/g, '</p><p class="mt-3">')}
+              </div>
             </div>
             
             <div class="mt-4">
-              <p>Would you like more details about how our services can specifically address your situation?</p>
+              <p class="font-medium">Would you like me to provide more specific strategies for your business?</p>
             </div>
           </div>
         `;

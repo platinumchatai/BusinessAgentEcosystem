@@ -14,18 +14,24 @@ const DEFAULT_MODEL = "gpt-4o";
  */
 export async function analyzeConsultation(text: string) {
   try {
-    // Create a concise prompt for the analysis
+    // Create a comprehensive prompt for the analysis that generates business-specific content
     const analysisPrompt = `
-Analyze this business consultation text and extract the following information in JSON format:
+Analyze this business consultation text in detail and extract the following information in JSON format:
 
-1. keyPhrases: Extract 5-7 key phrases that represent the most important or distinctive aspects of the consultation.
-2. topicDistribution: Identify 3-5 main topics discussed and their approximate percentage of the conversation.
-3. recommendedAgents: Based on the content, which 2-4 specialized agents would be most helpful (choose from: Business Development, Marketing and Branding, Content Planner, Financial Strategist, Customer Success, SEO Strategist, Product Development, Automation Specialist).
-4. personalizedContent: Create personalized marketing content with these sections:
-   - hook: A compelling hook that addresses the client's main challenge/need (20-30 words)
-   - story: A brief relatable narrative connecting their needs to our solution (60-80 words)
-   - offer: A personalized offer that presents our AI agency services as the ideal solution (40-50 words)
-   - combinedContent: The hook, story, and offer combined into a cohesive piece
+1. businessName: Identify the specific business name mentioned in the consultation. If none is explicitly mentioned, use clues to determine the business type/industry.
+2. businessType: Determine the type of business or industry being discussed.
+3. keyPhrases: Extract 5-7 key phrases that represent the most important or distinctive aspects of the consultation.
+4. businessChallenges: Identify 2-4 specific challenges or pain points mentioned for this particular business.
+5. businessGoals: Identify 2-4 specific goals or desired outcomes mentioned for this business.
+6. topicDistribution: Identify 3-5 main topics discussed and their approximate percentage of the conversation.
+7. recommendedAgents: Based on the content, which 2-4 specialized agents would be most helpful (choose from: Business Development, Marketing and Branding, Content Planner, Financial Strategist, Customer Success, SEO Strategist, Product Development, Automation Specialist).
+8. personalizedContent: Create highly personalized marketing content specific to this exact business with these sections:
+   - hook: A compelling hook that addresses this specific business's main challenge/need by name (30-40 words)
+   - story: A detailed narrative connecting their specific business needs to our solution, mentioning their business name and industry details (80-100 words)
+   - offer: A personalized offer that presents our AI agency services as the ideal solution for their specific business situation, referencing unique aspects of their business (50-60 words)
+   - combinedContent: The hook, story, and offer combined into a cohesive piece that feels custom-written for this specific business
+
+Make sure all content is extremely specific to the business mentioned, including direct references to their business name, industry, challenges, and goals. Avoid generic content at all costs.
 
 Format the response as a valid JSON object.
 
