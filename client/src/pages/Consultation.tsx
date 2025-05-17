@@ -321,6 +321,19 @@ const Consultation = () => {
                 </Button>
               </div>
               
+              <div className="pt-3 border-t border-gray-100">
+                <h4 className="text-sm font-medium text-gray-700">Content Analyzer</h4>
+                <p className="text-sm text-gray-500 mt-1">Extract insights and create personalized content</p>
+                <Link href="/consultation-analyzer">
+                  <Button 
+                    variant="outline" 
+                    className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50"
+                  >
+                    Open Analyzer
+                  </Button>
+                </Link>
+              </div>
+              
               <div className="pt-4 mt-3 border-t border-gray-100 bg-blue-50 p-4 -mx-4 rounded-md">
                 <h4 className="text-sm font-medium text-blue-700">Ready to get started?</h4>
                 <p className="text-sm text-blue-600 mt-1">Subscribe now to access our AI agent ecosystem</p>

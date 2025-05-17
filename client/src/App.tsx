@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import AgentDetail from "@/pages/AgentDetail";
 import WorkflowDetail from "@/pages/WorkflowDetail";
 import Consultation from "@/pages/Consultation";
+import ConsultationAnalyzerPage from "@/pages/ConsultationAnalyzerPage";
 import Subscribe from "@/pages/subscribe";
 import AuthPage from "@/pages/auth-page";
 import Agents from "@/pages/Agents";
@@ -23,6 +24,7 @@ function Router() {
       <ProtectedRoute path="/agent/:id" component={AgentDetail} />
       <ProtectedRoute path="/workflow/:id" component={WorkflowDetail} />
       <ProtectedRoute path="/consultation" component={Consultation} />
+      <ProtectedRoute path="/consultation-analyzer" component={ConsultationAnalyzerPage} />
       <ProtectedRoute path="/dashboard" component={DashboardPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/subscribe" component={Subscribe} />

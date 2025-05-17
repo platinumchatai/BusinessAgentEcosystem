@@ -23,6 +23,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Setup authentication routes and middleware
   setupAuth(app);
   
+  // Register consultation analyzer routes
+  app.use('/api/consultation', consultationAnalyzerRoutes);
+  
   // API routes
   
   // Get all messages for the current session
