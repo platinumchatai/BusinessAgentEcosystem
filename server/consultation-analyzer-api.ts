@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { analyzeConsultation } from './consultation-analyzer';
+import { analyzeConsultation } from './consultation-analyzer-fixed';
 import { z } from 'zod';
 
 const router = Router();

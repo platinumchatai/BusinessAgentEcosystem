@@ -274,28 +274,139 @@ const Consultation = () => {
     setInputValue('');
     setIsLoading(true);
     
+    // First, show that we're typing and indicate the app is thinking
+    const thinkingMessage: Message = {
+      id: (Date.now() + 1).toString(),
+      role: 'assistant',
+      content: 'Analyzing your business needs...',
+      timestamp: new Date(),
+    };
+    
+    setMessages(prev => [...prev, thinkingMessage]);
+    
     try {
-      // Generate enhanced response based on user input
-      const responseContent = await generateEnhancedResponse(userMessage.content);
+      // Directly call the consultation analyzer for ANY message over 20 characters
+      if (userMessage.content.length > 20) {
+        try {
+          const results = await analyzeConsultation(userMessage.content);
+          
+          // Create a business-specific response with package recommendations
+          const businessType = results.businessType || "business";
+          const packageTier = results.recommendedPackage?.split(' at ')[0] || "Professional Plan";
+          const packagePrice = results.recommendedPackage?.split(' at ')[1] || "$79/month";
+          const challenges = results.businessChallenges || ["client acquisition", "marketing visibility"]; 
+          const goals = results.businessGoals || ["increase revenue", "improve marketing effectiveness"];
+          
+          const personalizedResponse = `
+            <div>
+              <div class="bg-white border border-gray-200 rounded-md shadow-sm overflow-hidden">
+                <div class="p-4">
+                  <p>${results.personalizedContent.hook}</p>
+                  <p class="mt-3">${results.personalizedContent.story}</p>
+                  <p class="mt-3">${results.personalizedContent.offer}</p>
+                </div>
+              </div>
+              
+              <div class="mt-5 p-4 border border-blue-100 bg-blue-50 rounded-md">
+                <h4 class="text-lg font-semibold mb-3">Your Personalized Recommendation</h4>
+                
+                <p class="mb-3">Based on your ${businessType} needs, you would be best suited for our <strong>${packageTier} (${packagePrice})</strong>.</p>
+                
+                <p class="mb-2"><strong>This package includes these specialized AI agents:</strong></p>
+                <ul class="list-disc pl-6 mb-4 space-y-1">
+                  ${results.recommendedAgents.map(agent => 
+                    `<li><strong>${agent}</strong> - Helping you overcome challenges like ${challenges[0] || 'client acquisition'}</li>`
+                  ).join('')}
+                </ul>
+                
+                <p class="mb-2">Together, these agents will help your business:</p>
+                <ul class="list-disc pl-6 mb-3 space-y-1">
+                  <li>Develop targeted strategies for ${businessType} growth</li>
+                  <li>${goals.join(' and ')}</li>
+                  <li>Stay ahead of competitors in your market</li>
+                </ul>
+                
+                <p class="mt-3 text-sm font-medium">We also offer these alternative tiers:</p>
+                <div class="mt-2 flex flex-wrap gap-2">
+                  <span class="px-3 py-1 ${packageTier.includes('Basic') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Basic Plan ($29/month)</span>
+                  <span class="px-3 py-1 ${packageTier.includes('Professional') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Professional Plan ($79/month)</span>
+                  <span class="px-3 py-1 ${packageTier.includes('Enterprise') ? 'bg-gray-100 text-gray-700' : 'bg-gray-50 text-gray-500'} rounded-full text-xs font-medium">Enterprise Plan ($199/month)</span>
+                </div>
+              </div>
+              
+              <div class="mt-4">
+                <p class="font-medium">Would you like me to explain how our ${packageTier} will specifically help your business achieve ${goals[0] || 'your business goals'}?</p>
+              </div>
+            </div>
+          `;
+          
+          // Remove the temporary "thinking" message
+          setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id));
+          
+          // Add the real response with personalized content
+          const analysisMessage: Message = {
+            id: (Date.now() + 2).toString(),
+            role: 'assistant',
+            content: personalizedResponse,
+            timestamp: new Date(),
+          };
+          
+          setMessages(prev => [...prev, analysisMessage]);
+          return; // Exit early as we've handled the response
+        } catch (error) {
+          console.error('Analysis error:', error);
+          // Continue to standard response if analysis fails
+        }
+      }
       
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        role: 'assistant',
-        content: responseContent,
-        timestamp: new Date(),
-      };
+      // If we get here, either the message was too short or analysis failed
+      const standardResponseContent = generateResponse(userMessage.content);
       
-      setMessages(prev => [...prev, assistantMessage]);
+      // Remove the temporary "thinking" message
+      setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id));
       
-      // Don't ask follow-up questions automatically anymore
-      // Instead wait for the analysis to complete
+      // Only proceed if we have a valid response
+      if (standardResponseContent) {
+        const standardMessage: Message = {
+          id: (Date.now() + 3).toString(),
+          role: 'assistant',
+          content: standardResponseContent,
+          timestamp: new Date(),
+        };
+        
+        setMessages(prev => [...prev, standardMessage]);
+      } else {
+        // If no standard response, ask for more details
+        const promptMessage: Message = {
+          id: (Date.now() + 4).toString(),
+          role: 'assistant',
+          content: `
+            <div>
+              <p>To provide you with personalized recommendations for your business, I'd need to know more about:</p>
+              <ul class="list-disc pl-5 mt-2 space-y-1">
+                <li>What type of business do you have?</li>
+                <li>What challenges are you currently facing?</li>
+                <li>What are your goals for the business?</li>
+              </ul>
+              <p class="mt-2">With these details, I can suggest the most appropriate AI agents and subscription plan for your needs.</p>
+            </div>
+          `,
+          timestamp: new Date(),
+        };
+        
+        setMessages(prev => [...prev, promptMessage]);
+      }
     } catch (error) {
-      console.error('Error generating response:', error);
-      // Fallback to standard response if enhanced response fails
+      console.error('Response generation error:', error);
+      
+      // Remove the temporary "thinking" message
+      setMessages(prev => prev.filter(msg => msg.id !== thinkingMessage.id));
+      
+      // Add a fallback message if all else fails
       const fallbackMessage: Message = {
-        id: (Date.now() + 1).toString(),
+        id: (Date.now() + 5).toString(),
         role: 'assistant',
-        content: generateResponse(userMessage.content),
+        content: "I apologize, but I'm having trouble processing your request. Could you please provide more details about your business and the challenges you're facing?",
         timestamp: new Date(),
       };
       

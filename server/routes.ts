@@ -6,6 +6,7 @@ import { z } from "zod";
 import { nanoid } from "nanoid";
 import { setupAuth } from "./auth";
 import Stripe from "stripe";
+// Import the fixed consultation analyzer API
 import consultationAnalyzerRoutes from "./consultation-analyzer-api";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
