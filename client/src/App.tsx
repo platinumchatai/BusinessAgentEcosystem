@@ -24,7 +24,7 @@ function Router() {
       <ProtectedRoute path="/agent/:id" component={AgentDetail} />
       <ProtectedRoute path="/workflow/:id" component={WorkflowDetail} />
       <ProtectedRoute path="/consultation" component={Consultation} />
-      <ProtectedRoute path="/consultation-analyzer" component={ConsultationAnalyzerPage} />
+
       <ProtectedRoute path="/dashboard" component={DashboardPage} />
       <Route path="/auth" component={AuthPage} />
       <Route path="/subscribe" component={Subscribe} />

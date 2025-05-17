@@ -3,10 +3,11 @@ import { Link } from 'wouter';
 import MainLayout from '@/layouts/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Avatar } from '@/components/ui/avatar';
-import { SendHorizontal, Bot, User, ArrowLeft } from 'lucide-react';
+import { SendHorizontal, Bot, User, ArrowLeft, Sparkles } from 'lucide-react';
 import BackNavigation from '@/components/BackNavigation';
 import { cn } from '@/lib/utils';
 import { formatMessageContent } from '@/lib/formatMessage';
+import { analyzeConsultation, getPersonalizedContent, getRecommendedAgents } from '@/lib/consultationAnalyzer';
 
 type Message = {
   id: string;
@@ -131,12 +132,63 @@ const Consultation = () => {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisResults, setAnalysisResults] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   // Scroll to bottom of messages when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+  
+  // Function to generate response with potential content from the analyzer
+  const generateEnhancedResponse = async (userMessage: string) => {
+    // First check if this is a consultation that would benefit from analysis
+    const isDetailedConsultation = userMessage.length > 100 && 
+      (userMessage.includes('business') || 
+       userMessage.includes('help') || 
+       userMessage.includes('need') || 
+       userMessage.includes('challenge') ||
+       userMessage.includes('problem') ||
+       userMessage.includes('goal'));
+       
+    // Standard response based on keywords
+    let responseContent = generateResponse(userMessage);
+    
+    // For detailed consultations, try to analyze and enhance the response
+    if (isDetailedConsultation) {
+      setIsAnalyzing(true);
+      
+      try {
+        // Analyze the consultation in the background
+        const results = await analyzeConsultation(userMessage);
+        setAnalysisResults(results);
+        
+        // Extract personalized content
+        const personalizedContent = getPersonalizedContent(results);
+        
+        // Only display the personalized hook, story, offer - customers should never see the insights analysis
+        responseContent = `
+          <div>
+            <div class="p-4 bg-white border border-gray-200 rounded-md shadow-sm">
+              ${personalizedContent}
+            </div>
+            
+            <div class="mt-4">
+              <p>Would you like more details about how our services can specifically address your situation?</p>
+            </div>
+          </div>
+        `;
+      } catch (error) {
+        console.error('Analysis failed:', error);
+        // The standard response will be used if analysis fails
+      } finally {
+        setIsAnalyzing(false);
+      }
+    }
+    
+    return responseContent;
+  };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -154,10 +206,9 @@ const Consultation = () => {
     setInputValue('');
     setIsLoading(true);
     
-    // Simulate API delay for more realistic experience
-    setTimeout(() => {
-      // Generate assistant response based on user input
-      const responseContent = generateResponse(userMessage.content);
+    try {
+      // Generate enhanced response based on user input
+      const responseContent = await generateEnhancedResponse(userMessage.content);
       
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -167,8 +218,20 @@ const Consultation = () => {
       };
       
       setMessages(prev => [...prev, assistantMessage]);
+    } catch (error) {
+      console.error('Error generating response:', error);
+      // Fallback to standard response if enhanced response fails
+      const fallbackMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: generateResponse(userMessage.content),
+        timestamp: new Date(),
+      };
+      
+      setMessages(prev => [...prev, fallbackMessage]);
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
   
   return (
@@ -321,24 +384,13 @@ const Consultation = () => {
                 </Button>
               </div>
               
-              <div className="pt-3 border-t border-gray-100">
-                <h4 className="text-sm font-medium text-gray-700">Content Analyzer</h4>
-                <p className="text-sm text-gray-500 mt-1">Extract insights and create personalized content</p>
-                <Link href="/consultation-analyzer">
-                  <Button 
-                    variant="outline" 
-                    className="w-full mt-2 bg-white border-gray-300 text-gray-800 hover:bg-gray-50"
-                  >
-                    Open Analyzer
-                  </Button>
-                </Link>
-              </div>
+
               
-              <div className="pt-4 mt-3 border-t border-gray-100 bg-blue-50 p-4 -mx-4 rounded-md">
-                <h4 className="text-sm font-medium text-blue-700">Ready to get started?</h4>
-                <p className="text-sm text-blue-600 mt-1">Subscribe now to access our AI agent ecosystem</p>
+              <div className="pt-4 mt-3 border-t border-gray-100">
+                <h4 className="text-sm font-medium text-gray-700">Ready to get started?</h4>
+                <p className="text-sm text-gray-500 mt-1">Subscribe now to access our AI agent ecosystem</p>
                 <Link href="/subscribe">
-                  <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700">
+                  <Button className="w-full mt-2 bg-primary hover:bg-primary/90">
                     Subscribe Now
                   </Button>
                 </Link>
