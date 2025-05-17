@@ -4,9 +4,15 @@
  */
 
 interface AnalysisResults {
+  businessName?: string;
+  businessType?: string;
   keyPhrases: string[];
+  businessChallenges?: string[];
+  businessGoals?: string[];
   topicDistribution: { name: string; percentage: number }[];
+  industryInsights?: string[];
   recommendedAgents: string[];
+  recommendedPackage?: string;
   personalizedContent: {
     hook: string;
     story: string;

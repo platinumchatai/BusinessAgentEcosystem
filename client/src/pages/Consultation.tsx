@@ -20,7 +20,21 @@ const INITIAL_MESSAGES: Message[] = [
   {
     id: '1',
     role: 'assistant',
-    content: 'Hi there! 👋 I\'m the Business Agency AI Assistant. I can answer your questions about our services, agents, and subscription options. How can I help you today?',
+    content: `
+      <div>
+        <p>Hi there! 👋 I'm the Business Agency AI Assistant. I'd love to understand more about your business so I can provide personalized recommendations.</p>
+        
+        <p class="mt-3">To get started, could you tell me:</p>
+        <ul class="list-disc pl-6 mt-2 space-y-1">
+          <li>What's your business name and industry?</li>
+          <li>What are your biggest business challenges right now?</li>
+          <li>What are your main goals for the next 6-12 months?</li>
+          <li>Are there specific areas where you need help (marketing, operations, finance, etc.)?</li>
+        </ul>
+        
+        <p class="mt-3">The more you share, the better I can tailor our AI agents and solutions to your specific needs!</p>
+      </div>
+    `,
     timestamp: new Date(),
   },
 ];
@@ -189,7 +203,7 @@ const Consultation = () => {
                   </div>
                   <div class="ml-3">
                     <h5 class="text-md font-medium text-green-800">Recommended Package</h5>
-                    <p class="text-sm text-green-700 mt-1">${results.recommendedPackage}</p>
+                    <p class="text-sm text-green-700 mt-1">${results.recommendedPackage || "Professional Plan at $79/month"}</p>
                   </div>
                 </div>
               </div>
@@ -239,6 +253,30 @@ const Consultation = () => {
       };
       
       setMessages(prev => [...prev, assistantMessage]);
+      
+      // Ask follow-up questions if we need more business details
+      // This happens if the user's message is short and it's early in the conversation
+      if (messages.length <= 2 && userMessage.content.length < 100) {
+        setTimeout(() => {
+          const followUpMessage: Message = {
+            id: (Date.now() + 2).toString(),
+            role: 'assistant',
+            content: `
+              <div>
+                <p>To provide you with more tailored recommendations, could you share a bit more about your business?</p>
+                <ul class="list-disc pl-5 mt-2 space-y-1">
+                  <li>What specific challenges is your business facing right now?</li>
+                  <li>What are your main goals for the next 6-12 months?</li>
+                  <li>Which areas of your business need the most improvement?</li>
+                </ul>
+                <p class="mt-2">The more details you provide, the better I can customize our AI solutions to your specific situation.</p>
+              </div>
+            `,
+            timestamp: new Date(),
+          };
+          setMessages(prev => [...prev, followUpMessage]);
+        }, 3000); // Wait 3 seconds before sending the follow-up
+      }
     } catch (error) {
       console.error('Error generating response:', error);
       // Fallback to standard response if enhanced response fails
