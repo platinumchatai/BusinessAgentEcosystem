@@ -113,6 +113,16 @@ const generateResponse = (message: string): string => {
   // Convert message to lowercase for easier keyword matching
   const lowerMessage = message.toLowerCase();
   
+  // If message contains specific business challenges, goals, or marketing needs
+  // Don't return a canned response, let the consultation analyzer handle it
+  if ((lowerMessage.includes('challenge') || lowerMessage.includes('client') || 
+       lowerMessage.includes('marketing') || lowerMessage.includes('improve') || 
+       lowerMessage.includes('goal') || lowerMessage.includes('month')) && 
+      lowerMessage.length > 50) {
+    // Return an empty response so the analyzer will take over
+    return '';
+  }
+  
   // Check for subscription related questions
   if (lowerMessage.includes('subscription') || lowerMessage.includes('pricing') || lowerMessage.includes('plan') || lowerMessage.includes('cost')) {
     return AGENCY_RESPONSES['subscription'];
@@ -157,20 +167,34 @@ const Consultation = () => {
   
   // Function to generate response with potential content from the analyzer
   const generateEnhancedResponse = async (userMessage: string) => {
-    // Process all messages for analysis that might contain business details
-    // Trigger for almost all longer messages to ensure we catch business consultations
-    const isDetailedMessage = userMessage.length > 80;
+    // Process messages with any business info or specific challenges/goals mentioned
+    // More aggressive triggering to ensure we catch all potential business details
+    const containsBusinessInfo = userMessage.length > 50 || 
+                               userMessage.toLowerCase().includes('business') ||
+                               userMessage.toLowerCase().includes('challenge') ||
+                               userMessage.toLowerCase().includes('goal') ||
+                               userMessage.toLowerCase().includes('client') ||
+                               userMessage.toLowerCase().includes('market') ||
+                               userMessage.toLowerCase().includes('improve');
        
     // Standard response based on keywords
     let responseContent = generateResponse(userMessage);
     
-    // For detailed messages, try to analyze and enhance the response
-    if (isDetailedMessage) {
+    // Combine all previous user messages to provide context for analysis
+    const allUserMessages = messages
+      .filter(msg => msg.role === 'user')
+      .map(msg => msg.content)
+      .join(' ');
+    
+    const textToAnalyze = allUserMessages + ' ' + userMessage;
+    
+    // Always try to analyze and enhance the response for anything except very short messages
+    if (userMessage.length > 20) {
       setIsAnalyzing(true);
       
       try {
-        // Analyze the consultation in the background
-        const results = await analyzeConsultation(userMessage);
+        // Analyze the full conversation context
+        const results = await analyzeConsultation(textToAnalyze);
         setAnalysisResults(results);
         
         // Extract personalized content
