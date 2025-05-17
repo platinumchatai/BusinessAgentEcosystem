@@ -234,80 +234,120 @@ const Consultation = () => {
   
   return (
     <MainLayout>
-      <div className="flex flex-col h-full max-h-screen">
-        <div className="p-4 border-b">
-          <BackNavigation text="Back to Home" onClick={() => window.history.back()} />
-        </div>
-          
-        <div className="flex-1 overflow-y-auto p-4">
-          <div className="max-w-3xl mx-auto space-y-4">
-            {messages.map((msg, index) => (
-              <div
-                key={msg.id}
-                className={cn(
-                  "flex items-start gap-3 rounded-lg",
-                  msg.role === 'assistant' ? "" : "justify-end"
-                )}
-              >
-                {msg.role === 'assistant' && (
-                  <Avatar className="mt-1">
-                    <Bot className="h-5 w-5" />
-                  </Avatar>
-                )}
-                <div
-                  className={cn(
-                    "rounded-lg px-4 py-3 max-w-[85%]",
-                    msg.role === 'assistant'
-                      ? "bg-white border border-gray-100"
-                      : "bg-blue-500 text-white"
-                  )}
-                >
-                  {msg.role === 'assistant' ? (
-                    <div 
-                      className="prose prose-sm dark:prose-invert" 
-                      dangerouslySetInnerHTML={{ __html: formatMessageContent(msg.content) }}
-                    />
-                  ) : (
-                    <p>{msg.content}</p>
-                  )}
-                </div>
-                {msg.role === 'user' && (
-                  <Avatar className="mt-1">
-                    <User className="h-5 w-5" />
-                  </Avatar>
-                )}
-              </div>
-            ))}
-            <div ref={messagesEndRef} />
+      <div className="flex h-full max-h-screen">
+        {/* Left Sidebar with Options */}
+        <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col">
+          <div className="p-4 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-800">Navigation</h2>
+          </div>
+          <div className="p-3 space-y-2 flex-1">
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              onClick={() => window.location.href='/'}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              onClick={() => window.location.href='/agents'}
+            >
+              <User className="h-4 w-4 mr-2" />
+              Explore Agents
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              onClick={() => window.location.href='/plans'}
+            >
+              <Bot className="h-4 w-4 mr-2" />
+              Plans
+            </Button>
+            
+            <Button 
+              variant="ghost" 
+              className="w-full justify-start text-blue-600 hover:bg-blue-50 hover:text-blue-700"
+              onClick={() => window.location.href='/subscribe'}
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              Subscribe
+            </Button>
           </div>
         </div>
+        
+        {/* Main Chat Area */}
+        <div className="flex-1 flex flex-col">
+          {/* Title Bar */}
+          <div className="p-4 border-b bg-white flex items-center justify-between">
+            <h1 className="text-xl font-semibold text-gray-800">Platinum Chat AI Consultation</h1>
+          </div>
           
-        <div className="p-4 border-t">
-          <form onSubmit={handleSubmit} className="max-w-3xl mx-auto flex items-center gap-2">
-            <div className="relative flex-1">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Ask about our services, agents, or subscriptions..."
-                className="w-full px-4 py-2.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
-                disabled={isLoading}
-              />
-              <Button
-                type="submit"
-                size="icon"
-                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center"
-                disabled={isLoading}
-              >
-                <SendHorizontal className="h-4 w-4" />
-              </Button>
+          {/* Messages Container - Traditional One Box Style */}
+          <div className="flex-1 overflow-y-auto bg-gray-50">
+            <div className="py-4 px-6 space-y-4">
+              {messages.map((msg, index) => (
+                <div
+                  key={msg.id}
+                  className={cn(
+                    "flex max-w-[80%]",
+                    msg.role === 'assistant' ? "mr-auto" : "ml-auto"
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "rounded-2xl py-3 px-4",
+                      msg.role === 'assistant'
+                        ? "bg-white border border-gray-200"
+                        : "bg-blue-500 text-white"
+                    )}
+                  >
+                    {msg.role === 'assistant' ? (
+                      <div 
+                        className="prose prose-sm dark:prose-invert" 
+                        dangerouslySetInnerHTML={{ __html: formatMessageContent(msg.content) }}
+                      />
+                    ) : (
+                      <p>{msg.content}</p>
+                    )}
+                  </div>
+                </div>
+              ))}
+              <div ref={messagesEndRef} />
             </div>
-          </form>
-          <div className="flex justify-center mt-2">
-            <span className="text-xs text-gray-400 flex items-center gap-1">
-              <Sparkles className="h-3 w-3" /> 
-              Agency Assistant
-            </span>
+          </div>
+          
+          {/* Input Area */}
+          <div className="p-3 border-t bg-white">
+            <form onSubmit={handleSubmit} className="flex items-center gap-2 mx-auto max-w-4xl">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  placeholder="Ask about our services, agents, or subscriptions..."
+                  className="w-full px-4 py-3 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
+                  disabled={isLoading}
+                />
+                <Button
+                  type="submit"
+                  size="icon"
+                  className="absolute right-1 top-1/2 -translate-y-1/2 h-10 w-10 bg-blue-500 hover:bg-blue-600 rounded-full flex items-center justify-center"
+                  disabled={isLoading}
+                >
+                  <SendHorizontal className="h-5 w-5" />
+                </Button>
+              </div>
+            </form>
+            <div className="flex justify-center mt-2">
+              <span className="text-xs text-gray-400 flex items-center gap-1">
+                <Sparkles className="h-3 w-3" /> 
+                Platinum Chat AI
+              </span>
+            </div>
           </div>
         </div>
       </div>
