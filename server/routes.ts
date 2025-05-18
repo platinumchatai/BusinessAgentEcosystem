@@ -688,6 +688,58 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin routes
+  // Get all users (admin only)
+  app.get("/api/admin/users", isAdmin, async (req, res) => {
+    try {
+      const users = await storage.getAllUsers();
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+  
+  // Get all invoices (admin only)
+  app.get("/api/admin/invoices", isAdmin, async (req, res) => {
+    try {
+      const invoices = await storage.getAllInvoices();
+      res.json(invoices);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch invoices" });
+    }
+  });
+  
+  // Get all conversations (admin only) 
+  app.get("/api/admin/conversations", isAdmin, async (req, res) => {
+    try {
+      const conversations = await storage.getAllConversations();
+      res.json(conversations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch conversations" });
+    }
+  });
+  
+  // Update user role (admin only)
+  app.patch("/api/admin/users/:id/role", isAdmin, async (req, res) => {
+    try {
+      const schema = z.object({
+        role: z.enum(["user", "admin"]),
+      });
+      
+      const { role } = schema.parse(req.body);
+      const userId = parseInt(req.params.id);
+      
+      const user = await storage.updateUserRole(userId, role);
+      res.json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "Invalid request data", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "Failed to update user role" });
+      }
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

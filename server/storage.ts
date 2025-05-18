@@ -32,6 +32,8 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   updateStripeCustomerId(userId: number, customerId: string): Promise<User>;
   updateUserStripeInfo(userId: number, info: { customerId: string, subscriptionId: string, serviceLevel?: string }): Promise<User>;
+  getAllUsers(): Promise<User[]>; // Admin functionality
+  updateUserRole(userId: number, role: string): Promise<User>; // Admin functionality
   
   // Agent methods
   getAgents(): Promise<typeof agentsData>;
@@ -50,6 +52,7 @@ export interface IStorage {
   updateConversation(id: number, updates: Partial<InsertConversation>): Promise<Conversation>;
   archiveConversation(id: number): Promise<Conversation>;
   deleteConversation(id: number): Promise<void>;
+  getAllConversations(): Promise<Conversation[]>; // Admin functionality
   
   // Conversation-Agent relationships
   addAgentToConversation(conversationId: number, agentId: number): Promise<void>;
@@ -59,6 +62,7 @@ export interface IStorage {
   getInvoicesByUserId(userId: number): Promise<Invoice[]>;
   getInvoice(id: number): Promise<Invoice | undefined>;
   createInvoice(invoice: InsertInvoice): Promise<Invoice>;
+  getAllInvoices(): Promise<Invoice[]>; // Admin functionality
   
   // Session store
   sessionStore: session.Store;
@@ -270,6 +274,32 @@ export class DatabaseStorage implements IStorage {
       .returning();
     
     return newInvoice;
+  }
+
+  // Admin functionality
+  async getAllUsers(): Promise<User[]> {
+    return await db.select().from(users).orderBy(users.id);
+  }
+
+  async updateUserRole(userId: number, role: "user" | "admin"): Promise<User> {
+    const [updatedUser] = await db.update(users)
+      .set({ role })
+      .where(eq(users.id, userId))
+      .returning();
+    
+    return updatedUser;
+  }
+
+  async getAllConversations(): Promise<Conversation[]> {
+    return await db.select()
+      .from(conversations)
+      .orderBy(desc(conversations.createdAt));
+  }
+
+  async getAllInvoices(): Promise<Invoice[]> {
+    return await db.select()
+      .from(invoices)
+      .orderBy(desc(invoices.invoiceDate));
   }
 }
 
