@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
-import { apiRequest, queryClient } from "@/lib/queryClient";
 import { 
   Tabs, 
   TabsContent, 
@@ -26,28 +25,55 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
-import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Info, Edit, Trash2, User, DollarSign, MessageSquare, ChevronRight } from "lucide-react";
+import { Info, User, DollarSign, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+// Define types for our data
+interface UserData {
+  id: number;
+  username: string;
+  email: string | null;
+  serviceLevel: string | null;
+  createdAt: string;
+  isAdmin?: boolean;
+}
+
+interface InvoiceData {
+  id: number;
+  userId: number;
+  amount: number;
+  status: string;
+  invoiceDate: string;
+  description: string;
+  url?: string;
+}
+
+interface ConversationData {
+  id: number;
+  userId: number;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  isArchived: boolean;
+}
+
+interface AgentData {
+  id: number;
+  name: string;
+  category: string;
+  phase: number;
+  coordinator: boolean;
+}
 
 export default function AdminPage() {
   const { user } = useAuth();
@@ -57,71 +83,39 @@ export default function AdminPage() {
   const [isPromoteDialogOpen, setIsPromoteDialogOpen] = useState(false);
   
   // Redirect if not admin
-  if (user?.role !== "admin") {
+  if (!user?.isAdmin) {
     navigate("/");
     return null;
   }
   
   // Fetch all users
-  const { data: users = [], isLoading: isLoadingUsers } = useQuery({
+  const { data: users = [], isLoading: isLoadingUsers } = useQuery<UserData[]>({
     queryKey: ["/api/admin/users"],
     retry: false,
   });
   
   // Fetch all invoices
-  const { data: invoices = [], isLoading: isLoadingInvoices } = useQuery({
+  const { data: invoices = [], isLoading: isLoadingInvoices } = useQuery<InvoiceData[]>({
     queryKey: ["/api/admin/invoices"],
     retry: false,
   });
   
   // Fetch all conversations
-  const { data: conversations = [], isLoading: isLoadingConversations } = useQuery({
+  const { data: conversations = [], isLoading: isLoadingConversations } = useQuery<ConversationData[]>({
     queryKey: ["/api/admin/conversations"],
     retry: false,
   });
   
   // Fetch agents (using existing endpoint)
-  const { data: agents = [], isLoading: isLoadingAgents } = useQuery({
+  const { data: agents = [], isLoading: isLoadingAgents } = useQuery<AgentData[]>({
     queryKey: ["/api/agents"],
     retry: false,
   });
   
-  // Mutation to update user role
-  const updateRoleMutation = useMutation({
-    mutationFn: async ({ userId, role }: { userId: number, role: "user" | "admin" }) => {
-      return await apiRequest(`/api/admin/users/${userId}/role`, {
-        method: "PATCH",
-        body: JSON.stringify({ role }),
-      });
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/admin/users"] });
-      toast({
-        title: "Success",
-        description: "User role updated successfully",
-      });
-      setIsPromoteDialogOpen(false);
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to update user role",
-        variant: "destructive",
-      });
-    },
-  });
-  
-  // Handle promote to admin
-  const handlePromoteUser = (userId: number) => {
+  // Handle view user details
+  const handleViewUser = (userId: number) => {
     setSelectedUserId(userId);
     setIsPromoteDialogOpen(true);
-  };
-  
-  // Confirm role change
-  const confirmRoleChange = (role: "user" | "admin") => {
-    if (selectedUserId) {
-      updateRoleMutation.mutate({ userId: selectedUserId, role });
-    }
   };
   
   // Format date for display
@@ -194,21 +188,21 @@ export default function AdminPage() {
                         <TableHead>ID</TableHead>
                         <TableHead>Username</TableHead>
                         <TableHead>Email</TableHead>
-                        <TableHead>Role</TableHead>
+                        <TableHead>Admin</TableHead>
                         <TableHead>Created</TableHead>
                         <TableHead>Service Level</TableHead>
                         <TableHead>Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {users.map((user: any) => (
+                      {users.map((user) => (
                         <TableRow key={user.id}>
                           <TableCell>{user.id}</TableCell>
                           <TableCell className="font-medium">{user.username}</TableCell>
                           <TableCell>{user.email || "N/A"}</TableCell>
                           <TableCell>
-                            <Badge variant={user.role === "admin" ? "destructive" : "default"}>
-                              {user.role || "user"}
+                            <Badge variant={["admin", "owner"].includes(user.username) ? "destructive" : "outline"}>
+                              {["admin", "owner"].includes(user.username) ? "Admin" : "User"}
                             </Badge>
                           </TableCell>
                           <TableCell>{user.createdAt ? formatDate(user.createdAt) : "N/A"}</TableCell>
@@ -218,9 +212,9 @@ export default function AdminPage() {
                               <Button 
                                 variant="outline" 
                                 size="sm"
-                                onClick={() => handlePromoteUser(user.id)}
+                                onClick={() => handleViewUser(user.id)}
                               >
-                                Change Role
+                                View Details
                               </Button>
                             </div>
                           </TableCell>
@@ -264,15 +258,15 @@ export default function AdminPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {invoices.map((invoice: any) => (
+                      {invoices.map((invoice) => (
                         <TableRow key={invoice.id}>
                           <TableCell>{invoice.id}</TableCell>
                           <TableCell>{invoice.userId}</TableCell>
                           <TableCell>{formatCurrency(invoice.amount)}</TableCell>
                           <TableCell>
                             <Badge variant={
-                              invoice.status === "paid" ? "success" : 
-                              invoice.status === "pending" ? "warning" : "destructive"
+                              invoice.status === "paid" ? "default" : 
+                              invoice.status === "pending" ? "outline" : "destructive"
                             }>
                               {invoice.status}
                             </Badge>
@@ -333,7 +327,7 @@ export default function AdminPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {conversations.map((conversation: any) => (
+                      {conversations.map((conversation) => (
                         <TableRow key={conversation.id}>
                           <TableCell>{conversation.id}</TableCell>
                           <TableCell>{conversation.userId}</TableCell>
@@ -385,7 +379,7 @@ export default function AdminPage() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {agents.map((agent: any) => (
+                      {agents.map((agent) => (
                         <TableRow key={agent.id}>
                           <TableCell>{agent.id}</TableCell>
                           <TableCell className="font-medium">{agent.name}</TableCell>
@@ -393,7 +387,7 @@ export default function AdminPage() {
                           <TableCell>Phase {agent.phase}</TableCell>
                           <TableCell>
                             {agent.coordinator ? (
-                              <Badge variant="success">Yes</Badge>
+                              <Badge>Yes</Badge>
                             ) : (
                               <Badge variant="outline">No</Badge>
                             )}
@@ -409,34 +403,48 @@ export default function AdminPage() {
         </TabsContent>
       </Tabs>
       
-      {/* Dialog for changing user roles */}
+      {/* Dialog for viewing user details */}
       <Dialog open={isPromoteDialogOpen} onOpenChange={setIsPromoteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Change User Role</DialogTitle>
+            <DialogTitle>User Details</DialogTitle>
             <DialogDescription>
-              Are you sure you want to change this user's role? This action can significantly change their access and permissions.
+              Detailed information about the selected user
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="promote-admin">Make user an admin:</Label>
-              <div className="space-x-4">
-                <Button
-                  variant="outline"
-                  onClick={() => confirmRoleChange("user")}
-                  disabled={updateRoleMutation.isPending}
-                >
-                  Set as User
-                </Button>
-                <Button
-                  onClick={() => confirmRoleChange("admin")}
-                  disabled={updateRoleMutation.isPending}
-                >
-                  Set as Admin
-                </Button>
+            {selectedUserId && users.find(u => u.id === selectedUserId) && (
+              <div className="space-y-4">
+                <div>
+                  <Label>Username</Label>
+                  <div className="font-medium">{users.find(u => u.id === selectedUserId)?.username}</div>
+                </div>
+                <div>
+                  <Label>Email</Label>
+                  <div className="font-medium">{users.find(u => u.id === selectedUserId)?.email || "N/A"}</div>
+                </div>
+                <div>
+                  <Label>Service Level</Label>
+                  <div className="font-medium">{users.find(u => u.id === selectedUserId)?.serviceLevel || "Free"}</div>
+                </div>
+                <div>
+                  <Label>Created At</Label>
+                  <div className="font-medium">
+                    {users.find(u => u.id === selectedUserId)?.createdAt 
+                      ? formatDate(users.find(u => u.id === selectedUserId)!.createdAt) 
+                      : "N/A"}
+                  </div>
+                </div>
+                <div>
+                  <Label>Admin Status</Label>
+                  <div className="font-medium">
+                    {["admin", "owner"].includes(users.find(u => u.id === selectedUserId)?.username || "") 
+                      ? "Admin" 
+                      : "Regular User"}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>

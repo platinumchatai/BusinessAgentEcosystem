@@ -13,6 +13,7 @@ type SimulatedUser = {
   id: number;
   username: string;
   isSimulated: true;
+  isAdmin?: boolean;
 };
 
 type AuthContextType = {
