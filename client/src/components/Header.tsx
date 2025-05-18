@@ -120,7 +120,7 @@ const Header = () => {
                     </DropdownMenuItem>
                     
                     {/* Admin page link - only for admin users */}
-                    {user?.isAdmin && (
+                    {user && ["admin", "owner"].includes(user.username) && (
                       <DropdownMenuItem asChild>
                         <Link href="/admin" className="flex items-center w-full cursor-pointer">
                           <User className="mr-2 h-4 w-4" />

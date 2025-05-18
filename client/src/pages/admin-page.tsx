@@ -82,8 +82,9 @@ export default function AdminPage() {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isPromoteDialogOpen, setIsPromoteDialogOpen] = useState(false);
   
-  // Redirect if not admin
-  if (!user?.isAdmin) {
+  // Redirect if not admin (based on username)
+  const isAdminUser = user && ["admin", "owner"].includes(user.username);
+  if (!isAdminUser) {
     navigate("/");
     return null;
   }
