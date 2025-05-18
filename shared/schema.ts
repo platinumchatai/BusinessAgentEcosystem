@@ -2,12 +2,16 @@ import { pgTable, text, serial, integer, boolean, timestamp, pgEnum } from "driz
 import { z } from "zod";
 import { relations } from "drizzle-orm";
 
+// User role enum
+export const userRoleEnum = pgEnum('user_role', ['user', 'admin']);
+
 // Users table for authentication
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
   email: text("email"),
+  role: userRoleEnum("role").notNull().default("user"),
   stripeCustomerId: text("stripe_customer_id"),
   stripeSubscriptionId: text("stripe_subscription_id"),
   serviceLevel: text("service_level"),
