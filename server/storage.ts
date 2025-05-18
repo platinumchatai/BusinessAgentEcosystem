@@ -33,7 +33,7 @@ export interface IStorage {
   updateStripeCustomerId(userId: number, customerId: string): Promise<User>;
   updateUserStripeInfo(userId: number, info: { customerId: string, subscriptionId: string, serviceLevel?: string }): Promise<User>;
   getAllUsers(): Promise<User[]>; // Admin functionality
-  updateUserRole(userId: number, role: string): Promise<User>; // Admin functionality
+  updateUserRole(userId: number, role: "user" | "admin"): Promise<User>; // Admin functionality
   
   // Agent methods
   getAgents(): Promise<typeof agentsData>;
