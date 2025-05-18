@@ -278,16 +278,22 @@ export class DatabaseStorage implements IStorage {
 
   // Admin functionality
   async getAllUsers(): Promise<User[]> {
-    return await db.select().from(users).orderBy(users.id);
+    const allUsers = await db.select().from(users).orderBy(users.id);
+    // Remove sensitive information
+    return allUsers.map(user => {
+      const { password, ...safeUser } = user;
+      return safeUser as User;
+    });
   }
 
+  // Note: We're not using roles in the database, so this is a stub method
+  // that returns the user without changes
   async updateUserRole(userId: number, role: "user" | "admin"): Promise<User> {
-    const [updatedUser] = await db.update(users)
-      .set({ role })
-      .where(eq(users.id, userId))
-      .returning();
-    
-    return updatedUser;
+    const user = await this.getUser(userId);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return user;
   }
 
   async getAllConversations(): Promise<Conversation[]> {

@@ -224,6 +224,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Admin routes
+  // Get all users (admin only)
+  app.get("/api/admin/users", isAdmin, async (req, res) => {
+    try {
+      // Use the database API safely
+      const allUsers = await storage.getAllUsers();
+      res.json(allUsers);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch users" });
+    }
+  });
+  
+  // Get all invoices (admin only)
+  app.get("/api/admin/invoices", isAdmin, async (req, res) => {
+    try {
+      const allInvoices = await storage.getAllInvoices();
+      res.json(allInvoices);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch invoices" });
+    }
+  });
+  
+  // Get all conversations (admin only) 
+  app.get("/api/admin/conversations", isAdmin, async (req, res) => {
+    try {
+      const allConversations = await storage.getAllConversations();
+      res.json(allConversations);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch conversations" });
+    }
+  });
+  
   // Get all messages
   app.get("/api/messages", async (req, res) => {
     try {
