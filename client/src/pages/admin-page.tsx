@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
 import { useLocation } from "wouter";
@@ -82,12 +82,15 @@ export default function AdminPage() {
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isPromoteDialogOpen, setIsPromoteDialogOpen] = useState(false);
   
-  // Redirect if not admin (based on username)
+  // Check if user is admin (based on username)
   const isAdminUser = user && ["admin", "owner"].includes(user.username);
-  if (!isAdminUser) {
-    navigate("/");
-    return null;
-  }
+  
+  // Use useEffect for navigation instead of doing it during render
+  useEffect(() => {
+    if (user && !isAdminUser) {
+      navigate("/");
+    }
+  }, [user, isAdminUser, navigate]);
   
   // Fetch all users
   const { data: users = [], isLoading: isLoadingUsers } = useQuery<UserData[]>({
