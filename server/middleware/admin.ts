@@ -9,8 +9,8 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     return res.status(401).json({ message: "Not authenticated" });
   }
   
-  // Check if user is in the admin list
-  if (!ADMIN_USERNAMES.includes(req.user!.username)) {
+  // Check if user is in the admin list (case insensitive)
+  if (!ADMIN_USERNAMES.some(admin => admin.toLowerCase() === req.user!.username.toLowerCase())) {
     return res.status(403).json({ message: "Forbidden - Admin access required" });
   }
   
