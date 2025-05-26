@@ -32,8 +32,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main id="top" className="flex-grow">
-        {children}
+      <main id="top" className="flex-grow w-full">
+        <div className="max-w-6xl mx-auto px-4">
+          {children}
+        </div>
       </main>
       <Footer />
       <FloatingActionButton onClick={() => scrollToSection('chat')} />

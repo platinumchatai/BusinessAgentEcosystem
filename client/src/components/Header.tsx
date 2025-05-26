@@ -26,7 +26,7 @@ const Header = () => {
   const { user, simulateLogin, simulateLogout } = useAuth();
   const isMobile = useIsMobile();
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  
+
   // Check if user is authenticated
   const isAuthenticated = !!user;
 
@@ -81,7 +81,7 @@ const Header = () => {
               label={isMobile ? "Agents" : "Explore Agents"} 
               isActive={isActivePath('/agents')} 
             />
-            
+
             {/* Only show Dashboard for logged-in users */}
             {isAuthenticated && (
               <NavItem 
@@ -91,14 +91,14 @@ const Header = () => {
                 isActive={isActivePath('/dashboard')} 
               />
             )}
-            
+
             <NavItem 
               href="/subscribe" 
               icon={<DollarSign size={22} />} 
               label="Subscribe" 
               isActive={isActivePath('/subscribe')} 
             />
-            
+
             {/* User profile with dropdown */}
             {isAuthenticated ? (
               <div className="flex flex-col items-center justify-center py-3 px-2 md:px-4 text-white">
@@ -118,7 +118,7 @@ const Header = () => {
                         <span>Dashboard</span>
                       </Link>
                     </DropdownMenuItem>
-                    
+
                     {/* Admin page link - only for admin users (case insensitive check) */}
                     {user && ["admin", "owner", "janice"].some(name => user.username.toLowerCase() === name.toLowerCase()) && (
                       <DropdownMenuItem asChild>
@@ -128,7 +128,7 @@ const Header = () => {
                         </Link>
                       </DropdownMenuItem>
                     )}
-                    
+
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       className="flex items-center cursor-pointer" 
@@ -170,10 +170,10 @@ interface NavItemProps {
 
 const NavItem: React.FC<NavItemProps> = ({ href, icon, label, isActive }) => {
   const isMobile = useIsMobile();
-  
+
   return (
     <Link href={href}>
-      <div className={`flex flex-col items-center justify-center py-3 px-2 md:px-4 relative ${
+      <div className={`flex flex-col items-center justify-center py-3 px-3 md:px-6 relative transition-colors duration-200 ${
         isActive ? 'text-white' : 'text-white/80 hover:text-white'
       }`}>
         <div>
