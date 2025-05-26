@@ -120,7 +120,7 @@ const Header = () => {
                     </DropdownMenuItem>
                     
                     {/* Admin page link - only for admin users (case insensitive check) */}
-                    {user && ["admin", "owner"].some(name => user.username.toLowerCase() === name.toLowerCase()) && (
+                    {user && ["admin", "owner", "janice"].some(name => user.username.toLowerCase() === name.toLowerCase()) && (
                       <DropdownMenuItem asChild>
                         <Link href="/admin" className="flex items-center w-full cursor-pointer">
                           <User className="mr-2 h-4 w-4" />
