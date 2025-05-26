@@ -83,7 +83,7 @@ export default function AdminPage() {
   const [isPromoteDialogOpen, setIsPromoteDialogOpen] = useState(false);
   
   // Check if user is admin (based on username)
-  const isAdminUser = user && ["admin", "owner"].includes(user.username);
+  const isAdminUser = user && ["admin", "owner", "janice"].some(name => user.username.toLowerCase() === name.toLowerCase());
   
   // Use useEffect for navigation instead of doing it during render
   useEffect(() => {
