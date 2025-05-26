@@ -81,47 +81,47 @@ export default function AdminPage() {
   const { toast } = useToast();
   const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
   const [isPromoteDialogOpen, setIsPromoteDialogOpen] = useState(false);
-  
+
   // Check if user is admin (based on username)
   const isAdminUser = user && ["admin", "owner", "janice"].some(name => user.username.toLowerCase() === name.toLowerCase());
-  
+
   // Use useEffect for navigation instead of doing it during render
   useEffect(() => {
     if (user && !isAdminUser) {
       navigate("/");
     }
   }, [user, isAdminUser, navigate]);
-  
+
   // Fetch all users
   const { data: users = [], isLoading: isLoadingUsers } = useQuery<UserData[]>({
     queryKey: ["/api/admin/users"],
     retry: false,
   });
-  
+
   // Fetch all invoices
   const { data: invoices = [], isLoading: isLoadingInvoices } = useQuery<InvoiceData[]>({
     queryKey: ["/api/admin/invoices"],
     retry: false,
   });
-  
+
   // Fetch all conversations
   const { data: conversations = [], isLoading: isLoadingConversations } = useQuery<ConversationData[]>({
     queryKey: ["/api/admin/conversations"],
     retry: false,
   });
-  
+
   // Fetch agents (using existing endpoint)
   const { data: agents = [], isLoading: isLoadingAgents } = useQuery<AgentData[]>({
     queryKey: ["/api/agents"],
     retry: false,
   });
-  
+
   // Handle view user details
   const handleViewUser = (userId: number) => {
     setSelectedUserId(userId);
     setIsPromoteDialogOpen(true);
   };
-  
+
   // Format date for display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -131,7 +131,7 @@ export default function AdminPage() {
       day: "numeric",
     });
   };
-  
+
   // Format currency for display
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat("en-US", {
@@ -139,7 +139,7 @@ export default function AdminPage() {
       currency: "USD",
     }).format(amount / 100); // Convert cents to dollars
   };
-  
+
   return (
     <div className="container py-10">
       <div className="mb-8">
@@ -148,7 +148,7 @@ export default function AdminPage() {
           Manage users, view finances, and monitor system performance
         </p>
       </div>
-      
+
       <Tabs defaultValue="users" className="space-y-4">
         <TabsList>
           <TabsTrigger value="users" className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export default function AdminPage() {
             <span>Agents</span>
           </TabsTrigger>
         </TabsList>
-        
+
         {/* Users Tab */}
         <TabsContent value="users" className="space-y-4">
           <Card>
@@ -231,7 +231,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         {/* Invoices Tab */}
         <TabsContent value="invoices" className="space-y-4">
           <Card>
@@ -301,7 +301,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         {/* Conversations Tab */}
         <TabsContent value="conversations" className="space-y-4">
           <Card>
@@ -354,7 +354,7 @@ export default function AdminPage() {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         {/* Agents Tab */}
         <TabsContent value="agents" className="space-y-4">
           <Card>
@@ -406,7 +406,7 @@ export default function AdminPage() {
           </Card>
         </TabsContent>
       </Tabs>
-      
+
       {/* Dialog for viewing user details */}
       <Dialog open={isPromoteDialogOpen} onOpenChange={setIsPromoteDialogOpen}>
         <DialogContent>
