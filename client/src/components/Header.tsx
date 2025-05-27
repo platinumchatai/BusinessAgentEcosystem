@@ -108,7 +108,7 @@ const Header = () => {
                       <div className="h-8 w-8 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30">
                         <User size={18} />
                       </div>
-                      <span className="text-xs mt-1">{user?.username}</span>
+                      <span className="text-xs mt-1">{user?.displayName || user?.username}</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">

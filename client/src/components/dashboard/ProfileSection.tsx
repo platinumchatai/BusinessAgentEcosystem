@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { User } from "@shared/schema";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
+import { User } from "@shared/schema";
 import { Badge } from "@/components/ui/badge";
 
 interface ProfileSectionProps {
@@ -12,14 +12,15 @@ interface ProfileSectionProps {
 }
 
 export default function ProfileSection({ profile }: ProfileSectionProps) {
-  const { toast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [email, setEmail] = useState(profile?.email || "");
+  const [displayName, setDisplayName] = useState(profile?.displayName || "");
+  const { toast } = useToast();
 
   // Get a proper display format for the service level
   const formatServiceLevel = (level: string | undefined | null) => {
     if (!level) return "Free";
-    
+
     // Convert from snake_case or camelCase to Title Case with spaces
     return level
       .replace(/([a-z])([A-Z])/g, '$1 $2') // Convert camelCase to spaces
@@ -30,19 +31,19 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
   // Get a visual representation (badge) for the service level
   const getServiceLevelBadge = (level: string | undefined | null) => {
     const displayLevel = formatServiceLevel(level);
-    
+
     if (!level || level.toLowerCase().includes('free')) {
       return <Badge variant="outline" className="ml-2 text-slate-600">Free</Badge>;
     }
-    
+
     if (level.toLowerCase().includes('basic') || level.toLowerCase().includes('starter')) {
       return <Badge variant="default" className="ml-2 bg-blue-500">Basic</Badge>;
     }
-    
+
     if (level.toLowerCase().includes('pro') || level.toLowerCase().includes('premium')) {
       return <Badge variant="default" className="ml-2 bg-purple-600">Pro</Badge>;
     }
-    
+
     if (level.toLowerCase().includes('enterprise') || level.toLowerCase().includes('business')) {
       return <Badge variant="default" className="ml-2 bg-amber-600">Enterprise</Badge>;
     }
@@ -56,7 +57,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
       title: "Profile Updated",
       description: "Your profile information has been saved.",
     });
-    
+
     setIsEditing(false);
   };
 
@@ -79,7 +80,22 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
               className="bg-slate-50"
             />
           </div>
-          
+
+          <div className="space-y-2">
+            <Label htmlFor="displayName">Display Name</Label>
+            <Input
+              id="displayName"
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              disabled={!isEditing}
+              className={!isEditing ? "bg-slate-50" : ""}
+              placeholder="How you'd like to be addressed (e.g., Bob, Bob's Landscaping)"
+            />
+            <p className="text-sm text-gray-500 mt-1">
+              This is how you'll be greeted throughout the site
+            </p>
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
             <Input
@@ -91,7 +107,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
               className={!isEditing ? "bg-slate-50" : ""}
             />
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="service-level">Service Level</Label>
             <div className="flex items-center">
@@ -104,7 +120,7 @@ export default function ProfileSection({ profile }: ProfileSectionProps) {
               {getServiceLevelBadge(profile?.serviceLevel ?? null)}
             </div>
           </div>
-          
+
           <div className="space-y-2">
             <Label htmlFor="created-at">Member Since</Label>
             <Input

@@ -1,6 +1,7 @@
 // Here's how we would update your AgencyBot.tsx file with the complete implementation:
 
 import React, { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/use-auth";
 
 // Define the AgencyBotState interface
 interface AgencyBotState {
@@ -27,8 +28,8 @@ class AgencyBot {
     };
 
     this.responses = {
-      greeting: () => `
-Hello there! 👋 Welcome to Platinum Chat AI Business Agency! 
+      greeting: (userName?: string) => `
+Hello there${userName ? `, ${userName}` : ''}! 👋 Welcome to Platinum Chat AI Business Agency! 
 
 I'm your AI Business Consultant, ready to help you leverage our team of 16 specialized AI agents to grow your business. 
 
@@ -273,7 +274,15 @@ Have a wonderful day! 😊
 
 // React component for the chatbot UI
 const AgencyChatbot: React.FC = () => {
-  const [bot] = useState(new AgencyBot());
+  const { user } = useAuth();
+  const [bot] = useState(() => {
+    const newBot = new AgencyBot();
+    // Pre-populate user name if available
+    if (user?.displayName || user?.username) {
+      newBot.state.userName = user.displayName || user.username;
+    }
+    return newBot;
+  });
   const [messages, setMessages] = useState<{ text: string; isBot: boolean }[]>([
     { text: bot.processUserMessage(""), isBot: true },
   ]);
