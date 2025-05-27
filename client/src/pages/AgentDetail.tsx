@@ -76,10 +76,11 @@ const AgentDetail = () => {
   });
 
   // Handle submit message
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
-      const response = await fetch('/api/messages', {
+      try {
+        const response = await fetch('/api/messages', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -94,9 +95,13 @@ const AgentDetail = () => {
         if (response.ok) {
           const data = await response.json();
           setAgentResponse(data.response);
+          setMessage("");
         } else {
           setAgentResponse('Sorry, I encountered an error. Please try again.');
         }
+      } catch (error) {
+        setAgentResponse('Sorry, I encountered an error. Please try again.');
+      }
     }
   };
 
