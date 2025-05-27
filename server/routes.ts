@@ -375,6 +375,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         // Generate agent response using OpenAI
         let response;
         try {
+          // Verify OpenAI API key is available
+          if (!process.env.OPENAI_API_KEY && !process.env.VITE_OPENAI_API_KEY) {
+            throw new Error('OpenAI API key not configured');
+          }
+          
           const completion = await openai.chat.completions.create({
             model: "gpt-4o",
             messages: [

@@ -29,7 +29,7 @@ const AgentInteraction = () => {
     queryKey: ['/api/messages'],
     staleTime: 0,
   });
-  
+
   // Use a safe messages array, ensuring it's always defined
   const messages = data || [];
 
@@ -42,7 +42,7 @@ const AgentInteraction = () => {
     onSuccess: () => {
       setMessage('');
       setShowConnecting(true);
-      
+
       // Simulate time for agent to connect and respond
       setTimeout(() => {
         setShowConnecting(false);
@@ -109,7 +109,7 @@ const AgentInteraction = () => {
           Tell us about your business needs and we'll connect you with the right AI agents.
         </motion.p>
       </div>
-      
+
       <motion.div 
         className="bg-white rounded-lg shadow-lg overflow-hidden"
         initial={{ opacity: 0, y: 20 }}
@@ -120,7 +120,7 @@ const AgentInteraction = () => {
           {/* Agent selection sidebar */}
           <div className="bg-gray-50 p-4 border-r lg:col-span-1">
             <h3 className="font-heading font-semibold text-lg mb-4">Select Agents</h3>
-            
+
             <div className="mb-4">
               <input 
                 type="text" 
@@ -130,7 +130,7 @@ const AgentInteraction = () => {
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
             </div>
-            
+
             <div className="space-y-2 max-h-96 overflow-y-auto">
               {filteredAgents.map(agent => (
                 <div 
@@ -152,7 +152,7 @@ const AgentInteraction = () => {
                 </div>
               ))}
             </div>
-            
+
             <div className="mt-4 p-3 bg-primary/10 rounded-lg">
               <h4 className="font-heading font-medium text-sm mb-2">Recommended Workflow</h4>
               <button 
@@ -171,7 +171,7 @@ const AgentInteraction = () => {
               </button>
             </div>
           </div>
-          
+
           {/* Chat interface */}
           <div className="p-4 lg:col-span-2 flex flex-col h-[600px]">
             <div className="flex-1 overflow-y-auto mb-4 p-2">
@@ -194,7 +194,7 @@ const AgentInteraction = () => {
                   </div>
                 </div>
               )}
-              
+
               {/* Messages */}
               {messages.map((msg: Message, index: number) => (
                 <div key={msg.id} className={`flex mb-4 ${msg.sender === 'user' ? 'justify-end' : ''}`}>
@@ -203,7 +203,7 @@ const AgentInteraction = () => {
                       <span className="material-icons text-white text-sm">smart_toy</span>
                     </div>
                   )}
-                  
+
                   <div className={`${msg.sender === 'user' ? 'bg-primary/10' : 'bg-gray-100'} rounded-lg p-3 max-w-[80%]`}>
                     {msg.sender === 'user' ? (
                       <p className="text-sm">{msg.content}</p>
@@ -214,7 +214,7 @@ const AgentInteraction = () => {
                       />
                     )}
                   </div>
-                  
+
                   {msg.sender === 'user' && (
                     <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center ml-2 flex-shrink-0">
                       <span className="material-icons text-white text-sm">person</span>
@@ -222,17 +222,17 @@ const AgentInteraction = () => {
                   )}
                 </div>
               ))}
-              
+
               {/* Agent connection notice */}
               {showConnecting && (
                 <div className="text-center text-xs text-neutral-400 my-4">
                   <span>Connecting with agents...</span>
                 </div>
               )}
-              
+
               <div ref={messagesEndRef} />
             </div>
-            
+
             {/* Chat input */}
             <form onSubmit={handleSubmit} className="border-t pt-4">
               <div className="flex">

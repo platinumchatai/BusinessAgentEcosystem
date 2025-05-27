@@ -13,15 +13,15 @@ const AgentDetail = () => {
   const [agentResponse, setAgentResponse] = useState("");
   const [showConnecting, setShowConnecting] = useState(false);
   const { toast } = useToast();
-  
+
   // Scroll to top when component mounts or when agent ID changes
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
-  
+
   // Find the agent from the data
   const agent = agents.find(agent => agent.id === Number(id));
-  
+
   // If agent not found, show error
   if (!agent) {
     return (
@@ -36,10 +36,10 @@ const AgentDetail = () => {
       </div>
     );
   }
-  
+
   // Find the phase this agent belongs to
   const phase = phases.find(phase => phase.id === agent.phase);
-  
+
   // Background colors based on agent's phase
   const phaseColors = [
     { bg: 'bg-phase1', light: 'bg-primary/10', text: 'text-primary', dark: 'bg-primary' },
@@ -47,9 +47,9 @@ const AgentDetail = () => {
     { bg: 'bg-phase3', light: 'bg-amber-500/10', text: 'text-amber-500', dark: 'bg-amber-500' },
     { bg: 'bg-phase4', light: 'bg-secondary/10', text: 'text-secondary', dark: 'bg-secondary' },
   ];
-  
+
   const colors = phaseColors[agent.phase - 1];
-  
+
   // Send message mutation
   const { mutate: sendMessage, isPending } = useMutation({
     mutationFn: async (content: string) => {
@@ -59,7 +59,7 @@ const AgentDetail = () => {
       const data = await response.json();
       setMessage("");
       setShowConnecting(true);
-      
+
       // Simulate agent typing delay
       setTimeout(() => {
         setShowConnecting(false);
@@ -74,12 +74,29 @@ const AgentDetail = () => {
       });
     }
   });
-  
+
   // Handle submit message
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (message.trim()) {
-      sendMessage(message);
+      const response = await fetch('/api/messages', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            message: message,
+            agentIds: [agent.id],
+            conversationId: null
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setAgentResponse(data.response);
+        } else {
+          setAgentResponse('Sorry, I encountered an error. Please try again.');
+        }
     }
   };
 
@@ -93,7 +110,7 @@ const AgentDetail = () => {
           <span className="material-icons mr-1">arrow_back</span>
           Back to all agents
         </Link>
-        
+
         <div className={`${colors.bg} rounded-lg overflow-hidden`}>
           <div className="p-8">
             <div className="flex items-start justify-between flex-wrap gap-4">
@@ -106,11 +123,11 @@ const AgentDetail = () => {
                     Phase {agent.phase}: {phase?.name}
                   </span>
                 </div>
-                
+
                 <h1 className="text-3xl font-bold mb-4 text-white">{agent.name}</h1>
                 <p className="text-white font-light max-w-3xl">{agent.description}</p>
               </div>
-              
+
               <div className={`bg-white/20 p-4 rounded-lg self-start shadow-sm`}>
                 <h3 className="font-medium mb-2 text-white">Expertise Areas</h3>
                 <ul className="space-y-1">
@@ -126,7 +143,7 @@ const AgentDetail = () => {
           </div>
         </div>
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
           <motion.div 
@@ -144,14 +161,14 @@ const AgentDetail = () => {
                 in the {phase?.name.toLowerCase()} phase. With expertise in {agent.expertise.join(', ')},
                 this agent provides valuable insights and guidance to entrepreneurs and business owners.
               </p>
-              
+
               <h3>When to Use This Agent</h3>
               <ul>
                 {agent.whenToUse.map((item, index) => (
                   <li key={index}>{item}</li>
                 ))}
               </ul>
-              
+
               <h3>Key Capabilities</h3>
               <ul>
                 {agent.capabilities.map((item, index) => (
@@ -160,7 +177,7 @@ const AgentDetail = () => {
               </ul>
             </div>
           </motion.div>
-          
+
           {agent.relatedAgents.length > 0 && (
             <motion.div 
               className="bg-white rounded-lg shadow-lg p-6"
@@ -175,9 +192,9 @@ const AgentDetail = () => {
                 {agent.relatedAgents.map(relatedId => {
                   const related = agents.find(a => a.id === relatedId);
                   if (!related) return null;
-                  
+
                   const relatedColors = phaseColors[related.phase - 1];
-                  
+
                   return (
                     <Link key={related.id} href={`/agent/${related.id}`}>
                       <div 
@@ -198,7 +215,7 @@ const AgentDetail = () => {
             </motion.div>
           )}
         </div>
-        
+
         <div className="lg:col-span-1">
           <motion.div 
             className="bg-white rounded-lg shadow-lg overflow-hidden h-full"
@@ -209,7 +226,7 @@ const AgentDetail = () => {
             <div className={`${colors.dark} text-white p-4`}>
               <h2 className="font-bold">Chat with {agent.name}</h2>
             </div>
-            
+
             <div className="flex flex-col h-[calc(100%-60px)]">
               <div className="flex-1 overflow-y-auto p-4 min-h-[300px]">
                 <div className="flex mb-4">
@@ -222,7 +239,7 @@ const AgentDetail = () => {
                     </p>
                   </div>
                 </div>
-                
+
                 {agentResponse && (
                   <>
                     <div className="flex mb-4 justify-end">
@@ -233,7 +250,7 @@ const AgentDetail = () => {
                         <span className="material-icons text-white text-sm">person</span>
                       </div>
                     </div>
-                    
+
                     <div className="flex mb-4">
                       <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center mr-2 flex-shrink-0">
                         <span className="material-icons text-white text-sm">smart_toy</span>
@@ -247,7 +264,7 @@ const AgentDetail = () => {
                     </div>
                   </>
                 )}
-                
+
                 {showConnecting && (
                   <div className="flex items-center justify-center my-4">
                     <div className="bg-gray-100 rounded-full px-4 py-1">
@@ -256,7 +273,7 @@ const AgentDetail = () => {
                   </div>
                 )}
               </div>
-              
+
               <form onSubmit={handleSubmit} className="border-t p-4">
                 <div className="flex">
                   <input 
