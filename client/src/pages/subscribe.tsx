@@ -113,18 +113,18 @@ const Subscribe = () => {
   });
   const [captchaVerified, setCaptchaVerified] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  
+
   const handleCaptchaChange = (token: string | null) => {
     setCaptchaVerified(!!token);
   };
-  
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
       [name]: type === 'checkbox' ? checked : value
     });
-    
+
     // Clear error for this field when user types
     if (errors[name]) {
       setErrors({
@@ -133,59 +133,59 @@ const Subscribe = () => {
       });
     }
   };
-  
+
   const validateForm = (step: number): boolean => {
     const newErrors: Record<string, string> = {};
-    
+
     if (step === 0) { // Account creation validation
       if (!formData.email) newErrors.email = 'Email is required';
       else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid';
-      
+
       if (!formData.password) newErrors.password = 'Password is required';
       else if (formData.password.length < 8) newErrors.password = 'Password must be at least 8 characters';
-      
+
       if (!formData.confirmPassword) newErrors.confirmPassword = 'Please confirm your password';
       else if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
-      
+
       if (!formData.username) newErrors.username = 'Username is required';
-      
+
       if (!captchaVerified) newErrors.captcha = 'Please verify you are not a robot';
     }
-    
+
     if (step === 1) { // Payment validation
       if (!formData.cardNumber) newErrors.cardNumber = 'Card number is required';
       else if (!/^\d{16}$/.test(formData.cardNumber.replace(/\s/g, ''))) newErrors.cardNumber = 'Invalid card number';
-      
+
       if (!formData.expiryDate) newErrors.expiryDate = 'Expiry date is required';
       else if (!/^\d{2}\/\d{2}$/.test(formData.expiryDate)) newErrors.expiryDate = 'Use MM/YY format';
-      
+
       if (!formData.cvc) newErrors.cvc = 'CVC is required';
       else if (!/^\d{3,4}$/.test(formData.cvc)) newErrors.cvc = 'Invalid CVC';
-      
+
       if (!formData.nameOnCard) newErrors.nameOnCard = 'Name on card is required';
-      
+
       if (!formData.billingAddress) newErrors.billingAddress = 'Billing address is required';
       if (!formData.city) newErrors.city = 'City is required';
       if (!formData.state) newErrors.state = 'State is required';
       if (!formData.zipCode) newErrors.zipCode = 'ZIP code is required';
-      
+
       if (!formData.agreeTerms) newErrors.agreeTerms = 'You must agree to the terms and conditions';
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const handleNextStep = () => {
     if (validateForm(tabIndex)) {
       setTabIndex(tabIndex + 1);
     }
   };
-  
+
   const handlePrevStep = () => {
     setTabIndex(tabIndex - 1);
   };
-  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm(tabIndex)) {
@@ -193,7 +193,7 @@ const Subscribe = () => {
       // Here we would submit to API, process payment, etc.
     }
   };
-  
+
   return (
     <MainLayout>
       <div className="w-full bg-gradient-to-r from-[#1e4388] to-[#2a549e] py-16 px-4 mb-12">
@@ -205,7 +205,7 @@ const Subscribe = () => {
         </div>
       </div>
       <div className="container mx-auto px-4">
-        
+
         {/* Plan Selection */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
           {subscriptionPlans.map((plan, index) => (
@@ -224,16 +224,16 @@ const Subscribe = () => {
                   Recommended Plan
                 </div>
               )}
-              
+
               <div className="p-6 md:p-8">
                 <h3 className="text-xl font-bold text-gray-800">{plan.name}</h3>
                 <p className="text-gray-700 mt-2 text-sm font-medium">{plan.description}</p>
-                
+
                 <div className="mt-6 flex items-baseline">
                   <span className="text-4xl font-bold text-gray-800">{plan.price}</span>
                   <span className="text-gray-700 ml-1 text-lg font-medium">/{plan.frequency}</span>
                 </div>
-                
+
                 <Button 
                   className={cn(
                     "w-full mt-6 py-3 rounded-full font-medium shadow-sm",
@@ -245,7 +245,7 @@ const Subscribe = () => {
                 >
                   {selectedPlan === index ? 'Selected' : plan.buttonText}
                 </Button>
-                
+
                 <div className="mt-8">
                   <h4 className="font-medium mb-3 text-gray-800">Features:</h4>
                   <ul className="space-y-2">
@@ -256,7 +256,7 @@ const Subscribe = () => {
                       </li>
                     ))}
                   </ul>
-                  
+
                   {plan.limitations.length > 0 && (
                     <div className="mt-4">
                       <h4 className="font-medium mb-2">Limitations:</h4>
@@ -275,7 +275,7 @@ const Subscribe = () => {
             </div>
           ))}
         </div>
-        
+
         {/* Subscription Form with Tabs */}
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden">
           <div className="p-6 bg-gray-50 border-b border-gray-200">
@@ -286,7 +286,7 @@ const Subscribe = () => {
               {subscriptionPlans[selectedPlan].price}/{subscriptionPlans[selectedPlan].frequency} - {subscriptionPlans[selectedPlan].description}
             </p>
           </div>
-          
+
           <Tab.Group selectedIndex={tabIndex} onChange={setTabIndex}>
             <Tab.List className="flex px-4 py-2 bg-gray-50 border-b border-gray-200">
               <Tab
@@ -329,7 +329,7 @@ const Subscribe = () => {
                 Confirmation
               </Tab>
             </Tab.List>
-            
+
             <Tab.Panels>
               {/* Account Creation Panel */}
               <Tab.Panel>
@@ -347,7 +347,7 @@ const Subscribe = () => {
                       />
                       {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username}</p>}
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="email">Email</Label>
                       <Input
@@ -361,7 +361,7 @@ const Subscribe = () => {
                       />
                       {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label htmlFor="firstName">First Name</Label>
@@ -373,7 +373,7 @@ const Subscribe = () => {
                           onChange={handleInputChange}
                         />
                       </div>
-                      
+
                       <div>
                         <Label htmlFor="lastName">Last Name</Label>
                         <Input
@@ -385,7 +385,7 @@ const Subscribe = () => {
                         />
                       </div>
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="password">Password</Label>
                       <Input
@@ -399,7 +399,7 @@ const Subscribe = () => {
                       />
                       {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
                     </div>
-                    
+
                     <div>
                       <Label htmlFor="confirmPassword">Confirm Password</Label>
                       <Input
@@ -413,16 +413,16 @@ const Subscribe = () => {
                       />
                       {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
                     </div>
-                    
 
-                    
+
+
                     {/* CAPTCHA verification */}
                     <div className="mt-6">
                       <MockReCAPTCHA onChange={handleCaptchaChange} />
                       {errors.captcha && <p className="text-red-500 text-xs mt-1">{errors.captcha}</p>}
                     </div>
                   </div>
-                  
+
                   <div className="mt-8 flex justify-end">
                     <Button
                       type="button"
@@ -434,7 +434,7 @@ const Subscribe = () => {
                   </div>
                 </form>
               </Tab.Panel>
-              
+
               {/* Payment Information Panel */}
               <Tab.Panel>
                 <form className="p-6" onSubmit={handleSubmit}>
@@ -454,7 +454,7 @@ const Subscribe = () => {
                           />
                           {errors.nameOnCard && <p className="text-red-500 text-xs mt-1">{errors.nameOnCard}</p>}
                         </div>
-                        
+
                         <div>
                           <Label htmlFor="cardNumber">Card Number</Label>
                           <Input
@@ -467,7 +467,7 @@ const Subscribe = () => {
                           />
                           {errors.cardNumber && <p className="text-red-500 text-xs mt-1">{errors.cardNumber}</p>}
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="expiryDate">Expiry Date</Label>
@@ -481,7 +481,7 @@ const Subscribe = () => {
                             />
                             {errors.expiryDate && <p className="text-red-500 text-xs mt-1">{errors.expiryDate}</p>}
                           </div>
-                          
+
                           <div>
                             <Label htmlFor="cvc">CVC</Label>
                             <Input
@@ -497,9 +497,9 @@ const Subscribe = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <Separator />
-                    
+
                     <div>
                       <h3 className="text-lg font-medium mb-3">Billing Address</h3>
                       <div className="space-y-4">
@@ -515,7 +515,7 @@ const Subscribe = () => {
                           />
                           {errors.billingAddress && <p className="text-red-500 text-xs mt-1">{errors.billingAddress}</p>}
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="city">City</Label>
@@ -529,7 +529,7 @@ const Subscribe = () => {
                             />
                             {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
                           </div>
-                          
+
                           <div>
                             <Label htmlFor="state">State</Label>
                             <Input
@@ -543,7 +543,7 @@ const Subscribe = () => {
                             {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                           </div>
                         </div>
-                        
+
                         <div className="grid grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="zipCode">ZIP Code</Label>
@@ -557,7 +557,7 @@ const Subscribe = () => {
                             />
                             {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
                           </div>
-                          
+
                           <div>
                             <Label htmlFor="country">Country</Label>
                             <select
@@ -578,7 +578,7 @@ const Subscribe = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="flex items-start">
                       <input
                         id="agreeTerms"
@@ -594,7 +594,7 @@ const Subscribe = () => {
                     </div>
                     {errors.agreeTerms && <p className="text-red-500 text-xs mt-1">{errors.agreeTerms}</p>}
                   </div>
-                  
+
                   <div className="mt-8 flex justify-between">
                     <Button
                       type="button"
@@ -604,7 +604,7 @@ const Subscribe = () => {
                     >
                       Back to Account
                     </Button>
-                    
+
                     <Button
                       type="button"
                       onClick={handleNextStep}
@@ -615,7 +615,7 @@ const Subscribe = () => {
                   </div>
                 </form>
               </Tab.Panel>
-              
+
               {/* Confirmation Panel */}
               <Tab.Panel>
                 <div className="p-6">
@@ -625,7 +625,7 @@ const Subscribe = () => {
                       Almost done! Please review your subscription details
                     </h3>
                   </div>
-                  
+
                   <div className="space-y-6">
                     <div>
                       <h3 className="text-lg font-medium mb-2">Subscription Details</h3>
@@ -648,7 +648,7 @@ const Subscribe = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <h3 className="text-lg font-medium mb-2">Account Information</h3>
@@ -671,7 +671,7 @@ const Subscribe = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <h3 className="text-lg font-medium mb-2">Payment Method</h3>
                         <div className="bg-gray-50 p-4 rounded-md">
@@ -694,12 +694,12 @@ const Subscribe = () => {
                         </div>
                       </div>
                     </div>
-                    
+
                     <div className="pt-4 border-t border-gray-200">
                       <p className="text-sm text-gray-700 font-medium mb-6">
                         By clicking "Complete Subscription", you agree to subscribe to the {subscriptionPlans[selectedPlan].name}. Your payment method will be charged {subscriptionPlans[selectedPlan].price} monthly until you cancel. You can cancel anytime from your account settings.
                       </p>
-                      
+
                       <div className="flex justify-between">
                         <Button
                           type="button"
@@ -709,7 +709,7 @@ const Subscribe = () => {
                         >
                           Back to Payment
                         </Button>
-                        
+
                         <Button
                           type="button"
                           onClick={handleSubmit}
